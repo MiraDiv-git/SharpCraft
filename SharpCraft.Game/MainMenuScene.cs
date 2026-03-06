@@ -25,12 +25,12 @@ public class MainMenuScene : IScene
 
     private void LoadMainMenu()
     {
-        PlayButton();
-        OptionsButton();
-        ExitButton();
+        LoadPlayButton();
+        LoadOptionsButton();
+        LoadExitButton();
     }
     
-    private void PlayButton()
+    private void LoadPlayButton()
     {
         var rect = _canvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 0);
@@ -46,7 +46,7 @@ public class MainMenuScene : IScene
         };
     }
     
-    private void OptionsButton()
+    private void LoadOptionsButton()
     {
         var rect = _canvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 100);
@@ -62,7 +62,7 @@ public class MainMenuScene : IScene
         };
     }
     
-    private void ExitButton()
+    private void LoadExitButton()
     {
         var rect = _canvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 200);
