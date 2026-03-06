@@ -1,4 +1,5 @@
-﻿using SharpCraft.Engine.Input;
+﻿using SharpCraft.Engine.Audio;
+using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Scene;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -30,22 +31,20 @@ public class GameWindow
             Console.WriteLine("[OK] Game window loaded.");
             _gl = _window.CreateOpenGL();
             Console.WriteLine("[OK] OpenGL context created.");
-            Console.WriteLine($"\t↳Using OpenGL: {_gl.GetStringS(StringName.Version)}\n" +
-                              $"\t↳Shading Language: {_gl.GetStringS(StringName.ShadingLanguageVersion)}\n" +
-                              $"\t↳Renderer: {_gl.GetStringS(StringName.Renderer)}\n" +
-                              $"\t↳Vendor: {_gl.GetStringS(StringName.Vendor)}");
+            PrintGLInfo();
             
             _uiRenderer = new UIRenderer(_gl, 800, 600);
             Console.WriteLine("[OK] UI Renderer initialized.");
             
+            Console.WriteLine("\nLoading Game Managers...");
+            
             InputManager.Initialize(_window.CreateInput());
-            Console.WriteLine("[OK] Input initialized.");
-            
+            AudioManager.Initialize();
             SceneManager.Initialize(_uiRenderer);
-            Console.WriteLine("[OK] SceneManager initialized.");
-            SceneManager.LoadCurrentScene();
-            Console.WriteLine("\t↳Default scene loaded.");
-            
+                SceneManager.LoadCurrentScene();
+                Console.WriteLine("\t↳Default scene loaded.");
+                
+            Console.WriteLine("\n===== Game started =====\n");
         };
         
         _window.Update += delta =>
@@ -76,6 +75,14 @@ public class GameWindow
             
             SceneManager.Render();
         };
+    }
+    
+    private void PrintGLInfo()
+    {
+        Console.WriteLine($"\t↳Using OpenGL: {_gl.GetStringS(StringName.Version)}\n" +
+                          $"\t↳Shading Language: {_gl.GetStringS(StringName.ShadingLanguageVersion)}\n" +
+                          $"\t↳Renderer: {_gl.GetStringS(StringName.Renderer)}\n" +
+                          $"\t↳Vendor: {_gl.GetStringS(StringName.Vendor)}");
     }
     
     public void Run() => _window.Run();

@@ -21,6 +21,8 @@ public class InputManager
         
         _mouse.MouseDown += (_, btn) => { if (btn == MouseButton.Left) LeftMouseButtonDown = true; };
         _mouse.MouseUp += (_, btn) => { if (btn == MouseButton.Left) LeftMouseButtonDown = false; };
+        
+        Console.WriteLine("[OK] Input Manager initialized.");
     }
 
     public static void Update()

@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Update="Sounds/**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
     </ItemGroup>
 

@@ -11,6 +11,7 @@
       <None Update="Shaders/**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <PackageReference Include="NVorbis" Version="0.10.5" />
 
       <PackageReference Include="Silk.NET" Version="2.23.0" />
 

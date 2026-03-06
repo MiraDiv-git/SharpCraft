@@ -1,4 +1,5 @@
-﻿using SharpCraft.Engine.Scene;
+﻿using SharpCraft.Engine.Audio;
+using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.UI.Elements;
 
@@ -8,11 +9,13 @@ public class MainMenuScene : IScene
 {
     private UIRenderer _uiRenderer;
     private Canvas _canvas;
+    private Sound _clickSound;
 
     public void Load(UIRenderer uiRenderer)
     {
         _uiRenderer = uiRenderer;
         _canvas = new Canvas(_uiRenderer);
+        _clickSound = AudioManager.LoadAudio("Sounds/UI/click_ui.ogg");
         LoadMainMenu();
     }
 
@@ -36,7 +39,11 @@ public class MainMenuScene : IScene
         rect.ButtonColor = Color.Grey;
         rect.HoverColor = Color.LightGrey;
         rect.PressColor = Color.White;
-        rect.OnClick += () => Console.WriteLine("[INFO] Play button clicked.");
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            Console.WriteLine("[INFO] Play button clicked.");
+        };
     }
     
     private void OptionsButton()
@@ -48,7 +55,11 @@ public class MainMenuScene : IScene
         rect.ButtonColor = Color.Grey;
         rect.HoverColor = Color.LightGrey;
         rect.PressColor = Color.White;
-        rect.OnClick += () => Console.WriteLine("[INFO] Options button clicked.");
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            Console.WriteLine("[INFO] Options button clicked.");
+        };
     }
     
     private void ExitButton()
