@@ -20,7 +20,7 @@ public class Canvas
     
     public void Update(UIRenderer renderer)
     {
-        foreach (var element in _elements)
+        foreach (var element in _elements.ToList())
             if (element.Visible)
                 element.Update(renderer);
     }

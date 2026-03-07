@@ -10,8 +10,15 @@
       <None Update="Sounds/**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Textures/**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
 
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Textures\" />
     </ItemGroup>
 
 </Project>

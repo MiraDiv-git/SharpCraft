@@ -1,4 +1,5 @@
-﻿using SharpCraft.Engine.Audio;
+﻿using SharpCraft.Engine.Assets;
+using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Scene;
 using Silk.NET.Maths;
@@ -42,6 +43,7 @@ public class GameWindow
             
             InputManager.Initialize(_window.CreateInput());
             AudioManager.Initialize();
+            AssetManager.Initialize(_gl);
             SceneManager.Initialize(_uiRenderer);
                 SceneManager.LoadCurrentScene();
                 Console.WriteLine("\t↳Default scene loaded.");

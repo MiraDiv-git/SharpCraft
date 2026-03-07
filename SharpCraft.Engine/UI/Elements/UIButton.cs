@@ -11,9 +11,9 @@ public enum ButtonState
 
 public class UIButton : UIElement
 {
-    public Color4 ButtonColor { get; set; } = Color.White;
+    public Color4 ButtonColor { get; set; } = Color.Grey;
     public Color4 HoverColor { get; set; } = Color.LightGrey;
-    public Color4 PressColor { get; set; } = Color.Grey;
+    public Color4 PressColor { get; set; } = Color.White;
     public Texture? ButtonTexture { get; set; }
     
     public Action? OnClick { get; set; }
@@ -59,7 +59,7 @@ public class UIButton : UIElement
         };
         
         if (ButtonTexture != null)
-            renderer.DrawTexturedRect(Position, Size, ButtonTexture, ButtonColor, Anchor);
+            renderer.DrawTexturedRect(Position, Size, ButtonTexture, color, Anchor);
         else
             renderer.DrawRect(Position, Size, color, Anchor);
     }

@@ -9,9 +9,7 @@ class Program
     static void Main()
     {
         var window = new GameWindow();
-
         SceneManager.SetScene(new MainMenuScene());
-        
         window.Run();
     }
 }

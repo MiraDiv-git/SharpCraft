@@ -46,6 +46,9 @@ public class UIRenderer
         _gl.EnableVertexAttribArray(1);
         
         _gl.BindVertexArray(0);
+        
+        _gl.Enable(EnableCap.Blend);
+        _gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
     }
     
     public void SetScreenSize(int width, int height)
@@ -98,6 +101,7 @@ public class UIRenderer
         var resolvedPos = ResolvePosition(position, resolvedSize, anchor);
         _shader.SetUniform("uOffset", resolvedPos);
         _shader.SetUniform("uScale", resolvedSize);
+        _shader.SetUniform("uUseTexture", 0);
         
         _shader.SetUniform("uScreenSize", _screenSize);
 

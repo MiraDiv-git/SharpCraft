@@ -17,6 +17,8 @@ public static class SceneManager
     {
         _currentScene?.Unload();
         _currentScene = scene;
+        if (_uiRenderer != null)
+            _currentScene.Load(_uiRenderer);
     }
 
     public static void LoadCurrentScene() => _currentScene?.Load(_uiRenderer);
