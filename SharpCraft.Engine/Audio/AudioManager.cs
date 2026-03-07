@@ -53,5 +53,19 @@ public static class AudioManager
         _al.SetSourceProperty(source, SourceFloat.Gain, volume / 255f);
         _al.SetSourceProperty(source, SourceInteger.Buffer, sound.Buffer);
         _al.SourcePlay(source);
+        
+        Task.Run(async () =>
+        {
+            while (true)
+            {
+                await Task.Delay(100);
+                _al.GetSourceProperty(source, GetSourceInteger.SourceState, out int state);
+                if (state != (int)SourceState.Playing)
+                {
+                    _al.DeleteSource(source);
+                    break;
+                }
+            }
+        });
     }
 }
