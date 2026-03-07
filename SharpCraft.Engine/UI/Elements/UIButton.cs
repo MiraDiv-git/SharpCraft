@@ -1,4 +1,5 @@
 using SharpCraft.Engine.Input;
+using Silk.NET.Input;
 
 namespace SharpCraft.Engine.UI.Elements;
 
@@ -33,6 +34,8 @@ public class UIButton : UIElement
 
         if (hovered)
         {
+            InputManager.SetCursor(StandardCursor.Hand);
+            
             if (InputManager.LeftMouseButtonDown)
             {
                 State = ButtonState.Pressed;

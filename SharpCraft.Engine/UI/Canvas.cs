@@ -1,3 +1,4 @@
+using SharpCraft.Engine.Input;
 using Silk.NET.Windowing;
 namespace SharpCraft.Engine.UI;
 
@@ -20,6 +21,7 @@ public class Canvas
     
     public void Update(UIRenderer renderer)
     {
+        InputManager.ResetCursor();
         foreach (var element in _elements.ToList())
             if (element.Visible)
                 element.Update(renderer);

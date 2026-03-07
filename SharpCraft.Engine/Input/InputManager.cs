@@ -24,6 +24,13 @@ public class InputManager
         
         Console.WriteLine("[OK] Input Manager initialized.");
     }
+    
+    public static void SetCursor(StandardCursor cursor)
+    {
+        _mouse.Cursor.StandardCursor = cursor;
+    }
+    
+    public static void ResetCursor() => _mouse.Cursor.StandardCursor = StandardCursor.Default;
 
     public static void Update()
     {
@@ -31,4 +38,5 @@ public class InputManager
         LeftMouseButtonJustPressed = LeftMouseButtonDown && !_prevLeftMouseButtonDown;
         _prevLeftMouseButtonDown = LeftMouseButtonDown;
     }
+    
 }
