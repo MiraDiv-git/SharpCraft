@@ -1,7 +1,6 @@
-using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 
-namespace SharpCraft.Engine;
+namespace SharpCraft.Engine.Scene;
 
 public static class SceneManager
 {
@@ -14,7 +13,12 @@ public static class SceneManager
         Console.WriteLine("[OK] Scene Manager initialized.");
     }
 
-    public static void SetScene(IScene scene) => _currentScene = scene;
+    public static void SetScene(IScene scene)
+    {
+        _currentScene?.Unload();
+        _currentScene = scene;
+    }
+
     public static void LoadCurrentScene() => _currentScene?.Load(_uiRenderer);
     
     public static void Update() => _currentScene?.Update();

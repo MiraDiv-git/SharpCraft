@@ -33,4 +33,6 @@ public class Canvas
                 element.Render(_renderer);
         }
     }
+    
+    public void Clear() => _elements.Clear();
 }

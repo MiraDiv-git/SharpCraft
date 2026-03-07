@@ -13,14 +13,16 @@ public class GameWindow
 {
     private readonly IWindow _window;
     private GL _gl;
-    
+
+    private readonly int defaultWindowWidth = 800;
+    private readonly int defaultWindowHeight = 600;
     private UIRenderer _uiRenderer;
 
     public GameWindow()
     {
         _window = Window.Create(WindowOptions.Default with
         {
-            Size = new Vector2D<int>(800, 600),
+            Size = new Vector2D<int>(defaultWindowWidth, defaultWindowHeight),
             Title = "SharpCraft",
             UpdatesPerSecond = 60,
             FramesPerSecond = 60
@@ -33,7 +35,7 @@ public class GameWindow
             Console.WriteLine("[OK] OpenGL context created.");
             PrintGLInfo();
             
-            _uiRenderer = new UIRenderer(_gl, 800, 600);
+            _uiRenderer = new UIRenderer(_gl, defaultWindowWidth, defaultWindowHeight);
             Console.WriteLine("[OK] UI Renderer initialized.");
             
             Console.WriteLine("\nLoading Game Managers...");
@@ -55,9 +57,10 @@ public class GameWindow
         
         _window.Resize += size =>
         {
-            if (size.X < 800 || size.Y < 600)
+            if (size.X < defaultWindowWidth || size.Y < defaultWindowHeight)
             {
-                _window.Size = new Vector2D<int>(Math.Max(size.X, 800), Math.Max(size.Y, 600));
+                _window.Size = new Vector2D<int>(Math.Max(size.X, defaultWindowWidth), 
+                    Math.Max(size.Y, defaultWindowHeight));
                 return;
             }
             

@@ -47,25 +47,37 @@ public static class AudioManager
         return new Sound(alBuffer);
     }
 
-    public static void Play(Sound sound, byte volume = 255)
+    public static uint Play(Sound sound, byte volume = 255, bool isLooping = false)
     {
         var source = _al.GenSource();
         _al.SetSourceProperty(source, SourceFloat.Gain, volume / 255f);
         _al.SetSourceProperty(source, SourceInteger.Buffer, sound.Buffer);
+        _al.SetSourceProperty(source, SourceBoolean.Looping, isLooping);
         _al.SourcePlay(source);
-        
-        Task.Run(async () =>
+
+        if (!isLooping)
         {
-            while (true)
+            Task.Run(async () =>
             {
-                await Task.Delay(100);
-                _al.GetSourceProperty(source, GetSourceInteger.SourceState, out int state);
-                if (state != (int)SourceState.Playing)
+                while (true)
                 {
-                    _al.DeleteSource(source);
-                    break;
+                    await Task.Delay(100);
+                    _al.GetSourceProperty(source, GetSourceInteger.SourceState, out int state);
+                    if (state != (int)SourceState.Playing)
+                    {
+                        _al.DeleteSource(source);
+                        break;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        return source;
+    }
+
+    public static void Stop(uint source)
+    {
+        _al.SourceStop(source);
+        _al.DeleteSource(source);
     }
 }

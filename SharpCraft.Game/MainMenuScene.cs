@@ -22,6 +22,7 @@ public class MainMenuScene : IScene
     public void Update() => _canvas.Update(_uiRenderer);
 
     public void Render() => _canvas.Render();
+    public void Unload() => _canvas.Clear();
 
     private void LoadMainMenu()
     {
