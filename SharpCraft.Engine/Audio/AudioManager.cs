@@ -71,13 +71,15 @@ public static class AudioManager
                 }
             });
         }
-
+        
+        sound.ActiveSource = source;
         return source;
     }
 
-    public static void Stop(uint source)
+    public static void Stop(Sound sound)
     {
-        _al.SourceStop(source);
-        _al.DeleteSource(source);
+        _al.SourceStop(sound.ActiveSource);
+        _al.DeleteSource(sound.ActiveSource);
+        sound.ActiveSource = 0;
     }
 }

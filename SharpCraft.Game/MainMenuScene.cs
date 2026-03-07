@@ -19,6 +19,7 @@ public class MainMenuScene : IScene
     private Sound _menuLoop;
     
     private Texture _buttonTexture;
+    private Texture _buttonHoverTexture;
 
     private Vector2 defaultButtonSize = new Vector2(350, 40);
 
@@ -36,20 +37,26 @@ public class MainMenuScene : IScene
         _clickSound = AudioManager.LoadAudio("Sounds/UI/click_ui.ogg");
         _menuLoop = AudioManager.LoadAudio("Sounds/UI/menu_loop.ogg");
         
-        _buttonTexture = AssetManager.LoadTexture("Textures/gui/button.png");
+        _buttonTexture = AssetManager.LoadTexture("Textures/UI/Button/button.png");
+        _buttonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/button_hover.png");
         
         LoadMainMenu();
         LoadOptionsMenu();
     }
     
-    public void SwitchTo(Canvas canvas)
+    private void SwitchTo(Canvas canvas)
     {
         _activeCanvas = canvas;
     }
 
     public void Update() => _activeCanvas.Update(_uiRenderer);
     public void Render() => _activeCanvas.Render();
-    public void Unload() => _activeCanvas.Clear();
+
+    public void Unload()
+    {
+        AudioManager.Stop(_menuLoop);
+        _activeCanvas.Clear();
+    }
 
     private void LoadMainMenu()
     {
@@ -74,6 +81,9 @@ public class MainMenuScene : IScene
         rect.Position = new Vector2(0, 0);
         rect.Size = defaultButtonSize;
         rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () =>
         {
@@ -90,6 +100,9 @@ public class MainMenuScene : IScene
         rect.Position = new Vector2(0, 50);
         rect.Size = defaultButtonSize;
         rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () =>
         {
@@ -106,6 +119,9 @@ public class MainMenuScene : IScene
         rect.Position = new Vector2(0, 100);
         rect.Size = defaultButtonSize;
         rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () => Environment.Exit(0);
     }
@@ -117,10 +133,13 @@ public class MainMenuScene : IScene
     private void LoadBackButton()
     {
         var rect = _optionsCanvas.AddElement<UIButton>();
-        rect.Position = new Vector2(0, 270);
+        rect.Position = new Vector2(0, -20);
         rect.Size = defaultButtonSize;
         rect.ButtonTexture = _buttonTexture;
-        rect.Anchor = Anchor.MiddleCenter;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.BottomCenter;
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
