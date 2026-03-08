@@ -163,12 +163,29 @@ public class UIRenderer
         _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
         _gl.BindVertexArray(0);
     }
-    
-    public float GetCharWidth(char c) => _charWidths[(int)c];
+
+    public float GetCharWidth(char c)
+    {
+        int index = (int)c;
+        if (index >= 256) index = '?';
+        return _charWidths[index];
+    } 
     
     public void DrawChar(Vector2 pixelPos, float size, char character, Color4 color)
     {
         int index = (int)character;
+        if (index >= 0x0410 && index < 0x0450)
+            index = index - 0x0410 + 128; // Cyrillic
+        else if (index == 0x0401) index = 192; // Ё
+        else if (index == 0x0451) index = 193; // ё
+        else if (index == 0x0404) index = 194; // Є
+        else if (index == 0x0407) index = 195; // Ї
+        else if (index == 0x0406) index = 196; // І
+        else if (index == 0x0454) index = 197; // є
+        else if (index == 0x0457) index = 198; // ї
+        else if (index == 0x0456) index = 199; // і
+        else if (index >= 256) index = '?'; // Unknow symbol (fallback)
+        
         int col = index % 16;
         int row = 15 - (index / 16);
 

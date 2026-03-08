@@ -44,6 +44,4 @@ public class UIText : UIElement
             x += (renderer.GetCharWidth(c) + Spacing) * glyphScale;
         }
     }
-    
-    // Should add a fallback symbol if symbol doesn't exist
 }

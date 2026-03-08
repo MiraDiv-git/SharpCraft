@@ -45,12 +45,12 @@ public class TestScene : IScene
     private void LoadAsciiText()
     {
         var line1 = _canvas.AddElement<UIText>();
-        line1.Position = new Vector2(0, 0);
+        line1.Position = new Vector2(0, -50);
         line1.Anchor = Anchor.MiddleCenter;
         line1.Text = " !\"#$%&'()*+,-./";
         
         var line2 = _canvas.AddElement<UIText>();
-        line2.Position = new Vector2(line1.Position.X, 20);
+        line2.Position = new Vector2(line1.Position.X, line1.Position.Y + 20);
         line2.Anchor = Anchor.MiddleCenter;
         line2.Text = "0123456789:;<=>?";
         
@@ -73,5 +73,30 @@ public class TestScene : IScene
         line6.Position = new Vector2(line5.Position.X, line5.Position.Y + 20);
         line6.Anchor = Anchor.MiddleCenter;
         line6.Text = "pqrstuvwxyz{|}~\u0000";
+        
+        var line7 = _canvas.AddElement<UIText>();
+        line7.Position = new Vector2(line6.Position.X, line6.Position.Y + 20);
+        line7.Anchor = Anchor.MiddleCenter;
+        line7.Text = "АБВГДЕЖЗИЙКЛМНОП";
+        
+        var line8 = _canvas.AddElement<UIText>();
+        line8.Position = new Vector2(line7.Position.X, line7.Position.Y + 20);
+        line8.Anchor = Anchor.MiddleCenter;
+        line8.Text = "РСТУФХЦЧШЩЪЫЬЭЮЯ";
+        
+        var line9 = _canvas.AddElement<UIText>();
+        line9.Position = new Vector2(line8.Position.X, line8.Position.Y + 20);
+        line9.Anchor = Anchor.MiddleCenter;
+        line9.Text = "абвгдежзиклмноп";
+        
+        var line10 = _canvas.AddElement<UIText>();
+        line10.Position = new Vector2(line9.Position.X, line9.Position.Y + 20);
+        line10.Anchor = Anchor.MiddleCenter;
+        line10.Text = "рстуфхцчшщъыьэюя";
+        
+        var line11 = _canvas.AddElement<UIText>();
+        line11.Position = new Vector2(line10.Position.X, line10.Position.Y + 20);
+        line11.Anchor = Anchor.MiddleCenter;
+        line11.Text = "ЁёЄЇІєЇІ";
     }
 }
