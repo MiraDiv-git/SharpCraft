@@ -6,7 +6,7 @@ public class UIText : UIElement
     public float FontSize { get; set; } = 16f;
     public Color4 TextColor { get; set; } = Color.White;
     
-    public float Spacing { get; set; } = 1f;
+    public float Spacing { get; set; } = 0.6f;
     public bool Shadow { get; set; } = true;
     public float ShadowOffset { get; set; } = 2f;
     public float VerticalOffset { get; set; } = 0f;
@@ -45,5 +45,5 @@ public class UIText : UIElement
         }
     }
     
-    // Should add a fallback symbol if symbol doesn't exists
+    // Should add a fallback symbol if symbol doesn't exist
 }
