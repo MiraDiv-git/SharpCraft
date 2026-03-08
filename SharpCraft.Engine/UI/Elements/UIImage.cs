@@ -8,8 +8,8 @@ public class UIImage : UIElement
     {
         var (resolvedPos, resolvedSize) = renderer.ResolveElement(Position, Size, Anchor);
         if (ImageTexture != null)
-            renderer.DrawTexturedRect(resolvedPos, resolvedSize, ImageTexture, ImageColor, Anchor);
+            renderer.DrawTexturedRect(Position, Size, ImageTexture, ImageColor, Anchor);
         else
-            renderer.DrawRect(resolvedPos, resolvedSize, ImageColor, Anchor);
+            renderer.DrawRect(Position, Size, ImageColor, Anchor);
     }
 }

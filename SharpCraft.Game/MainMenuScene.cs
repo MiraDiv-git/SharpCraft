@@ -67,6 +67,7 @@ public class MainMenuScene : IScene
         LoadOptionsButton();
         LoadExitButton();
         LoadCopyrightText();
+        LoadLogoImage();
         AudioManager.Play(_menuLoop, 100, true);
     }
 
@@ -191,7 +192,7 @@ public class MainMenuScene : IScene
     {
         var text = _mainCanvas.AddElement<UIText>();
         text.Text = "(c) 2026 MiraDiv";
-        text.Position = new Vector2(-50, -20);
+        text.Position = new Vector2(-80, -20);
         text.VerticalOffset = -3f;
         text.Anchor = Anchor.BottomRight;
         text.TextColor = Color.White.WithAlpha(220);
@@ -200,12 +201,21 @@ public class MainMenuScene : IScene
         
         var bottomText = _mainCanvas.AddElement<UIText>();
         bottomText.Text = "GPL-3.0 License";
-        bottomText.Position = new Vector2(-50, text.Position.Y + 20);
+        bottomText.Position = new Vector2(text.Position.X, text.Position.Y + 20);
         bottomText.VerticalOffset = -3f;
         bottomText.Anchor = Anchor.BottomRight;
         bottomText.TextColor = Color.White.WithAlpha(220);
         bottomText.FontSize = 12f;
         bottomText.Shadow = false;
+    }
+
+    private void LoadLogoImage()
+    {
+        var logo = _mainCanvas.AddElement<UIImage>();
+        logo.Position = new Vector2(0, 70);
+        logo.Anchor = Anchor.TopCenter;
+        logo.Size = new Vector2(1005 / 1.5f, 124 / 1.5f);
+        logo.ImageTexture = _logoImage;
     }
     
 }
