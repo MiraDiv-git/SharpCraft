@@ -6,14 +6,14 @@ public class UIAnimation : UIElement
 {
     public Texture? Atlas { get; set; }
     public Color4 color { get; set; } = Color.White;
-    
+    public int FrameCount { get; set; } = -1;
     public int Horizontal { get; set; } = 1;
     public int Vertical { get; set; } = 1;
-    public float FrameDuration { get; set; } = 0.1f;
+    public float FrameDuration { get; set; } = 0.1f; // Frames per second
     
     private int _currentFrame = 0;
     private float _timer = 0f;
-    private int TotalFrames => Horizontal * Vertical;
+    private int TotalFrames => FrameCount > 0 ? FrameCount : Horizontal * Vertical;
 
     public override void Update(UIRenderer renderer)
     {

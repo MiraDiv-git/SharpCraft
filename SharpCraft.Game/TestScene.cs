@@ -47,13 +47,14 @@ public class TestScene : IScene
     private void LoadLoadingAnimation()
     {
         var anim = _canvas.AddElement<UIAnimation>();
-        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_squares.png");
+        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_cube.png");
         anim.Position = new Vector2(200, 0);
         anim.Size = new Vector2(64, 64);
         anim.Anchor = Anchor.MiddleLeft;
-        anim.Horizontal = 4;
-        anim.Vertical = 2;
-        anim.FrameDuration = 0.5f;
+        anim.Horizontal = 5;
+        anim.Vertical = 5;
+        anim.FrameDuration = 0.05f;
+        anim.FrameCount = 23;
     }
 
     private void LoadAsciiText()
