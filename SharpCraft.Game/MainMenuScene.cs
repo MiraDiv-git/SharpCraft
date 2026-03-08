@@ -70,7 +70,7 @@ public class MainMenuScene : IScene
         LoadExitButton();
         LoadCopyrightText();
         LoadLogoImage();
-        AudioManager.Play(_menuLoop, 100, true);
+        AudioManager.Play(_menuLoop, 30, true);
     }
 
     private void LoadOptionsMenu()
@@ -194,7 +194,7 @@ public class MainMenuScene : IScene
     {
         var text = _mainCanvas.AddElement<UIText>();
         text.Text = "\u0000 2026 MiraDiv";
-        text.Position = new Vector2(-80, -20);
+        text.Position = new Vector2(-50, -20);
         text.VerticalOffset = -3f;
         text.Anchor = Anchor.BottomRight;
         text.TextColor = Color.White.WithAlpha(220);
@@ -211,7 +211,7 @@ public class MainMenuScene : IScene
         bottomText.Shadow = false;
         
         var linkButton = _mainCanvas.AddElement<UIButton>();
-        linkButton.Position = new Vector2(-40, -12);
+        linkButton.Position = new Vector2(-10, -12);
         linkButton.Anchor = bottomText.Anchor;
         linkButton.Size = new Vector2(130, 15);
         linkButton.ButtonColor = Color.White.WithAlpha(0);
@@ -233,7 +233,7 @@ public class MainMenuScene : IScene
         logo.ImageTexture = _logoImage;
     }
     
-    public static void OpenUrl(string url)
+    private static void OpenUrl(string url)
     {
         try
         {

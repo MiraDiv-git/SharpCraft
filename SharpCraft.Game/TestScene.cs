@@ -97,6 +97,6 @@ public class TestScene : IScene
         var line11 = _canvas.AddElement<UIText>();
         line11.Position = new Vector2(line10.Position.X, line10.Position.Y + 20);
         line11.Anchor = Anchor.MiddleCenter;
-        line11.Text = "ЁёЄЇІєЇІ";
+        line11.Text = "ЁёЄЇІєїі";
     }
 }

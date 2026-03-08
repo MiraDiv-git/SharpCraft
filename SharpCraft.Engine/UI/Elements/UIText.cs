@@ -6,7 +6,7 @@ public class UIText : UIElement
     public float FontSize { get; set; } = 16f;
     public Color4 TextColor { get; set; } = Color.White;
     
-    public float Spacing { get; set; } = 0.6f;
+    public float Spacing { get; set; } = 0.4f;
     public bool Shadow { get; set; } = true;
     public float ShadowOffset { get; set; } = 2f;
     public float VerticalOffset { get; set; } = 0f;
