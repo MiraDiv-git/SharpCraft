@@ -93,7 +93,6 @@ public class MainMenuScene : IScene
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            // Console.WriteLine("[INFO] Play button clicked.");
             Console.WriteLine("[INFO] Changing scene to Test Scene.");
             SceneManager.SetScene(new TestScene());
         };
@@ -121,7 +120,6 @@ public class MainMenuScene : IScene
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            // Console.WriteLine("[INFO] Options button clicked.");
             Console.WriteLine("[INFO] Changing canvas to Options Canvas");
             SwitchTo(_optionsCanvas);
         };
