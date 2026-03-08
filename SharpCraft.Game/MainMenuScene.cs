@@ -1,4 +1,6 @@
-﻿using SharpCraft.Engine.Assets;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
+using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.Scene;
@@ -191,7 +193,7 @@ public class MainMenuScene : IScene
     private void LoadCopyrightText()
     {
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = "(c) 2026 MiraDiv";
+        text.Text = "\u0000 2026 MiraDiv";
         text.Position = new Vector2(-80, -20);
         text.VerticalOffset = -3f;
         text.Anchor = Anchor.BottomRight;
@@ -204,9 +206,22 @@ public class MainMenuScene : IScene
         bottomText.Position = new Vector2(text.Position.X, text.Position.Y + 20);
         bottomText.VerticalOffset = -3f;
         bottomText.Anchor = Anchor.BottomRight;
-        bottomText.TextColor = Color.White.WithAlpha(220);
+        bottomText.TextColor = Color.Cyan.WithAlpha(220);
         bottomText.FontSize = 12f;
         bottomText.Shadow = false;
+        
+        var linkButton = _mainCanvas.AddElement<UIButton>();
+        linkButton.Position = new Vector2(-40, -12);
+        linkButton.Anchor = bottomText.Anchor;
+        linkButton.Size = new Vector2(130, 15);
+        linkButton.ButtonColor = Color.White.WithAlpha(0);
+        linkButton.HoverColor = Color.White.WithAlpha(0);
+        linkButton.PressColor = Color.White.WithAlpha(0);
+        linkButton.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            OpenUrl("https://www.gnu.org/licenses/gpl-3.0.en.html");
+        };
     }
 
     private void LoadLogoImage()
@@ -216,6 +231,29 @@ public class MainMenuScene : IScene
         logo.Anchor = Anchor.TopCenter;
         logo.Size = new Vector2(1005 / 1.5f, 124 / 1.5f);
         logo.ImageTexture = _logoImage;
+    }
+    
+    public static void OpenUrl(string url)
+    {
+        try
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", url);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", url);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unable to open link: {ex.Message}");
+        }
     }
     
 }

@@ -72,6 +72,6 @@ public class TestScene : IScene
         var line6 = _canvas.AddElement<UIText>();
         line6.Position = new Vector2(line5.Position.X, line5.Position.Y + 20);
         line6.Anchor = Anchor.MiddleCenter;
-        line6.Text = "pqrstuvwxyz{|}~\u0001";
+        line6.Text = "pqrstuvwxyz{|}~\u0000";
     }
 }
