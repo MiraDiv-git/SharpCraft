@@ -9,8 +9,9 @@ public class UIRenderer
     private readonly uint _vao;
     private readonly uint _vbo;
     private readonly Vector2 _referenceSize;
-    
+    private Texture _fontTexture;
     private Vector2 _screenSize;
+    private float[] _charWidths = new float[256];
     
     public unsafe UIRenderer(GL gl, int width, int height)
     {
@@ -49,6 +50,34 @@ public class UIRenderer
         
         _gl.Enable(EnableCap.Blend);
         _gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+    }
+    
+    public void SetFont(Texture fontAtlas, byte[] rawPixels, int atlasWidth, int atlasHeight)
+    {
+        _fontTexture = fontAtlas;
+    
+        int cellW = atlasWidth / 16;
+        int cellH = atlasHeight / 16;
+    
+        for (int i = 0; i < 256; i++)
+        {
+            int col = i % 16;
+            int row = i / 16;
+        
+            int lastFilledCol = 0;
+            for (int x = 0; x < cellW; x++)
+            {
+                for (int y = 0; y < cellH; y++)
+                {
+                    int px = col * cellW + x;
+                    int py = row * cellH + y;
+                    int idx = (py * atlasWidth + px) * 4;
+                    if (rawPixels[idx + 3] > 0)
+                        lastFilledCol = x;
+                }
+            }
+            _charWidths[i] = lastFilledCol + 1;
+        }
     }
     
     public void SetScreenSize(int width, int height)
@@ -102,6 +131,8 @@ public class UIRenderer
         _shader.SetUniform("uOffset", resolvedPos);
         _shader.SetUniform("uScale", resolvedSize);
         _shader.SetUniform("uUseTexture", 0);
+        _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
+        _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
         
         _shader.SetUniform("uScreenSize", _screenSize);
 
@@ -123,9 +154,40 @@ public class UIRenderer
         var resolvedPos = ResolvePosition(position, resolvedSize, anchor);
         _shader.SetUniform("uOffset", resolvedPos);
         _shader.SetUniform("uScale", resolvedSize);
+        _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
+        _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
         
         _shader.SetUniform("uScreenSize", _screenSize);
         
+        _gl.BindVertexArray(_vao);
+        _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
+        _gl.BindVertexArray(0);
+    }
+    
+    public float GetCharWidth(char c) => _charWidths[(int)c];
+    
+    public void DrawChar(Vector2 pixelPos, float size, char character, Color4 color)
+    {
+        int index = (int)character;
+        int col = index % 16;
+        int row = 15 - (index / 16);
+
+        var uvOffset = new Vector2(col / 16f, row / 16f);
+        var uvScale = new Vector2(1f / 16f, 1f / 16f);
+    
+        _shader.Use();
+        _fontTexture.Bind();
+    
+        _shader.SetUniform("uTexture", 0);
+        _shader.SetUniform("uUseTexture", 1);
+        _shader.SetUniform("uColor", color);
+        _shader.SetUniform("uUVOffset", uvOffset);
+        _shader.SetUniform("uUVScale", uvScale);
+    
+        _shader.SetUniform("uOffset", pixelPos);
+        _shader.SetUniform("uScale", new Vector2(size, size));
+        _shader.SetUniform("uScreenSize", _screenSize);
+    
         _gl.BindVertexArray(_vao);
         _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
         _gl.BindVertexArray(0);

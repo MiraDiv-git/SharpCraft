@@ -12,6 +12,9 @@
       <None Update="Textures/**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Fonts/**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
 
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
       <ProjectReference Include="..\SharpCraft.Game\SharpCraft.Game.csproj" />

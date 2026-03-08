@@ -8,11 +8,11 @@ public class Texture : IDisposable
     private readonly uint _handle;
     private readonly GL _gl;
 
-    public Texture(GL gl, string path)
+    public Texture(GL gl, string path, bool flipVertically = true)
     {
         _gl = gl;
         
-        StbImage.stbi_set_flip_vertically_on_load(1);
+        StbImage.stbi_set_flip_vertically_on_load(flipVertically ? 1 : 0);
         var image = ImageResult.FromStream(File.OpenRead(path), ColorComponents.RedGreenBlueAlpha);
         
         _handle = _gl.GenTexture();

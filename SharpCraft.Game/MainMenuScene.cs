@@ -1,5 +1,6 @@
 ﻿using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
+using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.UI.Elements;
@@ -63,6 +64,7 @@ public class MainMenuScene : IScene
         LoadPlayButton();
         LoadOptionsButton();
         LoadExitButton();
+        LoadCopyrightText();
         AudioManager.Play(_menuLoop, 100, true);
     }
 
@@ -77,6 +79,7 @@ public class MainMenuScene : IScene
     
     private void LoadPlayButton()
     {
+        // Button
         var rect = _mainCanvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 0);
         rect.Size = defaultButtonSize;
@@ -92,10 +95,19 @@ public class MainMenuScene : IScene
             Console.WriteLine("[INFO] Changing scene to Test Scene.");
             SceneManager.SetScene(new TestScene());
         };
+        
+        // Text
+        var text = _mainCanvas.AddElement<UIText>();
+        text.Text = "Play";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
     }
     
     private void LoadOptionsButton()
     {
+        // Button
         var rect = _mainCanvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 50);
         rect.Size = defaultButtonSize;
@@ -111,10 +123,19 @@ public class MainMenuScene : IScene
             Console.WriteLine("[INFO] Changing canvas to Options Canvas");
             SwitchTo(_optionsCanvas);
         };
+        
+        // Text
+        var text = _mainCanvas.AddElement<UIText>();
+        text.Text = "Options";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
     }
     
     private void LoadExitButton()
     {
+        // Button
         var rect = _mainCanvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 100);
         rect.Size = defaultButtonSize;
@@ -124,6 +145,14 @@ public class MainMenuScene : IScene
         rect.HoverColor = Color.White;
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () => Environment.Exit(0);
+        
+        // Text
+        var text = _mainCanvas.AddElement<UIText>();
+        text.Text = "Exit";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
     }
     
     //
@@ -132,6 +161,7 @@ public class MainMenuScene : IScene
     
     private void LoadBackButton()
     {
+        // Button
         var rect = _optionsCanvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, -20);
         rect.Size = defaultButtonSize;
@@ -146,6 +176,36 @@ public class MainMenuScene : IScene
             SwitchTo(_mainCanvas);
             Console.WriteLine("[INFO] Changing canvas to Main Canvas");
         };
+        
+        // Text
+        var text = _optionsCanvas.AddElement<UIText>();
+        text.Text = "Apply and back";
+        text.Position = rect.Position;
+        text.VerticalOffset = -3f;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+
+    private void LoadCopyrightText()
+    {
+        var text = _mainCanvas.AddElement<UIText>();
+        text.Text = "(c) 2026 MiraDiv";
+        text.Position = new Vector2(-50, -20);
+        text.VerticalOffset = -3f;
+        text.Anchor = Anchor.BottomRight;
+        text.TextColor = Color.White.WithAlpha(220);
+        text.FontSize = 12f;
+        text.Shadow = false;
+        
+        var bottomText = _mainCanvas.AddElement<UIText>();
+        bottomText.Text = "GPL-3.0 License";
+        bottomText.Position = new Vector2(-50, text.Position.Y + 20);
+        bottomText.VerticalOffset = -3f;
+        bottomText.Anchor = Anchor.BottomRight;
+        bottomText.TextColor = Color.White.WithAlpha(220);
+        bottomText.FontSize = 12f;
+        bottomText.Shadow = false;
     }
     
 }

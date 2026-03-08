@@ -1,4 +1,5 @@
 using SharpCraft.Engine.Input;
+using SharpCraft.Engine.UI.Elements;
 using Silk.NET.Windowing;
 namespace SharpCraft.Engine.UI;
 
@@ -30,10 +31,13 @@ public class Canvas
     public void Render()
     {
         foreach (var element in _elements)
-        {
-            if (element.Visible)
+            if (element.Visible && element is not UIText)
                 element.Render(_renderer);
-        }
+        
+        foreach (var element in _elements)
+            if (element.Visible && element is UIText)
+                element.Render(_renderer);
+        
     }
     
     public void Clear() => _elements.Clear();

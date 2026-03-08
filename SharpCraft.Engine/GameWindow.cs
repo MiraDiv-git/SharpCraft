@@ -17,6 +17,7 @@ public class GameWindow
 
     private readonly int defaultWindowWidth = 800;
     private readonly int defaultWindowHeight = 600;
+    private readonly string defaultFont = "Fonts/ifeelnostalgic.png";
     private UIRenderer _uiRenderer;
 
     public GameWindow()
@@ -44,6 +45,11 @@ public class GameWindow
             InputManager.Initialize(_window.CreateInput());
             AudioManager.Initialize();
             AssetManager.Initialize(_gl);
+            
+            var (texture, pixels, w, h) = AssetManager.LoadFontTexture(defaultFont);
+            _uiRenderer.SetFont(texture, pixels, w, h);
+            Console.WriteLine($"\t↳Default font set: {defaultFont}");
+            
             SceneManager.Initialize(_uiRenderer);
                 SceneManager.LoadCurrentScene();
                 Console.WriteLine("\t↳Default scene loaded.");
