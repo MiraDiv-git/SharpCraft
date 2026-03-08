@@ -211,7 +211,7 @@ public class MainMenuScene : IScene
         bottomText.Shadow = false;
         
         var linkButton = _mainCanvas.AddElement<UIButton>();
-        linkButton.Position = new Vector2(-10, -12);
+        linkButton.Position = new Vector2(0, -12);
         linkButton.Anchor = bottomText.Anchor;
         linkButton.Size = new Vector2(130, 15);
         linkButton.ButtonColor = Color.White.WithAlpha(0);

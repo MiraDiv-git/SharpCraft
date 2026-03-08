@@ -87,10 +87,9 @@ public class UIRenderer
 
     private Vector2 ResolvePosition(Vector2 position, Vector2 size, Anchor anchor)
     {
-        float scaleX = _screenSize.X / _referenceSize.X;
-        float scaleY = _screenSize.Y / _referenceSize.Y;
-        float px = position.X * scaleX;
-        float py = position.Y * scaleY;
+        float scale = Math.Min(_screenSize.X / _referenceSize.X, _screenSize.Y / _referenceSize.Y);
+        float px = position.X * scale;
+        float py = position.Y * scale;
 
         return anchor switch
         {
