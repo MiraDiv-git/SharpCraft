@@ -1,3 +1,4 @@
+using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.UI.Elements;
@@ -27,6 +28,7 @@ public class TestScene : IScene
     {
         LoadBackButton();
         LoadAsciiText();
+        LoadLoadingAnimation();
     }
 
     private void LoadBackButton()
@@ -40,6 +42,18 @@ public class TestScene : IScene
             Console.WriteLine("[INFO] Changing scene to Main Menu Scene.");
             SceneManager.SetScene(new MainMenuScene());
         };
+    }
+
+    private void LoadLoadingAnimation()
+    {
+        var anim = _canvas.AddElement<UIAnimation>();
+        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_squares.png");
+        anim.Position = new Vector2(200, 0);
+        anim.Size = new Vector2(64, 64);
+        anim.Anchor = Anchor.MiddleLeft;
+        anim.Horizontal = 4;
+        anim.Vertical = 2;
+        anim.FrameDuration = 0.5f;
     }
 
     private void LoadAsciiText()

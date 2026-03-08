@@ -15,14 +15,17 @@ public class MainMenuScene : IScene
     private Canvas _activeCanvas;
     
     private Canvas _mainCanvas;
-    // private Canvas _playCanvas;
+    private Canvas _playCanvas;
     private Canvas _optionsCanvas;
+    private Canvas _loadingCanvas;
     
     private Sound _clickSound;
     private Sound _menuLoop;
     
     private Texture _buttonTexture;
     private Texture _buttonHoverTexture;
+    private Texture _smallButtonTexture;
+    private Texture _smallButtonHoverTexture;
     private Texture _logoImage;
 
     private Vector2 defaultButtonSize = new Vector2(350, 40);
@@ -34,6 +37,8 @@ public class MainMenuScene : IScene
         
         _mainCanvas = new Canvas(_uiRenderer);
         _optionsCanvas = new Canvas(_uiRenderer);
+        _playCanvas = new Canvas(_uiRenderer);
+        _loadingCanvas = new Canvas(_uiRenderer);
         
         _activeCanvas = _mainCanvas; // Canvas that should be shown when loading scene
         // _activeCanvas = _optionsCanvas;
@@ -43,9 +48,12 @@ public class MainMenuScene : IScene
         
         _buttonTexture = AssetManager.LoadTexture("Textures/UI/Button/button.png");
         _buttonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/button_hover.png");
+        _smallButtonTexture = AssetManager.LoadTexture("Textures/UI/Button/Small/small_button.png");
+        _smallButtonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/Small/small_button_hover.png");
         _logoImage = AssetManager.LoadTexture("Textures/UI/Logos/game_logo.png");
         
         LoadMainMenu();
+        LoadPlayMenu();
         LoadOptionsMenu();
     }
     
@@ -62,9 +70,12 @@ public class MainMenuScene : IScene
         AudioManager.Stop(_menuLoop);
         _activeCanvas.Clear();
     }
+    
 
     private void LoadMainMenu()
     {
+        LoadDevButton(); // Comment before publishing
+            
         LoadPlayButton();
         LoadOptionsButton();
         LoadExitButton();
@@ -73,14 +84,30 @@ public class MainMenuScene : IScene
         AudioManager.Play(_menuLoop, 30, true);
     }
 
+    private void LoadPlayMenu()
+    {
+        LoadSmallBackButton();
+        LoadNewWorldButton();
+    }
+
     private void LoadOptionsMenu()
     {
         LoadBackButton();
     }
     
+    
     //
     // Elements of Main Menu
     //
+
+    private void LoadDevButton()
+    {
+        var rect = _mainCanvas.AddElement<UIButton>();
+        rect.Position = new Vector2(10, 10);
+        rect.Size = new Vector2(32, 32);
+        rect.Anchor = Anchor.TopLeft;
+        rect.OnClick += () => SceneManager.SetScene(new TestScene());
+    }
     
     private void LoadPlayButton()
     {
@@ -96,8 +123,8 @@ public class MainMenuScene : IScene
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            Console.WriteLine("[INFO] Changing scene to Test Scene.");
-            SceneManager.SetScene(new TestScene());
+            Console.WriteLine("[INFO] Changing canvas to Play Canvas");
+            SwitchTo(_playCanvas);
         };
         
         // Text
@@ -158,38 +185,6 @@ public class MainMenuScene : IScene
         text.FontSize = 16f;
     }
     
-    //
-    // Elements of Options Menu
-    //
-    
-    private void LoadBackButton()
-    {
-        // Button
-        var rect = _optionsCanvas.AddElement<UIButton>();
-        rect.Position = new Vector2(0, -20);
-        rect.Size = defaultButtonSize;
-        rect.ButtonTexture = _buttonTexture;
-        rect.HoverTexture = _buttonHoverTexture;
-        rect.ButtonColor = Color.White;
-        rect.HoverColor = Color.White;
-        rect.Anchor = Anchor.BottomCenter;
-        rect.OnClick += () =>
-        {
-            AudioManager.Play(_clickSound);
-            SwitchTo(_mainCanvas);
-            Console.WriteLine("[INFO] Changing canvas to Main Canvas");
-        };
-        
-        // Text
-        var text = _optionsCanvas.AddElement<UIText>();
-        text.Text = "Apply and back";
-        text.Position = rect.Position;
-        text.VerticalOffset = -3f;
-        text.Anchor = rect.Anchor;
-        text.TextColor = Color.White;
-        text.FontSize = 16f;
-    }
-
     private void LoadCopyrightText()
     {
         var text = _mainCanvas.AddElement<UIText>();
@@ -256,4 +251,93 @@ public class MainMenuScene : IScene
         }
     }
     
+    
+    //
+    // Elements of Play Menu
+    //
+
+    private void LoadSmallBackButton()
+    {
+        var rect = _playCanvas.AddElement<UIButton>();
+        rect.Position = new Vector2(-100, -20);
+        rect.Size = new Vector2(defaultButtonSize.X / 2, defaultButtonSize.Y);
+        rect.ButtonTexture = _smallButtonTexture;
+        rect.HoverTexture = _smallButtonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.BottomCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            SwitchTo(_mainCanvas);
+            Console.WriteLine("[INFO] Changing canvas to Main Canvas");
+        };
+        
+        // Text
+        var text = _playCanvas.AddElement<UIText>();
+        text.Text = "Back";
+        text.Position = rect.Position;
+        text.VerticalOffset = -3f;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+
+    private void LoadNewWorldButton()
+    {
+        var rect = _playCanvas.AddElement<UIButton>();
+        rect.Position = new Vector2(100, -20);
+        rect.Size = new Vector2(defaultButtonSize.X / 2, defaultButtonSize.Y);
+        rect.ButtonTexture = _smallButtonTexture;
+        rect.HoverTexture = _smallButtonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.BottomCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+        };
+        
+        // Text
+        var text = _playCanvas.AddElement<UIText>();
+        text.Text = "New  World";
+        text.Position = rect.Position;
+        text.VerticalOffset = -3f;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+    
+    
+    //
+    // Elements of Options Menu
+    //
+    
+    private void LoadBackButton()
+    {
+        // Button
+        var rect = _optionsCanvas.AddElement<UIButton>();
+        rect.Position = new Vector2(0, -20);
+        rect.Size = defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.BottomCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            SwitchTo(_mainCanvas);
+            Console.WriteLine("[INFO] Changing canvas to Main Canvas");
+        };
+        
+        // Text
+        var text = _optionsCanvas.AddElement<UIText>();
+        text.Text = "Apply  and  back";
+        text.Position = rect.Position;
+        text.VerticalOffset = -3f;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
 }

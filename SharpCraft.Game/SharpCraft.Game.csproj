@@ -22,7 +22,7 @@
 
     <ItemGroup>
       <Folder Include="Fonts\" />
-      <Folder Include="Textures\" />
+      <Folder Include="Textures\Animations\" />
     </ItemGroup>
 
 </Project>

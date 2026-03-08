@@ -1,6 +1,7 @@
 ﻿using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Input;
+using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Scene;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -59,6 +60,8 @@ public class GameWindow
         
         _window.Update += delta =>
         {
+            Time.DeltaTime = (float)delta;
+            
             InputManager.Update();
             SceneManager.Update();
         };

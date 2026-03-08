@@ -162,6 +162,29 @@ public class UIRenderer
         _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
         _gl.BindVertexArray(0);
     }
+    
+    public void DrawTexturedRectUV(Vector2 position, Vector2 size, Texture texture, 
+        Color4 color, Anchor anchor, Vector2 uvOffset, Vector2 uvScale)
+    {
+        _shader.Use();
+        texture.Bind();
+    
+        _shader.SetUniform("uTexture", 0);
+        _shader.SetUniform("uUseTexture", 1);
+        _shader.SetUniform("uColor", color);
+    
+        var resolvedSize = ResolveSize(size);
+        var resolvedPos = ResolvePosition(position, resolvedSize, anchor);
+        _shader.SetUniform("uOffset", resolvedPos);
+        _shader.SetUniform("uScale", resolvedSize);
+        _shader.SetUniform("uUVOffset", uvOffset);
+        _shader.SetUniform("uUVScale", uvScale);
+        _shader.SetUniform("uScreenSize", _screenSize);
+    
+        _gl.BindVertexArray(_vao);
+        _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
+        _gl.BindVertexArray(0);
+    }
 
     public float GetCharWidth(char c)
     {
