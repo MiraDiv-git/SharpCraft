@@ -40,4 +40,9 @@ public class TestScene : IScene
             SceneManager.SetScene(new MainMenuScene());
         };
     }
+
+    private void LoadAsciiText()
+    {
+        
+    }
 }

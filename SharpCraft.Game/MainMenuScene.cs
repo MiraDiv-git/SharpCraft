@@ -21,6 +21,7 @@ public class MainMenuScene : IScene
     
     private Texture _buttonTexture;
     private Texture _buttonHoverTexture;
+    private Texture _logoImage;
 
     private Vector2 defaultButtonSize = new Vector2(350, 40);
 
@@ -40,6 +41,7 @@ public class MainMenuScene : IScene
         
         _buttonTexture = AssetManager.LoadTexture("Textures/UI/Button/button.png");
         _buttonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/button_hover.png");
+        _logoImage = AssetManager.LoadTexture("Textures/UI/Logos/game_logo.png");
         
         LoadMainMenu();
         LoadOptionsMenu();

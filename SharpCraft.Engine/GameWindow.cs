@@ -17,7 +17,7 @@ public class GameWindow
 
     private readonly int defaultWindowWidth = 800;
     private readonly int defaultWindowHeight = 600;
-    private readonly string defaultFont = "Fonts/ifeelnostalgic.png";
+    private readonly string defaultFont = "Fonts/dogicapixel.png";
     private UIRenderer _uiRenderer;
 
     public GameWindow()
