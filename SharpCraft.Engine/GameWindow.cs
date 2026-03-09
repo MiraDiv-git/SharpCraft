@@ -19,7 +19,7 @@ public class GameWindow
 
     private readonly int _defaultWindowWidth = 800;
     private readonly int _defaultWindowHeight = 600;
-    private readonly string _defaultFont = "Fonts/dogicapixel.png";
+    private readonly string _defaultFont = Path.Combine("Fonts", "dogicapixel.png");
     private UIRenderer _uiRenderer;
 
     private double FPSLock = 0;
@@ -41,7 +41,7 @@ public class GameWindow
             _gl = _window.CreateOpenGL();
             Console.WriteLine("[OK] OpenGL context created.");
             PrintGLInfo();
-            WindowIcon.Set(_window, "Textures/UI/Logos/game_icon.png");
+            WindowIcon.Set(_window, Path.Combine("Textures", "UI", "Logos", "game_icon.png"));
             Console.WriteLine("[OK] Window icon set.");
             
             UserSettings.Load();

@@ -12,6 +12,9 @@ public class UIRenderer
     private Texture _fontTexture;
     private Vector2 _screenSize;
     private float[] _charWidths = new float[256];
+
+    private readonly string _vertPath = Path.Combine("Shaders","UI","ui.vert");
+    private readonly string _fragPath = Path.Combine("Shaders","UI","ui.frag");
     
     public unsafe UIRenderer(GL gl, int width, int height)
     {
@@ -19,7 +22,7 @@ public class UIRenderer
         _referenceSize = new Vector2(width, height);
         _screenSize = new Vector2(width, height);
         
-        _shader = new Shader(gl, "Shaders/UI/ui.vert", "Shaders/UI/ui.frag");
+        _shader = new Shader(gl, _vertPath, _fragPath);
         
         _vao = _gl.GenVertexArray();
         _vbo = _gl.GenBuffer();

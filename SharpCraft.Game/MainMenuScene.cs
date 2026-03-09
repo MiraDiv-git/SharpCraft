@@ -44,14 +44,14 @@ public class MainMenuScene : IScene
         _activeCanvas = _mainCanvas; // Canvas that should be shown when loading scene
         // _activeCanvas = _optionsCanvas;
         
-        _clickSound = AudioManager.LoadAudio("Sounds/UI/click_ui.ogg");
-        _menuLoop = AudioManager.LoadAudio("Sounds/UI/menu_loop.ogg");
+        _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds", "UI", "click_ui.ogg"));
+        _menuLoop = AudioManager.LoadAudio(Path.Combine("Sounds", "UI", "menu_loop.ogg"));
         
-        _buttonTexture = AssetManager.LoadTexture("Textures/UI/Button/button.png");
-        _buttonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/button_hover.png");
-        _smallButtonTexture = AssetManager.LoadTexture("Textures/UI/Button/Small/small_button.png");
-        _smallButtonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/Small/small_button_hover.png");
-        _logoImage = AssetManager.LoadTexture("Textures/UI/Logos/game_logo.png");
+        _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
+        _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
+        _smallButtonTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","Small","small_button.png"));
+        _smallButtonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","Small","small_button_hover.png"));
+        _logoImage = AssetManager.LoadTexture(Path.Combine("Textures","UI","Logos","game_logo.png"));
         
         LoadMainMenu();
         LoadPlayMenu();

@@ -17,7 +17,6 @@ namespace SharpCraft.Game;
 
 public class TestWorld : IScene
 {
-    //private UIRenderer _uiRenderer;
     private GL _gl;
     private Shader _shader;
     private Camera _camera;
@@ -37,13 +36,16 @@ public class TestWorld : IScene
     
     private Vector2 defaultButtonSize = new Vector2(350, 40);
     
+    private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
+    private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
+    
     public void Load(UIRenderer uiRenderer, GL gl)
     {
         Console.WriteLine("[INFO] Loading Test World scene.");
         _gl = gl;
         _uiRenderer = uiRenderer;
 
-        _shader = new Shader(_gl, "Shaders/World/block.vert", "Shaders/World/block.frag");
+        _shader = new Shader(_gl, _vertPath, _fragPath);
         _camera = new Camera();
         
         _world = new WorldGenerator();
@@ -52,10 +54,10 @@ public class TestWorld : IScene
 
         _pauseMenuCanvas = new Canvas(_uiRenderer);
 
-        _clickSound = AudioManager.LoadAudio("Sounds/UI/click_ui.ogg");
+        _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds","UI","click_ui.ogg"));
         
-        _buttonTexture = AssetManager.LoadTexture("Textures/UI/Button/button.png");
-        _buttonHoverTexture = AssetManager.LoadTexture("Textures/UI/Button/button_hover.png");
+        _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","button.png"));
+        _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","button_hover.png"));
 
         LoadPauseMenu();
         

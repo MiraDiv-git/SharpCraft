@@ -8,6 +8,7 @@ class Program
 {
     static void Main()
     {
+        Directory.SetCurrentDirectory(AppContext.BaseDirectory);
         var window = new GameWindow();
         SceneManager.SetScene(new MainMenuScene());
         window.Run();

@@ -48,7 +48,7 @@ public class TestScene : IScene
     private void LoadLoadingAnimation()
     {
         var anim = _canvas.AddElement<UIAnimation>();
-        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/loading_cube.png");
+        anim.Atlas = AssetManager.LoadTexture(Path.Combine("Textures", "Animations", "loading_cube.png"));
         anim.Position = new Vector2(200, 0);
         anim.Size = new Vector2(64, 64);
         anim.Anchor = Anchor.MiddleLeft;
@@ -61,7 +61,7 @@ public class TestScene : IScene
     private void LoadTestAnimation()
     {
         var anim = _canvas.AddElement<UIAnimation>();
-        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_squares.png");
+        anim.Atlas = AssetManager.LoadTexture(Path.Combine("Textures","Animations","test_squares.png"));
         anim.Position = new Vector2(200, -80);
         anim.Size = new Vector2(64, 64);
         anim.Anchor = Anchor.MiddleLeft;

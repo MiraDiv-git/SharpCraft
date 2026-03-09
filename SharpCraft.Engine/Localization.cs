@@ -15,7 +15,8 @@ public class Localization
     public static void SetLanguage(string language)
     {
         CurrentLanguage = language;
-        Load($"Localization/{language}.json");
+        string jsonPath = Path.Combine("Localization", $"{language}.json");
+        Load(jsonPath);
     }
 
     public static string Get(string key) => _strings.TryGetValue(key, out var val) ? val : key;

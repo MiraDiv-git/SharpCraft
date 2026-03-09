@@ -60,8 +60,13 @@ public class InputManager
         _prevKeys.Clear();
         foreach (var k in _currKeys) _prevKeys.Add(k);
         _currKeys.Clear();
+
         foreach (var k in Enum.GetValues<Key>())
+        {
+            if (k == Key.Unknown || (int)k < 0) continue;
+            
             if (_keyboard.IsKeyPressed(k)) _currKeys.Add(k);
+        }
         
         var currentPos = new Vector2(_mouse.Position.X, _mouse.Position.Y);
         MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
