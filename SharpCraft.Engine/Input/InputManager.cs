@@ -4,15 +4,20 @@ namespace SharpCraft.Engine.Input;
 
 public class InputManager
 {
+    public static Vector2 MouseDelta { get; private set; }
+    public static bool IsMouseLocked { get; private set; }
+    
     private static IInputContext _input;
     private static IMouse _mouse;
     private static IKeyboard _keyboard;
+    
     private static bool _prevLeftMouseButtonDown;
+    private static Vector2 _lastMousePos;
 
     public static bool LeftMouseButtonJustPressed { get; private set; }
     public static Vector2 MousePosition { get; private set; }
     public static bool LeftMouseButtonDown { get; private set; }
-
+    
     public static void Initialize(IInputContext input)
     {
         _input = input;
@@ -25,6 +30,21 @@ public class InputManager
         Console.WriteLine("[OK] Input Manager initialized.");
     }
     
+    public static bool IsKeyDown(Key key) => _keyboard.IsKeyPressed(key);
+    public static bool IsKeyJustPressed(Key key) => _keyboard.IsKeyPressed(key);
+    
+    public static void LockMouse()
+    {
+        _mouse.Cursor.CursorMode = CursorMode.Raw;
+        IsMouseLocked = true;
+    }
+    
+    public static void UnlockMouse()
+    {
+        _mouse.Cursor.CursorMode = CursorMode.Normal;
+        IsMouseLocked = false;
+    }
+    
     public static void SetCursor(StandardCursor cursor)
     {
         _mouse.Cursor.StandardCursor = cursor;
@@ -34,7 +54,10 @@ public class InputManager
 
     public static void Update()
     {
-        MousePosition = new Vector2(_mouse.Position.X, _mouse.Position.Y);
+        var currentPos = new Vector2(_mouse.Position.X, _mouse.Position.Y);
+        MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
+        _lastMousePos = currentPos;
+        MousePosition = currentPos;
         LeftMouseButtonJustPressed = LeftMouseButtonDown && !_prevLeftMouseButtonDown;
         _prevLeftMouseButtonDown = LeftMouseButtonDown;
     }

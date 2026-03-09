@@ -60,6 +60,14 @@ public class Shader
             _gl.Uniform2(location, value.X, value.Y);
     }
     
+    // Camera (3D)
+    public unsafe void SetUniform(string name, Matrix4X4<float> matrix)
+    {
+        int location = _gl.GetUniformLocation(_handle, name);
+        if (location != -1)
+            _gl.UniformMatrix4(location, 1, false, (float*)&matrix);
+    }
+    
     // Only number (used for texture)
     public void SetUniform(string name, int value)
     {

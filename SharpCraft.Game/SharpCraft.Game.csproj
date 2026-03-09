@@ -23,6 +23,7 @@
     <ItemGroup>
       <Folder Include="Fonts\" />
       <Folder Include="Textures\Animations\" />
+      <Folder Include="Textures\Items\" />
     </ItemGroup>
 
 </Project>

@@ -29,6 +29,7 @@ public class TestScene : IScene
         LoadBackButton();
         LoadAsciiText();
         LoadLoadingAnimation();
+        LoadTestAnimation();
     }
 
     private void LoadBackButton()
@@ -47,7 +48,7 @@ public class TestScene : IScene
     private void LoadLoadingAnimation()
     {
         var anim = _canvas.AddElement<UIAnimation>();
-        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_cube.png");
+        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/loading_cube.png");
         anim.Position = new Vector2(200, 0);
         anim.Size = new Vector2(64, 64);
         anim.Anchor = Anchor.MiddleLeft;
@@ -57,10 +58,22 @@ public class TestScene : IScene
         anim.FrameCount = 23;
     }
 
+    private void LoadTestAnimation()
+    {
+        var anim = _canvas.AddElement<UIAnimation>();
+        anim.Atlas = AssetManager.LoadTexture("Textures/Animations/test_squares.png");
+        anim.Position = new Vector2(200, -80);
+        anim.Size = new Vector2(64, 64);
+        anim.Anchor = Anchor.MiddleLeft;
+        anim.Horizontal = 4;
+        anim.Vertical = 2;
+        anim.FrameDuration = 0.5f;
+    }
+
     private void LoadAsciiText()
     {
         var line1 = _canvas.AddElement<UIText>();
-        line1.Position = new Vector2(0, -50);
+        line1.Position = new Vector2(0, -100);
         line1.Anchor = Anchor.MiddleCenter;
         line1.Text = " !\"#$%&'()*+,-./";
         

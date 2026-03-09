@@ -296,6 +296,7 @@ public class MainMenuScene : IScene
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
+            SceneManager.SetScene(new TestWorld());
         };
         
         // Text

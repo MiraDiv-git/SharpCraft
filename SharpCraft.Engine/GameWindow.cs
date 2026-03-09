@@ -2,6 +2,7 @@
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Physics;
+using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.Scene;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -28,7 +29,8 @@ public class GameWindow
             Size = new Vector2D<int>(defaultWindowWidth, defaultWindowHeight),
             Title = "SharpCraft",
             UpdatesPerSecond = 60,
-            FramesPerSecond = 60
+            FramesPerSecond = 0,
+            VSync = false
         });
 
         _window.Load += () =>
@@ -37,6 +39,8 @@ public class GameWindow
             _gl = _window.CreateOpenGL();
             Console.WriteLine("[OK] OpenGL context created.");
             PrintGLInfo();
+            WindowIcon.Set(_window, "Textures/UI/Logos/game_icon.png");
+            Console.WriteLine("[OK] Window icon set.");
             
             _uiRenderer = new UIRenderer(_gl, defaultWindowWidth, defaultWindowHeight);
             Console.WriteLine("[OK] UI Renderer initialized.");
@@ -51,7 +55,7 @@ public class GameWindow
             _uiRenderer.SetFont(texture, pixels, w, h);
             Console.WriteLine($"\t↳Default font set: {defaultFont}");
             
-            SceneManager.Initialize(_uiRenderer);
+            SceneManager.Initialize(_uiRenderer, _gl);
                 SceneManager.LoadCurrentScene();
                 Console.WriteLine("\t↳Default scene loaded.");
                 
