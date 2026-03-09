@@ -3,6 +3,15 @@
   "menu.options": "Параметри",
   "menu.exit": "Вихід",
 
+  "play.back": "Назад",
+  "play.new": "Новий  світ",
+
+  "options.language": "Мова",
+  "options.back": "Застосувати",
+
+  "world.pause.resume": "Продовжити",
+  "world.pause.exit": "Вийти  до  головного  меню",
+
   "discord.main_menu": "Головне меню",
   "discord.in_game": "У грі"
 }

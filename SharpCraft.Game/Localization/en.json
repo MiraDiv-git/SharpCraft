@@ -3,6 +3,15 @@
   "menu.options": "Options",
   "menu.exit": "Exit",
 
+  "play.back": "Back",
+  "play.new": "New  World",
+
+  "options.language": "Language",
+  "options.back": "Apply  and  back",
+
+  "world.pause.resume": "Resume",
+  "world.pause.exit": "Quit  to  Main  Menu",
+
   "discord.main_menu": "In Main Menu",
   "discord.in_game": "In Game"
 }

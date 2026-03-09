@@ -2,7 +2,13 @@ namespace SharpCraft.Engine.UI.Elements;
 
 public class UIText : UIElement
 {
-    public string Text { get; set; } = "";
+    private string _text = "";
+    public string Text
+    {
+        get => Localization.Get(_text);
+        set => _text = value;
+    }
+    
     public float FontSize { get; set; } = 16f;
     public Color4 TextColor { get; set; } = Color.White;
     

@@ -94,6 +94,7 @@ public class MainMenuScene : IScene
     private void LoadOptionsMenu()
     {
         LoadBackButton();
+        LoadTestLocalizationButtons();
     }
     
     
@@ -130,7 +131,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = Localization.Get("menu.play");
+        text.Text = "menu.play";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
@@ -157,7 +158,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = Localization.Get("menu.options");
+        text.Text = "menu.options";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
@@ -179,7 +180,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = Localization.Get("menu.exit");
+        text.Text = "menu.exit";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
@@ -276,7 +277,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _playCanvas.AddElement<UIText>();
-        text.Text = "Back";
+        text.Text = "play.back";
         text.Position = rect.Position;
         text.VerticalOffset = -3f;
         text.Anchor = rect.Anchor;
@@ -302,7 +303,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _playCanvas.AddElement<UIText>();
-        text.Text = "New  World";
+        text.Text = "play.new";
         text.Position = rect.Position;
         text.VerticalOffset = -3f;
         text.Anchor = rect.Anchor;
@@ -335,11 +336,68 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _optionsCanvas.AddElement<UIText>();
-        text.Text = "Apply  and  back";
+        text.Text = "options.back";
         text.Position = rect.Position;
         text.VerticalOffset = -3f;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
         text.FontSize = 16f;
+    }
+
+    private void LoadTestLocalizationButtons()
+    {
+        // Categoty text
+        var cattxt = _optionsCanvas.AddElement<UIText>();
+        cattxt.Text = "options.language";
+        cattxt.Position = new Vector2(0, -40);
+        cattxt.Anchor = Anchor.MiddleCenter;
+        cattxt.TextColor = Color.White;
+        cattxt.FontSize = 16f;
+        
+        // English button
+        var buten = _optionsCanvas.AddElement<UIButton>();
+        buten.Position = new Vector2(0, 0);
+        buten.Size = defaultButtonSize;
+        buten.ButtonTexture = _buttonTexture;
+        buten.HoverTexture = _buttonHoverTexture;
+        buten.ButtonColor = Color.White;
+        buten.HoverColor = Color.White;
+        buten.Anchor = Anchor.MiddleCenter;
+        buten.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            Localization.SetLanguage("en");
+        };
+        
+        // English text
+        var butentxt = _optionsCanvas.AddElement<UIText>();
+        butentxt.Text = "English";
+        butentxt.Position = buten.Position;
+        butentxt.Anchor = buten.Anchor;
+        butentxt.TextColor = Color.White;
+        butentxt.FontSize = 16f;
+        
+        // Ukrainian button
+        var butua = _optionsCanvas.AddElement<UIButton>();
+        butua.Position = new Vector2(0, 50);
+        butua.Size = defaultButtonSize;
+        butua.ButtonTexture = _buttonTexture;
+        butua.HoverTexture = _buttonHoverTexture;
+        butua.ButtonColor = Color.White;
+        butua.HoverColor = Color.White;
+        butua.Anchor = Anchor.MiddleCenter;
+        butua.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            Localization.SetLanguage("ua");
+        };
+        
+        // Ukrainian text
+        var butuatxt = _optionsCanvas.AddElement<UIText>();
+        butuatxt.Text = "Українська";
+        butuatxt.Position = butua.Position;
+        butuatxt.Anchor = butua.Anchor;
+        butuatxt.TextColor = Color.White;
+        butuatxt.FontSize = 16f;
     }
 }

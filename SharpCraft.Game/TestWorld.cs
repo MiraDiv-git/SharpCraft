@@ -1,3 +1,4 @@
+using SharpCraft.Engine;
 using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Input;
@@ -177,7 +178,7 @@ public class TestWorld : IScene
         resbuttxt.Position = resbut.Position;
         resbuttxt.Anchor = resbut.Anchor;
         resbuttxt.TextColor = Color.White;
-        resbuttxt.Text = "Resume";
+        resbuttxt.Text = "world.pause.resume";
         
         
         // Main Menu button
@@ -200,6 +201,6 @@ public class TestWorld : IScene
         menubuttxt.Position = menubutton.Position;
         menubuttxt.Anchor = menubutton.Anchor;
         menubuttxt.TextColor = Color.White;
-        menubuttxt.Text = "Exit";
+        menubuttxt.Text = "world.pause.exit";
     }
 }
