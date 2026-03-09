@@ -366,6 +366,8 @@ public class MainMenuScene : IScene
         buten.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
+            UserSettings.Language = "en";
+            UserSettings.Save();
             Localization.SetLanguage("en");
         };
         
@@ -389,6 +391,8 @@ public class MainMenuScene : IScene
         butua.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
+            UserSettings.Language = "ua";
+            UserSettings.Save();
             Localization.SetLanguage("ua");
         };
         

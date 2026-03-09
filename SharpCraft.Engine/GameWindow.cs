@@ -44,8 +44,9 @@ public class GameWindow
             WindowIcon.Set(_window, "Textures/UI/Logos/game_icon.png");
             Console.WriteLine("[OK] Window icon set.");
             
-            Localization.SetLanguage("en");
-            Console.WriteLine("[OK] Default language set.");
+            UserSettings.Load();
+            Localization.SetLanguage(UserSettings.Language);
+            Console.WriteLine("[OK] Localization loaded set.");
             
             DiscordManager.Initialize();
             Console.WriteLine("[OK] Discord Rich Presence initialized.");
