@@ -22,14 +22,16 @@ public class GameWindow
     private readonly string defaultFont = "Fonts/dogicapixel.png";
     private UIRenderer _uiRenderer;
 
+    private double FPSLock = 0;
+
     public GameWindow()
     {
         _window = Window.Create(WindowOptions.Default with
         {
             Size = new Vector2D<int>(defaultWindowWidth, defaultWindowHeight),
             Title = "SharpCraft",
-            UpdatesPerSecond = 60,
-            FramesPerSecond = 0,
+            UpdatesPerSecond = FPSLock,
+            FramesPerSecond = FPSLock,
             VSync = false
         });
 

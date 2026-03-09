@@ -7,10 +7,10 @@ public class Mesh
     private readonly uint _vao, _vbo;
     private readonly int _vertexCount;
 
-    public Mesh(GL gl, float[] vertices)
+    public unsafe Mesh(GL gl, float[] vertices, bool hasUV = false)
     {
         _gl = gl;
-        _vertexCount = vertices.Length / 3;
+        _vertexCount = vertices.Length / (hasUV ? 5 : 3);
 
         _vao = _gl.GenVertexArray();
         _vbo = _gl.GenBuffer();
@@ -18,17 +18,31 @@ public class Mesh
         _gl.BindVertexArray(_vao);
         _gl.BindBuffer(BufferTargetARB.ArrayBuffer, _vbo);
 
-        unsafe
-        {
-            fixed (float* v = vertices)
-                _gl.BufferData(BufferTargetARB.ArrayBuffer,
-                    (nuint)(vertices.Length * sizeof(float)),
-                    v, BufferUsageARB.StaticDraw);
-        }
+        fixed (float* v = vertices)
+            _gl.BufferData(BufferTargetARB.ArrayBuffer,
+                (nuint)(vertices.Length * sizeof(float)),
+                v, BufferUsageARB.StaticDraw);
 
-        _gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-        _gl.EnableVertexAttribArray(0);
+        if (hasUV)
+        {
+            _gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), (void*)0);
+            _gl.EnableVertexAttribArray(0);
+            _gl.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+            _gl.EnableVertexAttribArray(1);
+        }
+        else
+        {
+            _gl.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), (void*)0);
+            _gl.EnableVertexAttribArray(0);
+        }
+    
+        _gl.BindVertexArray(0);
     }
 
-    public void Draw() => _gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)_vertexCount);
+    public void Draw()
+    {
+        _gl.BindVertexArray(_vao);
+        _gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)_vertexCount);
+        _gl.BindVertexArray(0);
+    }
 }

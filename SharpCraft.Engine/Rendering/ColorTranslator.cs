@@ -28,4 +28,7 @@ public static class Color
     public static Color4 Grey => FromRGBA(128, 128, 128);
     public static Color4 LightGrey => FromRGBA(169, 169, 169);
     public static Color4 DarkGrey => FromRGBA(30, 30, 30);
+    
+    // Other
+    public static Color4 Sky => FromRGBA(128, 179, 255);
 }

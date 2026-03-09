@@ -2,6 +2,8 @@ using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
+using SharpCraft.Engine.World;
+using SharpCraft.Engine.World.Blocks;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -11,45 +13,51 @@ namespace SharpCraft.Game;
 
 public class TestWorld : IScene
 {
-    private UIRenderer _uiRenderer;
+    //private UIRenderer _uiRenderer;
     private GL _gl;
-    private Mesh _mesh;
     private Shader _shader;
     private Camera _camera;
+    private GrassBlock _block;
+    private WorldGenerator _world;
     
     public void Load(UIRenderer uiRenderer, GL gl)
     {
         Console.WriteLine("[INFO] Loading Test World scene.");
         _gl = gl;
 
-        _shader = new Shader(_gl, "Shaders/World/world.vert", "Shaders/World/world.frag");
+        _shader = new Shader(_gl, "Shaders/World/block.vert", "Shaders/World/block.frag");
         _camera = new Camera();
-
-        float[] verticies = {
-            -0.5f, -0.5f, 0f,
-             0.5f, -0.5f, 0f,
-             0f,    0.5f, 0f,
-        };
         
-        _mesh = new Mesh(_gl, verticies);
+        _world = new WorldGenerator();
+        _world.GenerateFlat(64, 64);
+        _block = new GrassBlock(_gl, _shader);
+        
         InputManager.LockMouse();
     }
 
     public void Render()
     {
-        _gl.ClearColor(0.5f, 0.7f, 1.0f, 1.0f);
+        var c = Color.Sky;
+        _gl.ClearColor(c.r, c.g, c.b, c.a);
         _gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         _gl.Enable(EnableCap.DepthTest);
+        _gl.Enable(EnableCap.PolygonOffsetFill);
+        _gl.CullFace(TriangleFace.Back);
         
         int[] viewport = new int[4];
         _gl.GetInteger(GetPName.Viewport, viewport);
         float aspect = viewport[2] / (float)viewport[3];
         
         _shader.Use();
-        _shader.SetUniform("uModel", Matrix4X4<float>.Identity);
         _shader.SetUniform("uView", _camera.GetView());
         _shader.SetUniform("uProjection", _camera.GetProjection(aspect));
-        _mesh.Draw();
+
+        foreach (var model in _world.BlockPositions)
+        {
+            _block.Draw(model);
+        }
+        
+        _block.Draw(Matrix4X4<float>.Identity);
     }
     
     public void Update()
@@ -67,6 +75,7 @@ public class TestWorld : IScene
     public void Unload()
     {
         _gl.Disable(EnableCap.DepthTest);
+        _gl.Disable(EnableCap.PolygonOffsetFill);
         InputManager.UnlockMouse();
     }
 
