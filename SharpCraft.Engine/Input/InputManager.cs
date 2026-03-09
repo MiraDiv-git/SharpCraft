@@ -31,7 +31,10 @@ public class InputManager
     }
     
     public static bool IsKeyDown(Key key) => _keyboard.IsKeyPressed(key);
-    public static bool IsKeyJustPressed(Key key) => _keyboard.IsKeyPressed(key);
+    
+    private static readonly HashSet<Key> _prevKeys = new();
+    private static readonly HashSet<Key> _currKeys = new();
+    public static bool IsKeyJustPressed(Key key) => _currKeys.Contains(key) && !_prevKeys.Contains(key);
     
     public static void LockMouse()
     {
@@ -54,6 +57,12 @@ public class InputManager
 
     public static void Update()
     {
+        _prevKeys.Clear();
+        foreach (var k in _currKeys) _prevKeys.Add(k);
+        _currKeys.Clear();
+        foreach (var k in Enum.GetValues<Key>())
+            if (_keyboard.IsKeyPressed(k)) _currKeys.Add(k);
+        
         var currentPos = new Vector2(_mouse.Position.X, _mouse.Position.Y);
         MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
         _lastMousePos = currentPos;

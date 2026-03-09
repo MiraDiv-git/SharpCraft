@@ -17,9 +17,9 @@ public class GameWindow
     private readonly IWindow _window;
     private GL _gl;
 
-    private readonly int defaultWindowWidth = 800;
-    private readonly int defaultWindowHeight = 600;
-    private readonly string defaultFont = "Fonts/dogicapixel.png";
+    private readonly int _defaultWindowWidth = 800;
+    private readonly int _defaultWindowHeight = 600;
+    private readonly string _defaultFont = "Fonts/dogicapixel.png";
     private UIRenderer _uiRenderer;
 
     private double FPSLock = 0;
@@ -28,7 +28,7 @@ public class GameWindow
     {
         _window = Window.Create(WindowOptions.Default with
         {
-            Size = new Vector2D<int>(defaultWindowWidth, defaultWindowHeight),
+            Size = new Vector2D<int>(_defaultWindowWidth, _defaultWindowHeight),
             Title = "SharpCraft",
             UpdatesPerSecond = FPSLock,
             FramesPerSecond = FPSLock,
@@ -44,7 +44,7 @@ public class GameWindow
             WindowIcon.Set(_window, "Textures/UI/Logos/game_icon.png");
             Console.WriteLine("[OK] Window icon set.");
             
-            _uiRenderer = new UIRenderer(_gl, defaultWindowWidth, defaultWindowHeight);
+            _uiRenderer = new UIRenderer(_gl, _defaultWindowWidth, _defaultWindowHeight);
             Console.WriteLine("[OK] UI Renderer initialized.");
             
             Console.WriteLine("\nLoading Game Managers...");
@@ -53,9 +53,9 @@ public class GameWindow
             AudioManager.Initialize();
             AssetManager.Initialize(_gl);
             
-            var (texture, pixels, w, h) = AssetManager.LoadFontTexture(defaultFont);
+            var (texture, pixels, w, h) = AssetManager.LoadFontTexture(_defaultFont);
             _uiRenderer.SetFont(texture, pixels, w, h);
-            Console.WriteLine($"\t↳Default font set: {defaultFont}");
+            Console.WriteLine($"\t↳Default font set: {_defaultFont}");
             
             SceneManager.Initialize(_uiRenderer, _gl);
                 SceneManager.LoadCurrentScene();
@@ -74,10 +74,10 @@ public class GameWindow
         
         _window.Resize += size =>
         {
-            if (size.X < defaultWindowWidth || size.Y < defaultWindowHeight)
+            if (size.X < _defaultWindowWidth || size.Y < _defaultWindowHeight)
             {
-                _window.Size = new Vector2D<int>(Math.Max(size.X, defaultWindowWidth), 
-                    Math.Max(size.Y, defaultWindowHeight));
+                _window.Size = new Vector2D<int>(Math.Max(size.X, _defaultWindowWidth), 
+                    Math.Max(size.Y, _defaultWindowHeight));
                 return;
             }
             

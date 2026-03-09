@@ -1,7 +1,7 @@
 using SharpCraft.Engine.Assets;
 using Silk.NET.OpenGL;
 
-namespace SharpCraft.Engine.World.Blocks;
+namespace SharpCraft.Engine.World.Blocks.GameReady;
 
 public class GrassBlock : Block
 {
