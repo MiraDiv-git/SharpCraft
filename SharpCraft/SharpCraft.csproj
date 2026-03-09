@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>SharpCraft</RootNamespace>
+        <ApplicationIcon>game_icon.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
