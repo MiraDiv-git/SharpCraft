@@ -16,12 +16,16 @@
       <None Update="Fonts/**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="Localization/**">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
 
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Fonts\" />
+      <Folder Include="Localization\" />
       <Folder Include="Textures\Animations\" />
       <Folder Include="Textures\Items\" />
     </ItemGroup>

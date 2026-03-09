@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using SharpCraft.Engine;
 using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Rendering;
@@ -129,7 +130,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = "Play";
+        text.Text = Localization.Get("menu.play");
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
@@ -156,7 +157,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = "Options";
+        text.Text = Localization.Get("menu.options");
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
@@ -178,7 +179,7 @@ public class MainMenuScene : IScene
         
         // Text
         var text = _mainCanvas.AddElement<UIText>();
-        text.Text = "Exit";
+        text.Text = Localization.Get("menu.exit");
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
