@@ -67,8 +67,11 @@ public class UISlider : UIElement
         float handleY = resolvedPos.Y + (resolvedSize.Y - handleH) / 2f;
 
         if (HandleTexture != null)
-            renderer.DrawTexturedRectAbsolute(new Vector2(handleX, handleY), new Vector2(handleW, handleH), HandleTexture, HandleColor);
+            renderer.DrawTexturedRectAbsolute(new Vector2(handleX, handleY),
+                new Vector2(handleW, handleH), 
+                HandleTexture, HandleColor);
         else
-            renderer.DrawRectAbsolute(new Vector2(handleX, handleY), new Vector2(handleW, handleH), HandleColor);
+            renderer.DrawRectAbsolute(new Vector2(handleX, handleY), 
+                new Vector2(handleW, handleH), HandleColor);
     }
 }

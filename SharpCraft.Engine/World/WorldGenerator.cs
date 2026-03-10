@@ -22,7 +22,7 @@ public class WorldGenerator
         for (int z = 0; z < depth; z++)
         {
             var type = y == height - 1 ? topBlock : fillBlock;
-            Blocks.Add((Matrix4X4.CreateTranslation<float>(x, y - height - 1, z), type));
+            Blocks.Add((Matrix4X4.CreateTranslation<float>(x - (width - 1) / 2f, y - height - 1, z - (depth - 1) / 2f), type));
         }
     }
 

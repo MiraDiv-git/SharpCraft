@@ -5,7 +5,7 @@ namespace SharpCraft.Engine.Rendering;
 
 public class Camera
 {
-    public Vector3 Position { get; set; } = new(0, 0, 3);
+    public Vector3 Position { get; set; } = new(0, 0, 0);
     public float Yaw { get; set; } = -90f;
     public float Pitch { get; set; } = 0f;
     public float Fov { get; set; } = 70f;

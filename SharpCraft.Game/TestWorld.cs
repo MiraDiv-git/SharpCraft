@@ -89,7 +89,7 @@ public class TestWorld : IScene
             block.Draw(model);
         }
         
-        //_grassBlock.Draw(Matrix4X4<float>.Identity);
+        //_grassBlock.Draw(Matrix4X4.CreateTranslation(2f, 0f, 0));
         
         _gl.Disable(EnableCap.DepthTest);
         _activeCanvas?.Render();
