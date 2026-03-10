@@ -9,6 +9,10 @@
         <ApplicationIcon>game_icon.ico</ApplicationIcon>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+        <OutputType>WinExe</OutputType>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Update="Textures/**">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
