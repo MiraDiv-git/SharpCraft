@@ -44,7 +44,7 @@ public class PauseScreen
     {
         // Button
         var resbut = Canvas.AddElement<UIButton>();
-        resbut.Position = new Vector2(0, 0);
+        resbut.Position = new Vector2(0, -80);
         resbut.Size = WorldScene.defaultButtonSize;
         resbut.Anchor = Anchor.MiddleCenter;
         resbut.ButtonColor = Color.White;
@@ -69,7 +69,7 @@ public class PauseScreen
     {
         // Button
         var rect = Canvas.AddElement<UIButton>();
-        rect.Position = new Vector2(0, 50);
+        rect.Position = new Vector2(0, -30);
         rect.Size = WorldScene.defaultButtonSize;
         rect.Anchor = Anchor.MiddleCenter;
         rect.ButtonColor = Color.White;
@@ -94,7 +94,7 @@ public class PauseScreen
     {
         // Button
         var menubutton = Canvas.AddElement<UIButton>();
-        menubutton.Position = new Vector2(0, 100);
+        menubutton.Position = new Vector2(0, 20);
         menubutton.Size = WorldScene.defaultButtonSize;
         menubutton.Anchor = Anchor.MiddleCenter;
         menubutton.ButtonColor = Color.White;
