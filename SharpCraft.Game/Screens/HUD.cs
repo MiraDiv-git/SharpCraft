@@ -12,6 +12,7 @@ public class HUD
     public static float CrosshairSize { get; set; } = 10;
 
     private static Texture _crosshairTexture;
+    private static UIImage _crosshair;
 
     public static void Load()
     {
@@ -24,11 +25,16 @@ public class HUD
 
     private static void LoadCrosshair()
     {
-        var crosshair = Canvas.AddElement<UIImage>();
-        crosshair.Position = new Vector2(0, 0);
-        crosshair.Size = new Vector2(CrosshairSize, CrosshairSize);
-        crosshair.ImageTexture = _crosshairTexture;
-        crosshair.Anchor = Anchor.MiddleCenter;
-        crosshair.ImageColor = Color.White.WithAlpha(140);
+        _crosshair = Canvas.AddElement<UIImage>();
+        _crosshair.Position = new Vector2(0, 0);
+        _crosshair.Size = new Vector2(CrosshairSize, CrosshairSize);
+        _crosshair.ImageTexture = _crosshairTexture;
+        _crosshair.Anchor = Anchor.MiddleCenter;
+        _crosshair.ImageColor = Color.White.WithAlpha(140);
+    }
+
+    public static void Update()
+    {
+        _crosshair.Size = new Vector2(CrosshairSize, CrosshairSize);
     }
 }

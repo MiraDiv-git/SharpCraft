@@ -7,6 +7,8 @@
   "play.new": "Новий  світ",
 
   "options.language": "Мова",
+  "options.crosssize": "Розмір  перехрестя",
+  "options.fps": "Кадри  в  секунду",
   "options.back": "Застосувати",
 
   "world.pause.resume": "Продовжити",

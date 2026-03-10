@@ -96,6 +96,7 @@ public class WorldScene : IScene
     public void Update()
     {
         InputManager.ResetCursor();
+        HUD.Update();
         
         if (!_isPaused)
             ApplyMovement();

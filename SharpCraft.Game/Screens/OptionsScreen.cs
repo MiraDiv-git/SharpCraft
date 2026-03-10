@@ -16,6 +16,9 @@ public class OptionsScreen
     private static Texture _buttonHoverTexture;
     private static Texture _sliderTexture;
     private static Texture _sliderHandleTexture;
+    
+    private static UIText _fpsText;
+    private static UIText _crossText;
 
     private static bool _isGameplay;
 
@@ -93,6 +96,7 @@ public class OptionsScreen
         Anchor anchor = Anchor.MiddleCenter;
         
         var sText = Canvas.AddElement<UIText>();
+        _fpsText = sText;
         
         var slider = Canvas.AddElement<UISlider>();
         slider.Position = pos;
@@ -112,7 +116,7 @@ public class OptionsScreen
             GameWindow.SetFPSLock(v);
             UserSettings.FPSLock = v;
             UserSettings.Save();
-            sText.Text = $"FPS: {v}";
+            sText.Text = $"{Localization.Get("options.fps")}: {v}";
         };
         
         sText.Position = pos;
@@ -121,7 +125,7 @@ public class OptionsScreen
         
         slider.Value = (float)UserSettings.FPSLock;
         GameWindow.SetFPSLock(slider.Value);
-        sText.Text = $"FPS: {slider.Value}";
+        sText.Text = $"{Localization.Get("options.fps")}: {slider.Value}";
     }
     
     private static void LoadCrosshairSlider()
@@ -130,6 +134,7 @@ public class OptionsScreen
         Anchor anchor = Anchor.MiddleCenter;
         
         var sText = Canvas.AddElement<UIText>();
+        _crossText = sText;
         
         var slider = Canvas.AddElement<UISlider>();
         slider.Position = pos;
@@ -147,16 +152,24 @@ public class OptionsScreen
         slider.OnValueChanged += v =>
         {
             HUD.CrosshairSize = v;
-            sText.Text = $"Crosshair size: {v}";
+            UserSettings.CrosshairSize = v;
+            UserSettings.Save();
+            sText.Text = $"{Localization.Get("options.crosssize")}: {v}";
         };
         
         sText.Position = pos;
         sText.Anchor = anchor;
         sText.Size = slider.Size;
         
-        // slider.Value = (float)UserSettings.FPSLock;
+        slider.Value = (float)UserSettings.CrosshairSize;
         HUD.CrosshairSize = slider.Value;
-        sText.Text = $"Crosshair size: {slider.Value}";
+        sText.Text = $"{Localization.Get("options.crosssize")}: {slider.Value}";
+    }
+    
+    private static void RefreshTexts()
+    {
+        if (_fpsText != null) _fpsText.Text = $"{Localization.Get("options.fps")}: {UserSettings.FPSLock}";
+        if (_crossText != null) _crossText.Text = $"{Localization.Get("options.crosssize")}: {UserSettings.CrosshairSize}";
     }
 
     private static void LoadLocalizationButtons()
@@ -184,6 +197,7 @@ public class OptionsScreen
             UserSettings.Language = "en";
             UserSettings.Save();
             Localization.SetLanguage("en");
+            RefreshTexts();
         };
         
         // English text
@@ -209,6 +223,7 @@ public class OptionsScreen
             UserSettings.Language = "ua";
             UserSettings.Save();
             Localization.SetLanguage("ua");
+            RefreshTexts();
         };
         
         // Ukrainian text

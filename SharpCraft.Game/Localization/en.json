@@ -7,6 +7,8 @@
   "play.new": "New  World",
 
   "options.language": "Language",
+  "options.crosssize": "Crosshair  size",
+  "options.fps": "FPS",
   "options.back": "Apply  and  back",
 
   "world.pause.resume": "Resume",
