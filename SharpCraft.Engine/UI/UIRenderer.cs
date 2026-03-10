@@ -16,6 +16,9 @@ public class UIRenderer
     private readonly string _vertPath = Path.Combine("Shaders","UI","ui.vert");
     private readonly string _fragPath = Path.Combine("Shaders","UI","ui.frag");
     
+    public Vector2 ScreenSize => _screenSize;
+    public Vector2 ReferenceSize => _referenceSize;
+    
     public unsafe UIRenderer(GL gl, int width, int height)
     {
         _gl = gl;

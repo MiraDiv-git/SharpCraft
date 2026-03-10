@@ -39,6 +39,7 @@ public class OptionsScreen
         LoadBackButton();
         LoadLocalizationButtons();
         LoadFPSSlider();
+        LoadCrosshairSlider();
     }
     
     private static void LoadGameplayBackground()
@@ -88,12 +89,10 @@ public class OptionsScreen
 
     private static void LoadFPSSlider()
     {
-        Vector2 pos = new Vector2(0, -200);
+        Vector2 pos = new Vector2(180, -200);
         Anchor anchor = Anchor.MiddleCenter;
         
         var sText = Canvas.AddElement<UIText>();
-        sText.Position = pos;
-        sText.Anchor = anchor;
         
         var slider = Canvas.AddElement<UISlider>();
         slider.Position = pos;
@@ -116,9 +115,48 @@ public class OptionsScreen
             sText.Text = $"FPS: {v}";
         };
         
+        sText.Position = pos;
+        sText.Anchor = anchor;
+        sText.Size = slider.Size;
+        
         slider.Value = (float)UserSettings.FPSLock;
         GameWindow.SetFPSLock(slider.Value);
         sText.Text = $"FPS: {slider.Value}";
+    }
+    
+    private static void LoadCrosshairSlider()
+    {
+        Vector2 pos = new Vector2(-180, -200);
+        Anchor anchor = Anchor.MiddleCenter;
+        
+        var sText = Canvas.AddElement<UIText>();
+        
+        var slider = Canvas.AddElement<UISlider>();
+        slider.Position = pos;
+        slider.Size = MainMenuScene.defaultButtonSize;
+        slider.Anchor = anchor;
+        slider.Min = 4f;
+        slider.Max = 32f;
+        slider.Step = 1f;
+        slider.Value = 10f;
+        slider.BackgroundTexture = _sliderTexture;
+        slider.HandleTexture = _sliderHandleTexture;
+        slider.BackgroundColor = Color.White;
+        slider.HandleColor = Color.White;
+        slider.HandleSize = new Vector2(23, MainMenuScene.defaultButtonSize.Y);
+        slider.OnValueChanged += v =>
+        {
+            HUD.CrosshairSize = v;
+            sText.Text = $"Crosshair size: {v}";
+        };
+        
+        sText.Position = pos;
+        sText.Anchor = anchor;
+        sText.Size = slider.Size;
+        
+        // slider.Value = (float)UserSettings.FPSLock;
+        HUD.CrosshairSize = slider.Value;
+        sText.Text = $"Crosshair size: {slider.Value}";
     }
 
     private static void LoadLocalizationButtons()

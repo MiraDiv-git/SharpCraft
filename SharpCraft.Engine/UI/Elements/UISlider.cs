@@ -39,7 +39,10 @@ public class UISlider : UIElement
 
         if (_isDragging)
         {
-            float t = Math.Clamp((InputManager.MousePosition.X - resolvedPos.X) / resolvedSize.X, 0f, 1f);
+            float scale = resolvedSize.Y / Size.Y;
+            float handleW = HandleSize.X * scale;
+            float t = Math.Clamp((InputManager.MousePosition.X - resolvedPos.X - handleW / 2f) 
+                                 / (resolvedSize.X - handleW), 0f, 1f);
             float raw = Min + t * (Max - Min);
             float stepped = MathF.Round(raw / Step) * Step;
             if (stepped != _value)
@@ -58,20 +61,21 @@ public class UISlider : UIElement
             renderer.DrawRect(Position, Size, BackgroundColor, Anchor);
 
         var (resolvedPos, resolvedSize) = renderer.ResolveElement(Position, Size, Anchor);
-    
+
         float t = Max > Min ? (_value - Min) / (Max - Min) : 0f;
         float scale = resolvedSize.Y / Size.Y;
         float handleW = HandleSize.X * scale;
         float handleH = HandleSize.Y * scale;
-        float handleX = resolvedPos.X + t * resolvedSize.X - handleW / 2f;
+        float handleX = resolvedPos.X + t * (resolvedSize.X - handleW);
         float handleY = resolvedPos.Y + (resolvedSize.Y - handleH) / 2f;
+        
+        float s = Math.Min(renderer.ScreenSize.X / renderer.ReferenceSize.X, renderer.ScreenSize.Y / renderer.ReferenceSize.Y);
+        Vector2 logicalPos = new Vector2(handleX / s, handleY / s);
+        Vector2 logicalSize = new Vector2(handleW / s, handleH / s);
 
         if (HandleTexture != null)
-            renderer.DrawTexturedRectAbsolute(new Vector2(handleX, handleY),
-                new Vector2(handleW, handleH), 
-                HandleTexture, HandleColor);
+            renderer.DrawTexturedRectAbsolute(new Vector2(handleX, handleY), new Vector2(handleW, handleH), HandleTexture, HandleColor);
         else
-            renderer.DrawRectAbsolute(new Vector2(handleX, handleY), 
-                new Vector2(handleW, handleH), HandleColor);
+            renderer.DrawRectAbsolute(new Vector2(handleX, handleY), new Vector2(handleW, handleH), HandleColor);
     }
 }

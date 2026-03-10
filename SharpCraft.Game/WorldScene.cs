@@ -48,8 +48,9 @@ public class WorldScene : IScene
         _grassBlock = new GrassBlock(_gl, _shader);
         _dirtBlock = new DirtBlock(_gl, _shader);
         
-        PauseScreen.Load();
+        HUD.Load();
         DebugScreen.Load();
+        PauseScreen.Load();
         
         InputManager.LockMouse();
     }
@@ -80,11 +81,15 @@ public class WorldScene : IScene
         //_grassBlock.Draw(Matrix4X4.CreateTranslation(2f, 0f, 0));
         
         _gl.Disable(EnableCap.DepthTest);
-        _activeCanvas?.Render();
+        
+        HUD.Canvas.Render();
+        
         if (_isDebug)
         {
             DebugScreen.Canvas.Render();
         }
+        
+        _activeCanvas?.Render();
         _gl.Enable(EnableCap.DepthTest);
     }
     

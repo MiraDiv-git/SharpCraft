@@ -167,6 +167,7 @@ public class MainMenuScreen
         logo.Anchor = Anchor.TopCenter;
         logo.Size = new Vector2(1005 / 1.5f, 124 / 1.5f);
         logo.ImageTexture = _logoImage;
+        logo.ImageColor = Color.White;
     }
     
     private static void OpenUrl(string url)
