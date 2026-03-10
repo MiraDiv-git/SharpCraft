@@ -1,5 +1,7 @@
 namespace SharpCraft.Engine.UI.Elements;
 
+public enum TextAlign { Left, Center, Right }
+
 public class UIText : UIElement
 {
     private string _text = "";
@@ -11,11 +13,11 @@ public class UIText : UIElement
     
     public float FontSize { get; set; } = 16f;
     public Color4 TextColor { get; set; } = Color.White;
-    
     public float Spacing { get; set; } = 0.4f;
     public bool Shadow { get; set; } = true;
     public float ShadowOffset { get; set; } = 2f;
     public float VerticalOffset { get; set; } = 0f;
+    public TextAlign Align { get; set; } = TextAlign.Center;
     
     public override void Render(UIRenderer renderer)
     {
@@ -29,7 +31,11 @@ public class UIText : UIElement
         foreach (var c in Text)
             totalWidth += (renderer.GetCharWidth(c) + Spacing) * glyphScale;
         
-        float xOffset = (resolvedSize.X - totalWidth) / 2f;
+        float xOffset = Align switch {
+            TextAlign.Left   => 0,
+            TextAlign.Right  => resolvedSize.X - totalWidth,
+            _                => (resolvedSize.X - totalWidth) / 2f
+        };
         float yOffset = (resolvedSize.Y - scaledFontSize) / 2f + VerticalOffset * screenScale;
     
         if (Shadow)

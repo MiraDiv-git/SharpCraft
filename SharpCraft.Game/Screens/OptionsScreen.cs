@@ -22,7 +22,7 @@ public class OptionsScreen
     public static void Load(bool isGameplay = false)
     {
         _isGameplay = isGameplay;
-        Canvas = !isGameplay ? new Canvas(MainMenuScene.UIRenderer) : new Canvas(TestWorld.UIRenderer);
+        Canvas = !isGameplay ? new Canvas(MainMenuScene.UIRenderer) : new Canvas(WorldScene.UIRenderer);
         
         _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
@@ -71,7 +71,7 @@ public class OptionsScreen
             }
             else
             {
-                TestWorld.ChangeScreen(PauseScreen.Canvas);
+                WorldScene.ChangeScreen(PauseScreen.Canvas);
                 Console.WriteLine("[INFO] Changing screen to Pause Screen");
             }
         };

@@ -16,20 +16,19 @@ using Silk.NET.OpenGL;
 
 namespace SharpCraft.Game;
 
-public class TestWorld : IScene
+public class WorldScene : IScene
 {
     private GL _gl;
     private Shader _shader;
-    private Camera _camera;
     private Block _grassBlock;
     private Block _dirtBlock;
     private WorldGenerator _world;
-
-    public static UIRenderer UIRenderer { get; private set; }
     private static Canvas _activeCanvas;
-
     private static bool _isPaused = false;
-
+    private static bool _isDebug = false;
+    
+    public static UIRenderer UIRenderer { get; private set; }
+    public static Camera Camera { get; set; }
     public static Vector2 defaultButtonSize { get; } = new Vector2(350, 40);
 
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
@@ -42,7 +41,7 @@ public class TestWorld : IScene
         UIRenderer = uiRenderer;
 
         _shader = new Shader(_gl, _vertPath, _fragPath);
-        _camera = new Camera();
+        Camera = new Camera();
         
         _world = new WorldGenerator();
         _world.GenerateCube(16, 16, 4, WorldGenerator.BlockType.Grass, WorldGenerator.BlockType.Dirt);
@@ -50,6 +49,7 @@ public class TestWorld : IScene
         _dirtBlock = new DirtBlock(_gl, _shader);
         
         PauseScreen.Load();
+        DebugScreen.Load();
         
         InputManager.LockMouse();
     }
@@ -68,8 +68,8 @@ public class TestWorld : IScene
         float aspect = viewport[2] / (float)viewport[3];
         
         _shader.Use();
-        _shader.SetUniform("uView", _camera.GetView());
-        _shader.SetUniform("uProjection", _camera.GetProjection(aspect));
+        _shader.SetUniform("uView", Camera.GetView());
+        _shader.SetUniform("uProjection", Camera.GetProjection(aspect));
 
         foreach (var (model, type) in _world.Blocks)
         {
@@ -81,6 +81,10 @@ public class TestWorld : IScene
         
         _gl.Disable(EnableCap.DepthTest);
         _activeCanvas?.Render();
+        if (_isDebug)
+        {
+            DebugScreen.Canvas.Render();
+        }
         _gl.Enable(EnableCap.DepthTest);
     }
     
@@ -95,6 +99,12 @@ public class TestWorld : IScene
         {
             TogglePause(PauseScreen.Canvas);
         }
+        
+        if (InputManager.IsKeyJustPressed(Key.F3))
+            _isDebug = !_isDebug;
+        
+        if (_isDebug)
+            DebugScreen.Update(Camera);
         
         _activeCanvas?.Update(UIRenderer);
     }
@@ -112,8 +122,8 @@ public class TestWorld : IScene
     {
         // Movement
         var forward = new Vector3D<float>(
-            float.Cos(float.DegreesToRadians(_camera.Yaw)), 0,
-            float.Sin(float.DegreesToRadians(_camera.Yaw)));
+            float.Cos(float.DegreesToRadians(Camera.Yaw)), 0,
+            float.Sin(float.DegreesToRadians(Camera.Yaw)));
         var right = Vector3D.Normalize(Vector3D.Cross(forward, new Vector3D<float>(0, 1, 0)));
     
         var move = Vector3D<float>.Zero;
@@ -123,10 +133,10 @@ public class TestWorld : IScene
         if (InputManager.IsKeyDown(Key.D)) move += right;
     
         if (move != Vector3D<float>.Zero)
-            _camera.Move(Vector3D.Normalize(move));
+            Camera.Move(Vector3D.Normalize(move));
         
         // Rotation
-        _camera.Look(InputManager.MouseDelta);
+        Camera.Look(InputManager.MouseDelta);
     }
     
     public static void ChangeScreen(Canvas canvas)

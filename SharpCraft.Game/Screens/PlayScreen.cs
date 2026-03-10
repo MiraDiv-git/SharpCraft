@@ -68,7 +68,7 @@ public class PlayScreen
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            SceneManager.SetScene(new TestWorld());
+            SceneManager.SetScene(new WorldScene());
         };
         
         // Text

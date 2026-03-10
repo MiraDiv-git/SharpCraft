@@ -18,7 +18,7 @@ public class PauseScreen
     
     public static void Load()
     {
-        Canvas = new Canvas(TestWorld.UIRenderer);
+        Canvas = new Canvas(WorldScene.UIRenderer);
         OptionsScreen.Load(true);
 
         _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds","UI","click_ui.ogg"));
@@ -45,7 +45,7 @@ public class PauseScreen
         // Button
         var resbut = Canvas.AddElement<UIButton>();
         resbut.Position = new Vector2(0, 0);
-        resbut.Size = TestWorld.defaultButtonSize;
+        resbut.Size = WorldScene.defaultButtonSize;
         resbut.Anchor = Anchor.MiddleCenter;
         resbut.ButtonColor = Color.White;
         resbut.HoverColor = Color.White;
@@ -54,7 +54,7 @@ public class PauseScreen
         resbut.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            TestWorld.TogglePause(Canvas);
+            WorldScene.TogglePause(Canvas);
         };
         
         // Text
@@ -70,7 +70,7 @@ public class PauseScreen
         // Button
         var rect = Canvas.AddElement<UIButton>();
         rect.Position = new Vector2(0, 50);
-        rect.Size = TestWorld.defaultButtonSize;
+        rect.Size = WorldScene.defaultButtonSize;
         rect.Anchor = Anchor.MiddleCenter;
         rect.ButtonColor = Color.White;
         rect.HoverColor = Color.White;
@@ -79,7 +79,7 @@ public class PauseScreen
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            TestWorld.ChangeScreen(OptionsScreen.Canvas);
+            WorldScene.ChangeScreen(OptionsScreen.Canvas);
         };
         
         // Text
@@ -95,7 +95,7 @@ public class PauseScreen
         // Button
         var menubutton = Canvas.AddElement<UIButton>();
         menubutton.Position = new Vector2(0, 100);
-        menubutton.Size = TestWorld.defaultButtonSize;
+        menubutton.Size = WorldScene.defaultButtonSize;
         menubutton.Anchor = Anchor.MiddleCenter;
         menubutton.ButtonColor = Color.White;
         menubutton.HoverColor = Color.White;
