@@ -31,7 +31,7 @@ public class MainMenuScreen
         _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds", "UI", "click_ui.ogg"));
         _menuLoop = AudioManager.LoadAudio(Path.Combine("Sounds", "UI", "menu_loop.ogg"));
         
-        LoadDevButton(); // Comment before publishing
+        LoadDevButton(); // TODO: Comment before publishing
         LoadPlayButton();
         LoadOptionsButton();
         LoadExitButton();

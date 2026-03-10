@@ -8,6 +8,7 @@ using SharpCraft.Engine.UI.Elements;
 using SharpCraft.Engine.World;
 using SharpCraft.Engine.World.Blocks;
 using SharpCraft.Engine.World.Blocks.GameReady;
+using SharpCraft.Game.Screens;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -23,20 +24,14 @@ public class TestWorld : IScene
     private Block _grassBlock;
     private Block _dirtBlock;
     private WorldGenerator _world;
-    
-    private UIRenderer _uiRenderer;
-    private Canvas _activeCanvas;
-    private Canvas _pauseMenuCanvas;
-    
-    private Texture _buttonTexture;
-    private Texture _buttonHoverTexture;
-    
-    private Sound _clickSound;
 
-    private bool _isPaused = false;
-    
-    private Vector2 defaultButtonSize = new Vector2(350, 40);
-    
+    public static UIRenderer UIRenderer { get; private set; }
+    private static Canvas _activeCanvas;
+
+    private static bool _isPaused = false;
+
+    public static Vector2 defaultButtonSize { get; } = new Vector2(350, 40);
+
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
     private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
     
@@ -44,7 +39,7 @@ public class TestWorld : IScene
     {
         Console.WriteLine("[INFO] Loading Test World scene.");
         _gl = gl;
-        _uiRenderer = uiRenderer;
+        UIRenderer = uiRenderer;
 
         _shader = new Shader(_gl, _vertPath, _fragPath);
         _camera = new Camera();
@@ -53,15 +48,8 @@ public class TestWorld : IScene
         _world.GenerateCube(16, 16, 4, WorldGenerator.BlockType.Grass, WorldGenerator.BlockType.Dirt);
         _grassBlock = new GrassBlock(_gl, _shader);
         _dirtBlock = new DirtBlock(_gl, _shader);
-
-        _pauseMenuCanvas = new Canvas(_uiRenderer);
-
-        _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds","UI","click_ui.ogg"));
         
-        _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","button.png"));
-        _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","button_hover.png"));
-
-        LoadPauseMenu();
+        PauseScreen.Load();
         
         InputManager.LockMouse();
     }
@@ -105,20 +93,22 @@ public class TestWorld : IScene
 
         if (InputManager.IsKeyJustPressed(Key.Escape))
         {
-            TogglePause(_pauseMenuCanvas);
+            TogglePause(PauseScreen.Canvas);
         }
         
-        _activeCanvas?.Update(_uiRenderer);
+        _activeCanvas?.Update(UIRenderer);
     }
 
     public void Unload()
     {
         _gl.Disable(EnableCap.DepthTest);
         _gl.Disable(EnableCap.PolygonOffsetFill);
+        _activeCanvas.Clear();
+        _isPaused = false;
         InputManager.UnlockMouse();
     }
 
-    public void ApplyMovement()
+    private void ApplyMovement()
     {
         // Movement
         var forward = new Vector3D<float>(
@@ -139,7 +129,7 @@ public class TestWorld : IScene
         _camera.Look(InputManager.MouseDelta);
     }
     
-    private void TogglePause(Canvas canvas)
+    public static void TogglePause(Canvas canvas)
     {
         _isPaused = !_isPaused;
         
@@ -153,59 +143,5 @@ public class TestWorld : IScene
             _activeCanvas = null;
             InputManager.LockMouse();
         }
-    }
-
-    public void LoadPauseMenu()
-    {
-        // Background
-        var bgimage = _pauseMenuCanvas.AddElement<UIImage>();
-        bgimage.Size = new Vector2(9999, 9999);
-        bgimage.Anchor = Anchor.MiddleCenter;
-        bgimage.ImageColor = Color.Black.WithAlpha(200);
-        
-        // Resume button
-        var resbut = _pauseMenuCanvas.AddElement<UIButton>();
-        resbut.Position = new Vector2(0, 0);
-        resbut.Size = defaultButtonSize;
-        resbut.Anchor = Anchor.MiddleCenter;
-        resbut.ButtonColor = Color.White;
-        resbut.HoverColor = Color.White;
-        resbut.ButtonTexture = _buttonTexture;
-        resbut.HoverTexture = _buttonHoverTexture;
-        resbut.OnClick += () =>
-        {
-            AudioManager.Play(_clickSound);
-            TogglePause(_pauseMenuCanvas);
-        };
-        
-        // Resume button text
-        var resbuttxt = _pauseMenuCanvas.AddElement<UIText>();
-        resbuttxt.Position = resbut.Position;
-        resbuttxt.Anchor = resbut.Anchor;
-        resbuttxt.TextColor = Color.White;
-        resbuttxt.Text = "world.pause.resume";
-        
-        
-        // Main Menu button
-        var menubutton = _pauseMenuCanvas.AddElement<UIButton>();
-        menubutton.Position = new Vector2(resbut.Position.X, resbut.Position.Y + 50);
-        menubutton.Size = defaultButtonSize;
-        menubutton.Anchor = Anchor.MiddleCenter;
-        menubutton.ButtonColor = Color.White;
-        menubutton.HoverColor = Color.White;
-        menubutton.ButtonTexture = _buttonTexture;
-        menubutton.HoverTexture = _buttonHoverTexture;
-        menubutton.OnClick += () =>
-        {
-            AudioManager.Play(_clickSound);
-            SceneManager.SetScene(new MainMenuScene());
-        };
-        
-        // Main Menu button text
-        var menubuttxt = _pauseMenuCanvas.AddElement<UIText>();
-        menubuttxt.Position = menubutton.Position;
-        menubuttxt.Anchor = menubutton.Anchor;
-        menubuttxt.TextColor = Color.White;
-        menubuttxt.Text = "world.pause.exit";
     }
 }
