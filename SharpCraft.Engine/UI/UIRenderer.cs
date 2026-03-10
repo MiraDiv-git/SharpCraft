@@ -142,6 +142,21 @@ public class UIRenderer
         _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
         _gl.BindVertexArray(0);
     }
+    
+    public void DrawRectAbsolute(Vector2 screenPos, Vector2 screenSize, Color4 color)
+    {
+        _shader.Use();
+        _shader.SetUniform("uColor", color);
+        _shader.SetUniform("uOffset", screenPos);
+        _shader.SetUniform("uScale", screenSize);
+        _shader.SetUniform("uUseTexture", 0);
+        _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
+        _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
+        _shader.SetUniform("uScreenSize", _screenSize);
+        _gl.BindVertexArray(_vao);
+        _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
+        _gl.BindVertexArray(0);
+    }
 
     public void DrawTexturedRect(Vector2 position, Vector2 size, Texture texture, Color4 color, Anchor anchor)
     {
@@ -161,6 +176,23 @@ public class UIRenderer
         
         _shader.SetUniform("uScreenSize", _screenSize);
         
+        _gl.BindVertexArray(_vao);
+        _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
+        _gl.BindVertexArray(0);
+    }
+    
+    public void DrawTexturedRectAbsolute(Vector2 screenPos, Vector2 screenSize, Texture texture, Color4 color)
+    {
+        _shader.Use();
+        texture.Bind();
+        _shader.SetUniform("uTexture", 0);
+        _shader.SetUniform("uUseTexture", 1);
+        _shader.SetUniform("uColor", color);
+        _shader.SetUniform("uOffset", screenPos);
+        _shader.SetUniform("uScale", screenSize);
+        _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
+        _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
+        _shader.SetUniform("uScreenSize", _screenSize);
         _gl.BindVertexArray(_vao);
         _gl.DrawArrays(PrimitiveType.TriangleStrip, 0, 4);
         _gl.BindVertexArray(0);

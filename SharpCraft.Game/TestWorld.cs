@@ -1,4 +1,3 @@
-using SharpCraft.Engine;
 using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Input;
@@ -7,6 +6,7 @@ using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.UI.Elements;
 using SharpCraft.Engine.World;
+using SharpCraft.Engine.World.Blocks;
 using SharpCraft.Engine.World.Blocks.GameReady;
 using Silk.NET.Input;
 using Silk.NET.Maths;
@@ -20,7 +20,8 @@ public class TestWorld : IScene
     private GL _gl;
     private Shader _shader;
     private Camera _camera;
-    private GrassBlock _block;
+    private Block _grassBlock;
+    private Block _dirtBlock;
     private WorldGenerator _world;
     
     private UIRenderer _uiRenderer;
@@ -49,8 +50,9 @@ public class TestWorld : IScene
         _camera = new Camera();
         
         _world = new WorldGenerator();
-        _world.GenerateFlat(64, 64);
-        _block = new GrassBlock(_gl, _shader);
+        _world.GenerateCube(16, 16, 4, WorldGenerator.BlockType.Grass, WorldGenerator.BlockType.Dirt);
+        _grassBlock = new GrassBlock(_gl, _shader);
+        _dirtBlock = new DirtBlock(_gl, _shader);
 
         _pauseMenuCanvas = new Canvas(_uiRenderer);
 
@@ -81,12 +83,13 @@ public class TestWorld : IScene
         _shader.SetUniform("uView", _camera.GetView());
         _shader.SetUniform("uProjection", _camera.GetProjection(aspect));
 
-        foreach (var model in _world.BlockPositions)
+        foreach (var (model, type) in _world.Blocks)
         {
-            _block.Draw(model);
+            var block = type == WorldGenerator.BlockType.Grass ? _grassBlock : _dirtBlock;
+            block.Draw(model);
         }
         
-        _block.Draw(Matrix4X4<float>.Identity);
+        //_grassBlock.Draw(Matrix4X4<float>.Identity);
         
         _gl.Disable(EnableCap.DepthTest);
         _activeCanvas?.Render();

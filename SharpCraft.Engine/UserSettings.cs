@@ -5,6 +5,7 @@ public class UserSettings
     private const string Path = "settings.json";
     
     public static string Language { get; set; } = "en";
+    public static double FPSLock { get; set; } = 60;
     
     public static void Load()
     {
@@ -12,11 +13,13 @@ public class UserSettings
         var json = File.ReadAllText(Path);
         var data = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
         if (data.TryGetValue("language", out var lang)) Language = lang;
+        if (data.TryGetValue("fps_lock", out var fps)) FPSLock = double.Parse(fps);
     }
     
     public static void Save()
     {
         var data = new Dictionary<string, string> { ["language"] = Language };
+        data["fps_lock"] = FPSLock.ToString();
         File.WriteAllText(Path, System.Text.Json.JsonSerializer.Serialize(data));
     }
 }

@@ -95,6 +95,7 @@ public class MainMenuScene : IScene
     {
         LoadBackButton();
         LoadTestLocalizationButtons();
+        LoadFPSSlider();
     }
     
     
@@ -342,6 +343,39 @@ public class MainMenuScene : IScene
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
         text.FontSize = 16f;
+    }
+
+    private void LoadFPSSlider()
+    {
+        Vector2 pos = new Vector2(0, -200);
+        Anchor anchor = Anchor.MiddleCenter;
+        
+        var sText = _optionsCanvas.AddElement<UIText>();
+        sText.Position = pos;
+        sText.Anchor = anchor;
+        
+        var slider = _optionsCanvas.AddElement<UISlider>();
+        slider.Position = pos;
+        slider.Size = defaultButtonSize;
+        slider.Anchor = anchor;
+        slider.Min = 30f;
+        slider.Max = 540f;
+        slider.Step = 5f;
+        slider.Value = 60f;
+        slider.BackgroundColor = new Color4(0.3f, 0.3f, 0.3f, 1f);
+        slider.HandleColor = Color.White;
+        slider.HandleSize = new Vector2(18, defaultButtonSize.Y);
+        slider.OnValueChanged += v =>
+        {
+            GameWindow.SetFPSLock(v);
+            UserSettings.FPSLock = v;
+            UserSettings.Save();
+            sText.Text = $"FPS: {v}";
+        };
+        
+        slider.Value = (float)UserSettings.FPSLock;
+        GameWindow.SetFPSLock(slider.Value);
+        sText.Text = $"FPS: {slider.Value}";
     }
 
     private void LoadTestLocalizationButtons()

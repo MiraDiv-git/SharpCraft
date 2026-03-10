@@ -16,22 +16,21 @@ public class GameWindow
 {
     private readonly IWindow _window;
     private GL _gl;
+    private static GameWindow _instance;
 
     private readonly int _defaultWindowWidth = 800;
     private readonly int _defaultWindowHeight = 600;
     private readonly string _defaultFont = Path.Combine("Fonts", "dogicapixel.png");
     private UIRenderer _uiRenderer;
 
-    private double FPSLock = 0;
-
     public GameWindow()
     {
+        _instance = this;
+        
         _window = Window.Create(WindowOptions.Default with
         {
             Size = new Vector2D<int>(_defaultWindowWidth, _defaultWindowHeight),
             Title = "SharpCraft",
-            UpdatesPerSecond = FPSLock,
-            FramesPerSecond = FPSLock,
             VSync = false
         });
 
@@ -46,6 +45,7 @@ public class GameWindow
             
             UserSettings.Load();
             Localization.SetLanguage(UserSettings.Language);
+            SetFPSLock(UserSettings.FPSLock);
             Console.WriteLine("[OK] Localization loaded set.");
             
             DiscordManager.Initialize();
@@ -102,6 +102,12 @@ public class GameWindow
             
             SceneManager.Render();
         };
+    }
+    
+    public static void SetFPSLock(double fps)
+    {
+        _instance._window.FramesPerSecond = fps;
+        _instance._window.UpdatesPerSecond = fps;
     }
     
     private void PrintGLInfo()
