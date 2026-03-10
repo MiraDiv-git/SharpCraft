@@ -129,6 +129,11 @@ public class TestWorld : IScene
         _camera.Look(InputManager.MouseDelta);
     }
     
+    public static void ChangeScreen(Canvas canvas)
+    {
+        _activeCanvas = canvas;
+    }
+    
     public static void TogglePause(Canvas canvas)
     {
         _isPaused = !_isPaused;

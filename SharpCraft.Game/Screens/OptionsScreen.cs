@@ -2,6 +2,7 @@ using SharpCraft.Engine;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
+using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.UI.Elements;
 namespace SharpCraft.Game.Screens;
 
@@ -15,10 +16,13 @@ public class OptionsScreen
     private static Texture _buttonHoverTexture;
     private static Texture _sliderTexture;
     private static Texture _sliderHandleTexture;
-    
-    public static void Load()
+
+    private static bool _isGameplay;
+
+    public static void Load(bool isGameplay = false)
     {
-        Canvas = new Canvas(MainMenuScene.UIRenderer);
+        _isGameplay = isGameplay;
+        Canvas = !isGameplay ? new Canvas(MainMenuScene.UIRenderer) : new Canvas(TestWorld.UIRenderer);
         
         _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
@@ -26,10 +30,23 @@ public class OptionsScreen
         _sliderHandleTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Slider", "slider_handle.png"));
         
         _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds", "UI", "click_ui.ogg"));
+
+        if (isGameplay)
+        {
+            LoadGameplayBackground();
+        }
         
         LoadBackButton();
         LoadLocalizationButtons();
         LoadFPSSlider();
+    }
+    
+    private static void LoadGameplayBackground()
+    {
+        var bgimage = Canvas.AddElement<UIImage>();
+        bgimage.Size = new Vector2(9999, 9999);
+        bgimage.Anchor = Anchor.MiddleCenter;
+        bgimage.ImageColor = Color.Black.WithAlpha(200);
     }
     
     private static void LoadBackButton()
@@ -46,8 +63,17 @@ public class OptionsScreen
         rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            MainMenuScene.SwitchTo(MainMenuScreen.Canvas);
-            Console.WriteLine("[INFO] Changing canvas to Main Canvas");
+            
+            if (!_isGameplay)
+            {
+                MainMenuScene.SwitchTo(MainMenuScreen.Canvas);
+                Console.WriteLine("[INFO] Changing screen to Main Menu Screen");
+            }
+            else
+            {
+                TestWorld.ChangeScreen(PauseScreen.Canvas);
+                Console.WriteLine("[INFO] Changing screen to Pause Screen");
+            }
         };
         
         // Text

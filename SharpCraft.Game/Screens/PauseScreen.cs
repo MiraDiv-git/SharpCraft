@@ -19,6 +19,7 @@ public class PauseScreen
     public static void Load()
     {
         Canvas = new Canvas(TestWorld.UIRenderer);
+        OptionsScreen.Load(true);
 
         _clickSound = AudioManager.LoadAudio(Path.Combine("Sounds","UI","click_ui.ogg"));
         
@@ -27,6 +28,7 @@ public class PauseScreen
 
         LoadBackground();
         LoadResumeButton();
+        LoadOptionsButton();
         LoadMenuButton();
     }
 
@@ -62,12 +64,37 @@ public class PauseScreen
         resbuttxt.TextColor = Color.White;
         resbuttxt.Text = "world.pause.resume";
     }
+
+    private static void LoadOptionsButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(0, 50);
+        rect.Size = TestWorld.defaultButtonSize;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            TestWorld.ChangeScreen(OptionsScreen.Canvas);
+        };
+        
+        // Text
+        var txt = Canvas.AddElement<UIText>();
+        txt.Position = rect.Position;
+        txt.Anchor = rect.Anchor;
+        txt.TextColor = Color.White;
+        txt.Text = "menu.options";
+    }
     
     private static void LoadMenuButton()
     {
         // Button
         var menubutton = Canvas.AddElement<UIButton>();
-        menubutton.Position = new Vector2(0, 50);
+        menubutton.Position = new Vector2(0, 100);
         menubutton.Size = TestWorld.defaultButtonSize;
         menubutton.Anchor = Anchor.MiddleCenter;
         menubutton.ButtonColor = Color.White;
