@@ -8,9 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="Shaders/**">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <EmbeddedResource Include="Shaders/**/*.vert" />
+      <EmbeddedResource Include="Shaders/**/*.frag" />
+
       <PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
       <PackageReference Include="NVorbis" Version="0.10.5" />
 

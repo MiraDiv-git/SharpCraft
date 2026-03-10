@@ -11,22 +11,30 @@ public class Shader
     {
         _gl = gl;
 
-        var vert = Compile(ShaderType.VertexShader, File.ReadAllText(vertPath));
-        var frag = Compile(ShaderType.FragmentShader, File.ReadAllText(fragPath));
+        var assembly = typeof(Shader).Assembly;
+        var vert = Compile(ShaderType.VertexShader, ReadEmbedded(assembly, vertPath));
+        var frag = Compile(ShaderType.FragmentShader, ReadEmbedded(assembly, fragPath));
 
         _handle = _gl.CreateProgram();
         _gl.AttachShader(_handle, vert);
         _gl.AttachShader(_handle, frag);
         _gl.LinkProgram(_handle);
-        
+
         _gl.GetProgram(_handle, ProgramPropertyARB.LinkStatus, out var status);
         if (status == 0)
-        {
             throw new Exception($"Error linking shader program: {_gl.GetProgramInfoLog(_handle)}");
-        }
 
         _gl.DeleteShader(vert);
         _gl.DeleteShader(frag);
+    }
+
+    private static string ReadEmbedded(System.Reflection.Assembly assembly, string path)
+    {
+        var name = "SharpCraft.Engine." + path.Replace('/', '.').Replace('\\', '.');
+        using var stream = assembly.GetManifestResourceStream(name)
+                           ?? throw new FileNotFoundException($"Embedded shader not found: {name}");
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 
     private uint Compile(ShaderType type, string source)

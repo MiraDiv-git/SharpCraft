@@ -1,3 +1,5 @@
+using SharpCraft.Engine.Assets;
+
 namespace SharpCraft.Engine;
 
 public class Localization
@@ -8,7 +10,9 @@ public class Localization
     
     public static void Load(string path)
     {
-        var json = File.ReadAllText(path);
+        using var stream = AssetManager.OpenResource(path);
+        using var reader = new StreamReader(stream);
+        var json = reader.ReadToEnd();
         _strings = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json)!;
     }
     

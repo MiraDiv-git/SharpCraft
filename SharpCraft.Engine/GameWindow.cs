@@ -40,13 +40,6 @@ public class GameWindow
             _gl = _window.CreateOpenGL();
             Console.WriteLine("[OK] OpenGL context created.");
             PrintGLInfo();
-            WindowIcon.Set(_window, Path.Combine("Textures", "UI", "Logos", "game_icon.png"));
-            Console.WriteLine("[OK] Window icon set.");
-            
-            UserSettings.Load();
-            Localization.SetLanguage(UserSettings.Language);
-            SetFPSLock(UserSettings.FPSLock);
-            Console.WriteLine("[OK] Localization loaded set.");
             
             DiscordManager.Initialize();
             Console.WriteLine("[OK] Discord Rich Presence initialized.");
@@ -59,6 +52,18 @@ public class GameWindow
             InputManager.Initialize(_window.CreateInput());
             AudioManager.Initialize();
             AssetManager.Initialize(_gl);
+            
+            WindowIcon.Set(_window, Path.Combine("Textures", "UI", "Logos", "game_icon.png"));
+            Console.WriteLine("[OK] Window icon set.");
+            
+            
+            Console.WriteLine("\nLoading User Settings...");
+            
+            UserSettings.Load();
+            SetFPSLock(UserSettings.FPSLock);
+            Console.WriteLine("[OK] FPS loaded and set.");
+            Localization.SetLanguage(UserSettings.Language);
+            Console.WriteLine("[OK] Localization loaded and set.");
             
             var (texture, pixels, w, h) = AssetManager.LoadFontTexture(_defaultFont);
             _uiRenderer.SetFont(texture, pixels, w, h);

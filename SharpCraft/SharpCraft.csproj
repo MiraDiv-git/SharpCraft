@@ -14,16 +14,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="Textures/**">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Fonts/**">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Localization/**">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-
       <None Update="soft_oal.dll" Condition="'$(RuntimeIdentifier)' == 'win-x64'">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

@@ -1,3 +1,4 @@
+using SharpCraft.Engine.Assets;
 using Silk.NET.OpenGL;
 using StbImageSharp;
 
@@ -13,7 +14,7 @@ public class Texture : IDisposable
         _gl = gl;
         
         StbImage.stbi_set_flip_vertically_on_load(flipVertically ? 1 : 0);
-        var image = ImageResult.FromStream(File.OpenRead(path), ColorComponents.RedGreenBlueAlpha);
+        var image = ImageResult.FromStream(AssetManager.OpenResource(path), ColorComponents.RedGreenBlueAlpha);
         
         _handle = _gl.GenTexture();
         _gl.BindTexture(TextureTarget.Texture2D, _handle);

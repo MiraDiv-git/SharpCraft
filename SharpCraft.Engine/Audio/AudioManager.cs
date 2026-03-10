@@ -1,4 +1,5 @@
 using NVorbis;
+using SharpCraft.Engine.Assets;
 using Silk.NET.OpenAL;
 
 namespace SharpCraft.Engine.Audio;
@@ -24,7 +25,7 @@ public static class AudioManager
     
     public static Sound LoadAudio(string path)
     {
-        using var vorbis = new VorbisReader(path);
+        using var vorbis = new VorbisReader(AssetManager.OpenResource(path));
         var channels = vorbis.Channels;
         var sampleRate = vorbis.SampleRate;
     
