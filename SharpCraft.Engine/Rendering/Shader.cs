@@ -76,6 +76,13 @@ public class Shader
             _gl.UniformMatrix4(location, 1, false, (float*)&matrix);
     }
     
+    // Debug renderer
+    public void SetUniform(string name, Vector3 value)
+    {
+        int location = _gl.GetUniformLocation(_handle, name);
+        _gl.Uniform3(location, value.X, value.Y, value.Z);
+    }
+    
     // Only number (used for texture)
     public void SetUniform(string name, int value)
     {
