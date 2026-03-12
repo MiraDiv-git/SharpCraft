@@ -4,7 +4,7 @@ using Silk.NET.OpenGL;
 
 namespace SharpCraft.Engine.World.Blocks;
 
-public class Block
+public class Block //: IDisposable
 {
     private readonly Mesh _mesh;
     private readonly Shader _shader;
@@ -36,5 +36,10 @@ public class Block
             _shader.SetUniform("uColor", (0.8f, 0f, 0.8f, 1f));
         
         _mesh.Draw();
+    }
+
+    public void Dispose(GL _gl)
+    {
+        
     }
 }

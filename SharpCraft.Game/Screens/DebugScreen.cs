@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.UI;
@@ -11,10 +12,18 @@ public class DebugScreen
     
     private static UIText _coords;
     private static UIText _fps;
+    private static UIText _ram;
+    
+    private static float _memoryTimer = 0f;
+    private static long _lastRamValue = 0;
+    private static long _totalRamValue = 0;
 
     public static void Load()
     {
         Canvas = new Canvas(WorldScene.UIRenderer);
+        
+        var memInfo = GC.GetGCMemoryInfo();
+        _totalRamValue = memInfo.TotalAvailableMemoryBytes / 1024 / 1024;
 
         LoadDebugText();
     }
@@ -24,6 +33,14 @@ public class DebugScreen
         var p = camera.Position;
         _coords.Text = $"Position: {p.X:F2}, {p.Y:F2}, {p.Z:F2}";
         _fps.Text = $"FPS: {(int)(1f / Time.DeltaTime)}";
+        
+        _memoryTimer += (float)Time.DeltaTime;
+        if (_memoryTimer >= 0.5f)
+        {
+            _lastRamValue = Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024;
+            _memoryTimer = 0;
+        }
+        _ram.Text = $"RAM: {_lastRamValue} / {_totalRamValue} MB";
     }
     
     private static void LoadDebugText()
@@ -46,5 +63,14 @@ public class DebugScreen
         _fps.TextColor = Color.White;
         _fps.Shadow = false;
         _fps.Align = TextAlign.Left;
+        
+        // RAM
+        _ram = Canvas.AddElement<UIText>();
+        _ram.FontSize = 9f;
+        _ram.Anchor = Anchor.TopLeft;
+        _ram.Position = new Vector2(_fps.Position.X, _fps.Position.Y + 12);
+        _ram.TextColor = Color.White;
+        _ram.Shadow = false;
+        _ram.Align = TextAlign.Left;
     }
 }
