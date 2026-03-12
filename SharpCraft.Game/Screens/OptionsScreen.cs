@@ -45,6 +45,14 @@ public class OptionsScreen
         LoadCrosshairSlider();
     }
     
+    public static void Unload()
+    {
+        _buttonTexture.Dispose();
+        _buttonHoverTexture.Dispose();
+        _sliderTexture.Dispose();
+        _sliderHandleTexture.Dispose();
+    }
+    
     private static void LoadGameplayBackground()
     {
         var bgimage = Canvas.AddElement<UIImage>();

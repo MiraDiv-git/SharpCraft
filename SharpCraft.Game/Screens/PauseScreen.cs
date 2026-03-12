@@ -31,6 +31,13 @@ public class PauseScreen
         LoadOptionsButton();
         LoadMenuButton();
     }
+    
+    public static void Unload()
+    {
+        _buttonTexture.Dispose();
+        _buttonHoverTexture.Dispose();
+        //_clickSound.Dispose();
+    }
 
     private static void LoadBackground()
     {

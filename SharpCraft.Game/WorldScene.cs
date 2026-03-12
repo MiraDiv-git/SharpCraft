@@ -8,7 +8,6 @@ using SharpCraft.Engine.World.Blocks;
 using SharpCraft.Engine.World.Blocks.GameReady;
 using SharpCraft.Game.Screens;
 using Silk.NET.Input;
-using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 
 
@@ -20,16 +19,16 @@ public class WorldScene : IScene
     private Shader _shader;
     private Block _grassBlock;
     private Block _dirtBlock;
-    private WorldGenerator _world;
+    private WorldGenerator _worldGenerator;
     private static Canvas _activeCanvas;
-    private Player _player;
-    
-    private static bool _isPaused = false;
+    private PlayerController _playerController;
+
+    public static GameWorld GameWorld;
+    public static bool IsPaused { get; set; } = false;
     private static bool _isDebug = false;
     
-    
     public static UIRenderer UIRenderer { get; private set; }
-    public static Camera Camera { get; set; }
+
     public static Vector2 defaultButtonSize { get; } = new Vector2(350, 40);
 
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
@@ -42,12 +41,11 @@ public class WorldScene : IScene
     {
         Console.WriteLine("[INFO] Loading Test World scene.");
         _gl = gl;
+        _playerController = new PlayerController();
+        _playerController.Load();
         UIRenderer = uiRenderer;
-
-        _shader = new Shader(_gl, _vertPath, _fragPath);
-        Camera = new Camera();
         
-        _player = new Player();
+        _shader = new Shader(_gl, _vertPath, _fragPath);
         
         _grassBlock = new GrassBlock(_gl, _shader);
         _dirtBlock = new DirtBlock(_gl, _shader);
@@ -57,10 +55,12 @@ public class WorldScene : IScene
             Path.Combine("Shaders", "Debug", "Collisions", "collisions.frag"));
         _debugRenderer = new DebugRenderer(_gl, _debugShader);
         
-        _world = new WorldGenerator();
-        _world.GenerateCube(16, 16, 4, _grassBlock, _dirtBlock);
+        GameWorld = new GameWorld();
+        _worldGenerator = new WorldGenerator();
+        _worldGenerator.GenerateCube(GameWorld, 16, 16, 4, _grassBlock, _dirtBlock);
         
-        _world.AddBlock(3, 0, 0, _grassBlock); //
+        GameWorld.AddBlock(3, 0, 0, _grassBlock); //
+        GameWorld.AddBlock(3, -1, 1, _grassBlock);
         
         HUD.Load();
         DebugScreen.Load();
@@ -83,10 +83,10 @@ public class WorldScene : IScene
         float aspect = viewport[2] / (float)viewport[3];
         
         _shader.Use();
-        _shader.SetUniform("uView", Camera.GetView());
-        _shader.SetUniform("uProjection", Camera.GetProjection(aspect));
+        _shader.SetUniform("uView", PlayerController.Camera.GetView());
+        _shader.SetUniform("uProjection", PlayerController.Camera.GetProjection(aspect));
 
-        foreach (var (model, block) in _world.Blocks)
+        foreach (var (model, block) in GameWorld.Blocks)
         {
             block.Draw(model);
         }
@@ -99,11 +99,11 @@ public class WorldScene : IScene
         {
             DebugScreen.Canvas.Render();
             
-            var view = Camera.GetView();
-            var proj = Camera.GetProjection(aspect);
+            var view = PlayerController.Camera.GetView();
+            var proj = PlayerController.Camera.GetProjection(aspect);
             
-            foreach (var (model, _) in _world.Blocks)
-                _debugRenderer.DrawAABB(_world.GetBlockAABB(model), new Vector3(1, 0, 0), view, proj);
+            foreach (var (model, _) in GameWorld.Blocks)
+                _debugRenderer.DrawAABB(GameWorld.GetBlockAABB(model), new Vector3(1, 0, 0), view, proj);
         }
         
         _activeCanvas?.Render();
@@ -113,14 +113,8 @@ public class WorldScene : IScene
     public void Update()
     {
         InputManager.ResetCursor();
+        _playerController.Update();
         HUD.Update();
-
-        if (!_isPaused)
-        {
-            _player.Update(Time.DeltaTime, _world);
-            Camera.Position = _player.Position + new Vector3(0, 1.6f, 0);
-            ApplyMovement();
-        }
 
         if (InputManager.IsKeyJustPressed(Key.Escape))
         {
@@ -131,7 +125,7 @@ public class WorldScene : IScene
             _isDebug = !_isDebug;
         
         if (_isDebug)
-            DebugScreen.Update(Camera);
+            DebugScreen.Update(PlayerController.Camera);
         
         _activeCanvas?.Update(UIRenderer);
     }
@@ -141,41 +135,30 @@ public class WorldScene : IScene
         _gl.Disable(EnableCap.DepthTest);
         _gl.Disable(EnableCap.PolygonOffsetFill);
         _activeCanvas.Clear();
-        _isPaused = false;
-        InputManager.UnlockMouse();
-    }
-
-    private void ApplyMovement()
-    {
-        // Movement
-        var forward = new Vector3(
-            float.Cos(float.DegreesToRadians(Camera.Yaw)), 0,
-            float.Sin(float.DegreesToRadians(Camera.Yaw)));
-        var right = Vector3D.Normalize(Vector3D.Cross(forward, new Vector3(0, 1, 0)));
-    
-        var move = Vector3.Zero;
-        if (InputManager.IsKeyDown(Key.W)) move += forward;
-        if (InputManager.IsKeyDown(Key.S)) move -= forward;
-        if (InputManager.IsKeyDown(Key.A)) move -= right;
-        if (InputManager.IsKeyDown(Key.D)) move += right;
-    
-        if (move != Vector3D<float>.Zero)
-        {
-            var vel = _player.Velocity;
-            var dir = Vector3D.Normalize(move);
-            vel.X = dir.X * Camera.Speed;
-            vel.Z = dir.Z * Camera.Speed;
-            _player.Velocity = vel;
-        }
-        else
-        {
-            var vel = _player.Velocity;
-            vel.X = 0; vel.Z = 0;
-            _player.Velocity = vel;
-        }
+        IsPaused = false;
         
-        // Rotation
-        Camera.Look(InputManager.MouseDelta);
+        foreach (var (_, block) in GameWorld.Blocks)
+            block.Dispose();
+        
+        GameWorld.Dispose();
+        _shader.Dispose();
+        _debugShader.Dispose();
+        _debugRenderer.Dispose();
+        
+        _grassBlock?.Dispose();
+        _dirtBlock?.Dispose();
+        
+        _activeCanvas = null;
+        UIRenderer = null;
+        PlayerController.Camera = null;
+        
+        HUD.Unload();
+        PauseScreen.Unload();
+        OptionsScreen.Unload();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        
+        InputManager.UnlockMouse();
     }
     
     public static void ChangeScreen(Canvas canvas)
@@ -185,9 +168,9 @@ public class WorldScene : IScene
     
     public static void TogglePause(Canvas canvas)
     {
-        _isPaused = !_isPaused;
+        IsPaused = !IsPaused;
         
-        if (_isPaused)
+        if (IsPaused)
         {
             _activeCanvas = canvas;
             InputManager.UnlockMouse();

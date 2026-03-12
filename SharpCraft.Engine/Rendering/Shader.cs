@@ -2,7 +2,7 @@ using Silk.NET.OpenGL;
 using Silk.NET.Maths;
 namespace SharpCraft.Engine.Rendering;
 
-public class Shader
+public class Shader : IDisposable
 {
     private readonly uint _handle;
     private readonly GL _gl;
@@ -92,4 +92,6 @@ public class Shader
     }
 
     public void Use() => _gl.UseProgram(_handle);
+    
+    public void Dispose() => _gl.DeleteProgram(_handle);
 }

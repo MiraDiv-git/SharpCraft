@@ -27,6 +27,13 @@ public class PlayScreen
         LoadSmallBackButton();
         LoadNewWorldButton();
     }
+
+    public static void Unload()
+    {
+        _smallButtonTexture.Dispose();
+        _smallButtonHoverTexture.Dispose();
+        Canvas.Clear();
+    }
     
     private static void LoadSmallBackButton()
     {

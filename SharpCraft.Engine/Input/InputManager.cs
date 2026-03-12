@@ -6,6 +6,7 @@ public class InputManager
 {
     public static Vector2 MouseDelta { get; private set; }
     public static bool IsMouseLocked { get; private set; }
+    // TODO: Fix Windows cursor blinking
     
     private static IInputContext _input;
     private static IMouse _mouse;

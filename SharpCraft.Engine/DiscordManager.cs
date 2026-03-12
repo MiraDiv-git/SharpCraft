@@ -11,7 +11,9 @@ public static class DiscordManager
     {
         _client = new DiscordRpcClient("1480590651069304862");
         _client.Initialize();
-        SetPresence("discord.main_menu"); // TODO: Add localization switch logic
+        SetPresence("discord.main_menu"); 
+        // TODO: Add localization switch logic
+        // TODO: Add .scres support
     }
     
     public static void SetPresence(string stateKey)

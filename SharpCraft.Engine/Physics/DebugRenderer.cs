@@ -3,7 +3,7 @@ using Silk.NET.OpenGL;
 
 namespace SharpCraft.Engine.Physics;
 
-public class DebugRenderer
+public class DebugRenderer : IDisposable
 {
     private readonly GL _gl;
     private readonly Shader _shader;
@@ -53,5 +53,11 @@ public class DebugRenderer
         _shader.SetUniform("uColor", color);
 
         _gl.DrawArrays(PrimitiveType.Lines, 0, 24);
+    }
+    
+    public void Dispose()
+    {
+        _gl.DeleteVertexArray(_vao);
+        _gl.DeleteBuffer(_vbo);
     }
 }

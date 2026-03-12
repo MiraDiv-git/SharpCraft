@@ -4,17 +4,20 @@ namespace SharpCraft.Engine.Physics;
 
 public class Player
 {
-    public Vector3 Position { get; set; } = new(0, 10, 0);
+    public Vector3 Position { get; set; } = new(0, -2, 0);
     public Vector3 Velocity { get; set; } = Vector3.Zero;
     public bool IsGrounded { get; private set; }
+    public bool IsFlying { get; set; } = false;
 
     private static readonly Vector3 Size = new(0.6f, 1.8f, 0.6f);
-    private const float Gravity = -20f;
+    private const float Gravity = -25f;
 
     public AABB GetAABB() => new(Position, Size);
 
-    public void Update(float deltaTime, WorldGenerator world) // Gravity
+    public void Update(float deltaTime, GameWorld world) // Gravity
     {
+        IsGrounded = false;
+        
         var vel = Velocity;
         vel.Y += Gravity * deltaTime;
         Velocity = vel;
@@ -22,10 +25,16 @@ public class Player
         MoveAxis(ref vel, 0, deltaTime, world); // X
         MoveAxis(ref vel, 1, deltaTime, world); // Y
         MoveAxis(ref vel, 2, deltaTime, world); // Z
+        
         Velocity = vel;
+
+        if (!IsFlying)
+            vel.Y -= Gravity * deltaTime;
+        else
+            vel.Y = 0;
     }
 
-    private void MoveAxis(ref Vector3 vel, int axis, float dt, WorldGenerator world)
+    private void MoveAxis(ref Vector3 vel, int axis, float dt, GameWorld world)
     {
         var pos = Position;
         if (axis == 0) pos.X += vel.X * dt;

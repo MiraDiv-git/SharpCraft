@@ -1,7 +1,7 @@
 using Silk.NET.OpenGL;
 namespace SharpCraft.Engine.Rendering;
 
-public class Mesh
+public class Mesh : IDisposable
 {
     private readonly GL _gl;
     private readonly uint _vao, _vbo;
@@ -44,5 +44,11 @@ public class Mesh
         _gl.BindVertexArray(_vao);
         _gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)_vertexCount);
         _gl.BindVertexArray(0);
+    }
+    
+    public void Dispose()
+    {
+        _gl.DeleteVertexArray(_vao);
+        _gl.DeleteBuffer(_vbo);
     }
 }

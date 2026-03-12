@@ -8,6 +8,7 @@ public class Camera
     public Vector3 Position { get; set; } = new(0, 0, 0);
     public float Yaw { get; set; } = -90f;
     public float Pitch { get; set; } = 0f;
+    public float BaseFov { get; set; } = 70f;
     public float Fov { get; set; } = 70f;
     public float Speed { get; set; } = 5f;
     public float Sensitivity { get; set; } = 0.1f;

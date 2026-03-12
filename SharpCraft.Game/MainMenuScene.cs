@@ -34,6 +34,14 @@ public class MainMenuScene : IScene
     public void Unload()
     {
         MainMenuScreen.Unload();
+        PlayScreen.Unload();
+        OptionsScreen.Unload();
         _activeCanvas.Clear();
+        
+        _activeCanvas = null;
+        UIRenderer = null;
+        
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
     }
 }

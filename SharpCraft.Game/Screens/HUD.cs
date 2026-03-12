@@ -37,4 +37,9 @@ public class HUD
     {
         _crosshair.Size = new Vector2(CrosshairSize, CrosshairSize);
     }
+
+    public static void Unload()
+    {
+        _crosshairTexture.Dispose();
+    }
 }

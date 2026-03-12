@@ -4,13 +4,13 @@ using Silk.NET.OpenGL;
 
 namespace SharpCraft.Engine.World.Blocks;
 
-public class Block //: IDisposable
+public class Block : IDisposable
 {
     private readonly Mesh _mesh;
     private readonly Shader _shader;
     private readonly Texture? _texture;
 
-    public Block(GL gl, Shader shader, Texture? texture = null)
+    public Block(GL gl, Shader shader, GameWorld world, Texture? texture = null)
     {
         _shader = shader;
         _texture = texture;
@@ -38,8 +38,9 @@ public class Block //: IDisposable
         _mesh.Draw();
     }
 
-    public void Dispose(GL _gl)
+    public void Dispose()
     {
-        
+        _mesh.Dispose();
+        _texture.Dispose();
     }
 }

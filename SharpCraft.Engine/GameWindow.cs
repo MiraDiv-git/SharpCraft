@@ -79,6 +79,7 @@ public class GameWindow
         _window.Update += delta =>
         {
             Time.DeltaTime = (float)delta;
+            Time.TotalTime += (float)delta;
             
             InputManager.Update();
             SceneManager.Update();
