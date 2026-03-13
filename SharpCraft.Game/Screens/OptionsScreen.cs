@@ -111,9 +111,8 @@ public class OptionsScreen
         slider.Size = MainMenuScene.defaultButtonSize;
         slider.Anchor = anchor;
         slider.Min = 30f;
-        slider.Max = 540f;
+        slider.Max = 545f;
         slider.Step = 5f;
-        slider.Value = 60f;
         slider.BackgroundTexture = _sliderTexture;
         slider.HandleTexture = _sliderHandleTexture;
         slider.BackgroundColor = Color.White;
@@ -121,19 +120,19 @@ public class OptionsScreen
         slider.HandleSize = new Vector2(23, MainMenuScene.defaultButtonSize.Y);
         slider.OnValueChanged += v =>
         {
-            GameWindow.SetFPSLock(v);
-            UserSettings.FPSLock = v;
+            UserSettings.FPSLock = v > 540f ? 0 : (double)v;
+            GameWindow.SetFPSLock(UserSettings.FPSLock);
             UserSettings.Save();
-            sText.Text = $"{Localization.Get("options.fps")}: {v}";
+            RefreshTexts();
         };
         
         sText.Position = pos;
         sText.Anchor = anchor;
         sText.Size = slider.Size;
         
-        slider.Value = (float)UserSettings.FPSLock;
-        GameWindow.SetFPSLock(slider.Value);
-        sText.Text = $"{Localization.Get("options.fps")}: {slider.Value}";
+        slider.Value = UserSettings.FPSLock <= 0 ? 545f : (float)UserSettings.FPSLock;
+        GameWindow.SetFPSLock(UserSettings.FPSLock);
+        RefreshTexts();
     }
     
     private static void LoadCrosshairSlider()
@@ -176,8 +175,15 @@ public class OptionsScreen
     
     private static void RefreshTexts()
     {
-        if (_fpsText != null) _fpsText.Text = $"{Localization.Get("options.fps")}: {UserSettings.FPSLock}";
-        if (_crossText != null) _crossText.Text = $"{Localization.Get("options.crosssize")}: {UserSettings.CrosshairSize}";
+        if (_fpsText != null)
+        {
+            string val = UserSettings.FPSLock <= 0
+                ? Localization.Get("options.fps.nolimits")
+                : UserSettings.FPSLock.ToString();
+            _fpsText.Text = $"{Localization.Get("options.fps")}: {val}";
+        }
+        if (_crossText != null)
+            _crossText.Text = $"{Localization.Get("options.crosssize")}: {UserSettings.CrosshairSize}";
     }
 
     private static void LoadLocalizationButtons()

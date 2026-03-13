@@ -149,7 +149,6 @@ public class WorldScene : IScene
         _dirtBlock?.Dispose();
         
         _activeCanvas = null;
-        UIRenderer = null;
         PlayerController.Camera = null;
         
         HUD.Unload();

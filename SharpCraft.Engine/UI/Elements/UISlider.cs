@@ -22,8 +22,8 @@ public class UISlider : UIElement
 
     public Vector2 HandleSize { get; set; } = new Vector2(8, 20);
     public Action<float>? OnValueChanged { get; set; }
-
-    private bool _isDragging = false;
+    
+    private static UISlider? _activeDrag = null;
 
     public override void Update(UIRenderer renderer)
     {
@@ -34,10 +34,13 @@ public class UISlider : UIElement
                        InputManager.MousePosition.Y >= resolvedPos.Y &&
                        InputManager.MousePosition.Y <= resolvedPos.Y + resolvedSize.Y;
 
-        if (hovered && InputManager.LeftMouseButtonDown) _isDragging = true;
-        if (!InputManager.LeftMouseButtonDown) _isDragging = false;
+        if (hovered && InputManager.LeftMouseButtonDown && _activeDrag == null)
+            _activeDrag = this;
+        
+        if (!InputManager.LeftMouseButtonDown)
+            _activeDrag = null;
 
-        if (_isDragging)
+        if (_activeDrag == this)
         {
             float scale = resolvedSize.Y / Size.Y;
             float handleW = HandleSize.X * scale;
