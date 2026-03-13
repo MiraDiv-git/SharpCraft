@@ -16,6 +16,14 @@ public class GameWorld : IDisposable
         Blocks.Add((Matrix4X4.CreateTranslation<float>(x, y, z), block));
     }
     
+    public void RemoveBlock(Matrix4X4<float> model)
+    {
+        Blocks.RemoveAll(b => 
+            b.Model.M41 == model.M41 && 
+            b.Model.M42 == model.M42 && 
+            b.Model.M43 == model.M43);
+    }
+    
     public AABB GetBlockAABB(Matrix4X4<float> model)
     {
         var pos = new Vector3(model.M41, model.M42 - 0.5f, model.M43);

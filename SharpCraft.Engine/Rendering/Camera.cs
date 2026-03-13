@@ -16,6 +16,11 @@ public class Camera
     private Vector3 _front = new(0, 0, -1);
     private Vector3 _up = new(0, 1, 0);
     
+    public Vector3 Front
+    {
+        get { UpdateVectors(); return _front; }
+    }
+    
     public void Move(Vector3D<float> direction)
     {
         Position += direction * Speed * Time.DeltaTime;

@@ -1,6 +1,6 @@
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Physics;
-using SharpCraft.Engine.Rendering;
+using SharpCraft.Engine.Rendering.Extra;
 using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Engine.World;
@@ -9,7 +9,6 @@ using SharpCraft.Engine.World.Blocks.GameReady;
 using SharpCraft.Game.Screens;
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
-
 
 namespace SharpCraft.Game;
 
@@ -34,8 +33,8 @@ public class WorldScene : IScene
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
     private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
     
-    private DebugRenderer _debugRenderer;
-    private Shader _debugShader;
+    private BlockOutlineRenderer _outlineRenderer;
+    private Shader _outlineShader;
     
     public void Load(UIRenderer uiRenderer, GL gl)
     {
@@ -50,16 +49,16 @@ public class WorldScene : IScene
         _grassBlock = new GrassBlock(_gl, _shader);
         _dirtBlock = new DirtBlock(_gl, _shader);
         
-        _debugShader = new Shader(_gl,
-            Path.Combine("Shaders", "Debug", "Collisions", "collisions.vert"),
-            Path.Combine("Shaders", "Debug", "Collisions", "collisions.frag"));
-        _debugRenderer = new DebugRenderer(_gl, _debugShader);
+        _outlineShader = new Shader(_gl,
+            Path.Combine("Shaders", "World", "outline.vert"),
+            Path.Combine("Shaders", "World", "outline.frag"));
+        _outlineRenderer = new BlockOutlineRenderer(_gl, _outlineShader);
         
         GameWorld = new GameWorld();
         _worldGenerator = new WorldGenerator();
         _worldGenerator.GenerateCube(GameWorld, 16, 16, 4, _grassBlock, _dirtBlock);
         
-        GameWorld.AddBlock(3, 0, 0, _grassBlock); //
+        GameWorld.AddBlock(3, 0, 0, _grassBlock);
         GameWorld.AddBlock(3, -1, 1, _grassBlock);
         
         HUD.Load();
@@ -96,14 +95,26 @@ public class WorldScene : IScene
         HUD.Canvas.Render();
         
         if (_isDebug)
-        {
             DebugScreen.Canvas.Render();
-            
+        
+        
+        // Block outline in gameplay
+        var hit = Raycast.Cast(PlayerController.Camera.Position, 
+            PlayerController.Camera.Front, GameWorld);
+        
+        if (hit.HasValue)
+        {
+            _gl.Enable(EnableCap.DepthTest);
             var view = PlayerController.Camera.GetView();
             var proj = PlayerController.Camera.GetProjection(aspect);
-            
-            foreach (var (model, _) in GameWorld.Blocks)
-                _debugRenderer.DrawAABB(GameWorld.GetBlockAABB(model), new Vector3(1, 0, 0), view, proj);
+            int[] vp = new int[4];
+            _gl.GetInteger(GetPName.Viewport, vp);
+            _outlineRenderer.DrawOutline(
+                GameWorld.GetBlockAABB(hit.Value.model),
+                new Vector4(0, 0, 0, 1),
+                view, proj,
+                new Vector2(vp[2], vp[3]));
+            _gl.Disable(EnableCap.DepthTest);
         }
         
         _activeCanvas?.Render();
@@ -142,8 +153,8 @@ public class WorldScene : IScene
         
         GameWorld.Dispose();
         _shader.Dispose();
-        _debugShader.Dispose();
-        _debugRenderer.Dispose();
+        _outlineShader.Dispose();
+        _outlineRenderer.Dispose();
         
         _grassBlock?.Dispose();
         _dirtBlock?.Dispose();

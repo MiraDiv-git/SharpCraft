@@ -83,6 +83,20 @@ public class Shader : IDisposable
         _gl.Uniform3(location, value.X, value.Y, value.Z);
     }
     
+    public void SetUniform(string name, Vector4D<float> value)
+    {
+        int location = _gl.GetUniformLocation(_handle, name);
+        if (location != -1)
+            _gl.Uniform4(location, value.X, value.Y, value.Z, value.W);
+    }
+
+    public void SetUniform(string name, float value)
+    {
+        int location = _gl.GetUniformLocation(_handle, name);
+        if (location != -1)
+            _gl.Uniform1(location, value);
+    }
+    
     // Only number (used for texture)
     public void SetUniform(string name, int value)
     {

@@ -107,5 +107,10 @@ public class PlayerController
         
         // Rotation
         Camera.Look(InputManager.MouseDelta);
+        
+        // Block destroy
+        var hit = Raycast.Cast(Camera.Position, Camera.Front, WorldScene.GameWorld);
+        if (hit.HasValue && InputManager.LeftMouseButtonJustPressed)
+            WorldScene.GameWorld.RemoveBlock(hit.Value.model);
     }
 }

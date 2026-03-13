@@ -13,11 +13,14 @@ public class InputManager
     private static IKeyboard _keyboard;
     
     private static bool _prevLeftMouseButtonDown;
+    private static bool _prevRightMouseButtonDown;
     private static Vector2 _lastMousePos;
 
     public static bool LeftMouseButtonJustPressed { get; private set; }
     public static Vector2 MousePosition { get; private set; }
     public static bool LeftMouseButtonDown { get; private set; }
+    public static bool RightMouseButtonDown { get; private set; }
+    public static bool RightMouseButtonJustPressed { get; private set; }
     
     public static void Initialize(IInputContext input)
     {
@@ -25,8 +28,14 @@ public class InputManager
         _mouse = input.Mice[0];
         _keyboard = input.Keyboards[0];
         
-        _mouse.MouseDown += (_, btn) => { if (btn == MouseButton.Left) LeftMouseButtonDown = true; };
-        _mouse.MouseUp += (_, btn) => { if (btn == MouseButton.Left) LeftMouseButtonDown = false; };
+        _mouse.MouseDown += (_, btn) => { 
+            if (btn == MouseButton.Left) LeftMouseButtonDown = true;
+            if (btn == MouseButton.Right) RightMouseButtonDown = true;
+        };
+        _mouse.MouseUp += (_, btn) => { 
+            if (btn == MouseButton.Left) LeftMouseButtonDown = false;
+            if (btn == MouseButton.Right) RightMouseButtonDown = false;
+        };
         
         Console.WriteLine("[OK] Input Manager initialized.");
     }
@@ -73,8 +82,12 @@ public class InputManager
         MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
         _lastMousePos = currentPos;
         MousePosition = currentPos;
+        
         LeftMouseButtonJustPressed = LeftMouseButtonDown && !_prevLeftMouseButtonDown;
         _prevLeftMouseButtonDown = LeftMouseButtonDown;
+        
+        RightMouseButtonJustPressed = RightMouseButtonDown && !_prevRightMouseButtonDown;
+        _prevRightMouseButtonDown = RightMouseButtonDown;
     }
     
 }
