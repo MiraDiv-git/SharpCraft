@@ -6,7 +6,7 @@ namespace SharpCraft.Engine.Physics;
 
 public class Raycast
 {
-    public static (Matrix4X4<float> model, Block block)? Cast(Vector3 origin, Vector3 direction, GameWorld world, float maxDistance = 5f)
+    public static (Matrix4X4<float> model, Block block, Vector3 normal)? Cast(Vector3 origin, Vector3 direction, GameWorld world, float maxDistance = 5f)
     {
         var dir = Vector3D.Normalize(direction);
         
@@ -23,7 +23,24 @@ public class Raycast
                 if (point.X >= aabb.Min.X && point.X <= aabb.Max.X &&
                     point.Y >= aabb.Min.Y && point.Y <= aabb.Max.Y &&
                     point.Z >= aabb.Min.Z && point.Z <= aabb.Max.Z)
-                    return (model, block);
+                {
+                    var center = new Vector3(
+                        (aabb.Min.X + aabb.Max.X) / 2f,
+                        (aabb.Min.Y + aabb.Max.Y) / 2f,
+                        (aabb.Min.Z + aabb.Max.Z) / 2f);
+                    var diff = point - center;
+                    float ax = MathF.Abs(diff.X);
+                    float ay = MathF.Abs(diff.Y);
+                    float az = MathF.Abs(diff.Z);
+                    Vector3 normal;
+                    if (ax > ay && ax > az)
+                        normal = new Vector3(MathF.Sign(diff.X), 0, 0);
+                    else if (ay > ax && ay > az)
+                        normal = new Vector3(0, MathF.Sign(diff.Y), 0);
+                    else
+                        normal = new Vector3(0, 0, MathF.Sign(diff.Z));
+                    return (model, block, normal);
+                }
             }
         }
         

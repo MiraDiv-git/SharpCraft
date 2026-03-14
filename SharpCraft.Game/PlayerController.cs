@@ -1,7 +1,6 @@
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
-using Silk.NET.Input;
 using Silk.NET.Maths;
 
 namespace SharpCraft.Game;
@@ -15,6 +14,8 @@ public class PlayerController
     
     private float _lastSpaceTime = -1f;
     private const float DoubleClickThreshold = 0.3f;
+    private float _blockActionTimer = 0f;
+    private const float BlockActionDelay = 0.2f;
     
     public void Load()
     {
@@ -42,12 +43,12 @@ public class PlayerController
         var right = Vector3D.Normalize(Vector3D.Cross(forward, new Vector3(0, 1, 0)));
     
         var move = Vector3.Zero; // Movement
-        if (InputManager.IsKeyDown(Key.W)) move += forward;
-        if (InputManager.IsKeyDown(Key.S)) move -= forward;
-        if (InputManager.IsKeyDown(Key.A)) move -= right;
-        if (InputManager.IsKeyDown(Key.D)) move += right;
+        if (KeyBindings.MoveForward.IsDown()) move += forward;
+        if (KeyBindings.MoveBack.IsDown()) move -= forward;
+        if (KeyBindings.MoveLeft.IsDown()) move -= right;
+        if (KeyBindings.MoveRight.IsDown()) move += right;
 
-        if (InputManager.IsKeyJustPressed(Key.Space)) // Fly check
+        if (KeyBindings.Jump.IsJustPressed()) // Fly check
         {
             float now = (float)Time.TotalTime;
             if (now - _lastSpaceTime < DoubleClickThreshold)
@@ -61,7 +62,7 @@ public class PlayerController
             }
         }
         
-        if (InputManager.IsKeyDown(Key.Space) && Player.IsGrounded && !Player.IsFlying) // Jump
+        if (KeyBindings.Jump.IsDown() && Player.IsGrounded && !Player.IsFlying) // Jump
         {
             var vel = Player.Velocity;
             vel.Y = JumpForce;
@@ -72,8 +73,8 @@ public class PlayerController
         {
             var vel = Player.Velocity;
             vel.Y = 0;
-            if (InputManager.IsKeyDown(Key.Space)) vel.Y = Camera.Speed * 2f;
-            if (InputManager.IsKeyDown(Key.ShiftLeft)) vel.Y = -Camera.Speed * 2f;
+            if (KeyBindings.Jump.IsDown()) vel.Y = Camera.Speed * 2f;
+            if (KeyBindings.Sneak.IsDown()) vel.Y = -Camera.Speed * 2f;
             Player.Velocity = vel;
         }
         
@@ -84,7 +85,7 @@ public class PlayerController
             var dir = Vector3D.Normalize(move);
             
             float currentSpeed = Player.IsFlying ? Camera.Speed * 2f : Camera.Speed;
-            if (InputManager.IsKeyDown(Key.ControlLeft) && InputManager.IsKeyDown(Key.W)) // Sprinting
+            if (KeyBindings.Sprint.IsDown() && KeyBindings.MoveForward.IsDown()) // Sprinting
             {
                 currentSpeed *= 1.3f;
                 targetFov = Camera.BaseFov + 20f;
@@ -108,9 +109,33 @@ public class PlayerController
         // Rotation
         Camera.Look(InputManager.MouseDelta);
         
-        // Block destroy
-        var hit = Raycast.Cast(Camera.Position, Camera.Front, WorldScene.GameWorld);
-        if (hit.HasValue && InputManager.LeftMouseButtonJustPressed)
-            WorldScene.GameWorld.RemoveBlock(hit.Value.model);
+        // Block actions
+        var hit = WorldScene.HitBlock;
+        if (hit.HasValue)
+        {
+            bool destroy = KeyBindings.Destroy.IsJustPressed() || 
+                           (KeyBindings.Destroy.IsDown() && _blockActionTimer <= 0f);
+                   
+            bool place = KeyBindings.Place.IsJustPressed() || 
+                         (KeyBindings.Place.IsDown() && _blockActionTimer <= 0f);
+
+            if (destroy)
+            {
+                WorldScene.GameWorld.RemoveBlock(hit.Value.model);
+                _blockActionTimer = BlockActionDelay;
+            }
+            else if (place)
+            {
+                var pos = new Vector3(hit.Value.model.M41, hit.Value.model.M42, hit.Value.model.M43);
+                var newPos = pos + hit.Value.normal;
+                var blockAABB = WorldScene.GameWorld.GetBlockAABB(Matrix4X4.CreateTranslation<float>(newPos.X, newPos.Y, newPos.Z));
+                if (!blockAABB.Intersects(Player.GetAABB()))
+                    WorldScene.GameWorld.AddBlock(newPos.X, newPos.Y, newPos.Z, WorldScene._dirtBlock);
+                _blockActionTimer = BlockActionDelay;
+            }
+            
+            if (_blockActionTimer > 0)
+                _blockActionTimer -= (float)Time.DeltaTime;
+        }
     }
 }

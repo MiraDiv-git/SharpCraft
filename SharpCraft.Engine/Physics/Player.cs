@@ -17,21 +17,19 @@ public class Player
     public void Update(float deltaTime, GameWorld world) // Gravity
     {
         IsGrounded = false;
-        
+    
         var vel = Velocity;
-        vel.Y += Gravity * deltaTime;
-        Velocity = vel;
-
-        MoveAxis(ref vel, 0, deltaTime, world); // X
-        MoveAxis(ref vel, 1, deltaTime, world); // Y
-        MoveAxis(ref vel, 2, deltaTime, world); // Z
-        
-        Velocity = vel;
-
+    
         if (!IsFlying)
-            vel.Y -= Gravity * deltaTime;
-        else
-            vel.Y = 0;
+            vel.Y += Gravity * deltaTime;
+    
+        Velocity = vel;
+
+        MoveAxis(ref vel, 0, deltaTime, world);
+        MoveAxis(ref vel, 1, deltaTime, world);
+        MoveAxis(ref vel, 2, deltaTime, world);
+    
+        Velocity = vel;
     }
 
     private void MoveAxis(ref Vector3 vel, int axis, float dt, GameWorld world)

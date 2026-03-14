@@ -4,6 +4,8 @@ using SharpCraft.Engine.Assets;
 using SharpCraft.Engine.Audio;
 using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.UI.Elements;
+using SharpCraft.Game.Screens.Options;
+
 namespace SharpCraft.Game.Screens;
 
 public class OptionsScreen
@@ -20,12 +22,14 @@ public class OptionsScreen
     private static UIText _fpsText;
     private static UIText _crossText;
 
-    private static bool _isGameplay;
+    public static bool IsGameplay;
 
     public static void Load(bool isGameplay = false)
     {
-        _isGameplay = isGameplay;
+        IsGameplay = isGameplay;
         Canvas = !isGameplay ? new Canvas(MainMenuScene.UIRenderer) : new Canvas(WorldScene.UIRenderer);
+        LanguageScreen.Load();
+        ControlScreen.Load();
         
         _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
@@ -39,10 +43,13 @@ public class OptionsScreen
             LoadGameplayBackground();
         }
         
-        LoadBackButton();
-        LoadLocalizationButtons();
         LoadFPSSlider();
         LoadCrosshairSlider();
+        
+        LoadLanguageButton();
+        LoadControlsButton();
+        
+        LoadBackButton();
     }
     
     public static void Unload()
@@ -76,7 +83,7 @@ public class OptionsScreen
         {
             AudioManager.Play(_clickSound);
             
-            if (!_isGameplay)
+            if (!IsGameplay)
             {
                 MainMenuScene.SwitchTo(MainMenuScreen.Canvas);
                 Console.WriteLine("[INFO] Changing screen to Main Menu Screen");
@@ -173,7 +180,7 @@ public class OptionsScreen
         sText.Text = $"{Localization.Get("options.crosssize")}: {slider.Value}";
     }
     
-    private static void RefreshTexts()
+    public static void RefreshTexts()
     {
         if (_fpsText != null)
         {
@@ -186,66 +193,69 @@ public class OptionsScreen
             _crossText.Text = $"{Localization.Get("options.crosssize")}: {UserSettings.CrosshairSize}";
     }
 
-    private static void LoadLocalizationButtons()
+    private static void LoadLanguageButton()
     {
-        // Categoty text
-        var cattxt = Canvas.AddElement<UIText>();
-        cattxt.Text = "options.language";
-        cattxt.Position = new Vector2(0, -40);
-        cattxt.Anchor = Anchor.MiddleCenter;
-        cattxt.TextColor = Color.White;
-        cattxt.FontSize = 16f;
-        
-        // English button
-        var buten = Canvas.AddElement<UIButton>();
-        buten.Position = new Vector2(0, 0);
-        buten.Size = MainMenuScene.defaultButtonSize;
-        buten.ButtonTexture = _buttonTexture;
-        buten.HoverTexture = _buttonHoverTexture;
-        buten.ButtonColor = Color.White;
-        buten.HoverColor = Color.White;
-        buten.Anchor = Anchor.MiddleCenter;
-        buten.OnClick += () =>
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(-180, -140);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            UserSettings.Language = "en";
-            UserSettings.Save();
-            Localization.SetLanguage("en");
-            RefreshTexts();
+            if (!IsGameplay)
+            {
+                MainMenuScene.SwitchTo(LanguageScreen.Canvas);
+            }
+            else
+            {
+                WorldScene.ChangeScreen(LanguageScreen.Canvas);
+            }
         };
         
-        // English text
-        var butentxt = Canvas.AddElement<UIText>();
-        butentxt.Text = "English";
-        butentxt.Position = buten.Position;
-        butentxt.Anchor = buten.Anchor;
-        butentxt.TextColor = Color.White;
-        butentxt.FontSize = 16f;
-        
-        // Ukrainian button
-        var butua = Canvas.AddElement<UIButton>();
-        butua.Position = new Vector2(0, 50);
-        butua.Size = MainMenuScene.defaultButtonSize;
-        butua.ButtonTexture = _buttonTexture;
-        butua.HoverTexture = _buttonHoverTexture;
-        butua.ButtonColor = Color.White;
-        butua.HoverColor = Color.White;
-        butua.Anchor = Anchor.MiddleCenter;
-        butua.OnClick += () =>
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.language";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+
+    private static void LoadControlsButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(180, -140);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            UserSettings.Language = "ua";
-            UserSettings.Save();
-            Localization.SetLanguage("ua");
-            RefreshTexts();
+            if (!IsGameplay)
+            {
+                MainMenuScene.SwitchTo(ControlScreen.Canvas);
+            }
+            else
+            {
+                WorldScene.ChangeScreen(ControlScreen.Canvas);
+            }
         };
         
-        // Ukrainian text
-        var butuatxt = Canvas.AddElement<UIText>();
-        butuatxt.Text = "Українська";
-        butuatxt.Position = butua.Position;
-        butuatxt.Anchor = butua.Anchor;
-        butuatxt.TextColor = Color.White;
-        butuatxt.FontSize = 16f;
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.controls";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
     }
 }

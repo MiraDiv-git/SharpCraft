@@ -15,27 +15,22 @@ namespace SharpCraft.Game;
 
 public class WorldScene : IScene
 {
+    public static GameWorld GameWorld;
+    public static bool IsPaused { get; set; } = false;
+    public static UIRenderer UIRenderer { get; private set; }
+    public static Vector2 defaultButtonSize { get; } = new Vector2(350, 40);
+    public static (Matrix4X4<float> model, Block block, Vector3 normal)? HitBlock;
+
     private GL _gl;
     private Shader _shader;
     private Block _grassBlock;
-    private Block _dirtBlock;
+    public static Block _dirtBlock;
     private WorldGenerator _worldGenerator;
     private static Canvas _activeCanvas;
     private PlayerController _playerController;
-
-    public static GameWorld GameWorld;
-    public static bool IsPaused { get; set; } = false;
     private static bool _isDebug = false;
-    
-    public static UIRenderer UIRenderer { get; private set; }
-
-    public static Vector2 defaultButtonSize { get; } = new Vector2(350, 40);
-
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
     private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
-    
-    private (Matrix4X4<float> model, Block block)? _hitBlock;
-    
     private BlockOutlineRenderer _outlineRenderer;
     private Shader _outlineShader;
     
@@ -102,7 +97,7 @@ public class WorldScene : IScene
         
         
         // Block outline in gameplay
-        if (_hitBlock.HasValue)
+        if (HitBlock.HasValue)
         {
             _gl.Enable(EnableCap.DepthTest);
             var view = PlayerController.Camera.GetView();
@@ -110,7 +105,7 @@ public class WorldScene : IScene
             int[] vp = new int[4];
             _gl.GetInteger(GetPName.Viewport, vp);
             _outlineRenderer.DrawOutline(
-                GameWorld.GetBlockAABB(_hitBlock.Value.model),
+                GameWorld.GetBlockAABB(HitBlock.Value.model),
                 new Vector4(0, 0, 0, 1),
                 view, proj,
                 new Vector2(vp[2], vp[3]), thickness: 0.003f);
@@ -129,8 +124,8 @@ public class WorldScene : IScene
 
         if (!IsPaused)
         {
-            _hitBlock = Raycast.Cast(PlayerController.Camera.Position,
-                PlayerController.Camera.Front, GameWorld);
+            HitBlock = Raycast.Cast(PlayerController.Camera.Position,
+                PlayerController.Camera.Front, GameWorld, 6f);
         }
 
         if (InputManager.IsKeyJustPressed(Key.Escape))
