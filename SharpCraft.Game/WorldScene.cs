@@ -82,10 +82,15 @@ public class WorldScene : IScene
         _shader.SetUniform("uView", PlayerController.Camera.GetView());
         _shader.SetUniform("uProjection", PlayerController.Camera.GetProjection(aspect));
 
+        var groups = new Dictionary<Block, List<Matrix4X4<float>>>();
         foreach (var (model, block) in GameWorld.Blocks)
         {
-            block.Draw(model);
+            if (!groups.ContainsKey(block))
+                groups[block] = new List<Matrix4X4<float>>();
+            groups[block].Add(model);
         }
+        foreach (var (block, models) in groups)
+            block.DrawInstanced(models);
         
         _gl.Disable(EnableCap.DepthTest);
         
