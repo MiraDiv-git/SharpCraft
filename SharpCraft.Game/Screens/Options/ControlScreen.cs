@@ -127,7 +127,8 @@ public class ControlScreen
     
     private static void LoadSensitivitySlider()
     {
-        Vector2 pos = new Vector2(-180, -200);
+        // Vector2 pos = new Vector2(-180, -200);
+        Vector2 pos = new Vector2(0, -200);
         Anchor anchor = Anchor.MiddleCenter;
         
         var sText = Canvas.AddElement<UIText>();
