@@ -26,6 +26,8 @@ public class UIButton : UIElement
 
     public override void Update(UIRenderer renderer)
     {
+        if (InputManager.BlockUIInput) return;
+        
         var (resolvedPos, resolvedSize) = renderer.ResolveElement(Position, Size, Anchor);
         var mouse = InputManager.MousePosition;
         

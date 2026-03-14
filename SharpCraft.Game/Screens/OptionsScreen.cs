@@ -30,6 +30,7 @@ public class OptionsScreen
         Canvas = !isGameplay ? new Canvas(MainMenuScene.UIRenderer) : new Canvas(WorldScene.UIRenderer);
         LanguageScreen.Load();
         ControlScreen.Load();
+        VideoScreen.Load();
         
         _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
@@ -42,12 +43,14 @@ public class OptionsScreen
         {
             LoadGameplayBackground();
         }
-        
+
+        LoadCategoryText();
         LoadFPSSlider();
         LoadCrosshairSlider();
         
         LoadLanguageButton();
         LoadControlsButton();
+        LoadVideoButton();
         
         LoadBackButton();
     }
@@ -58,6 +61,16 @@ public class OptionsScreen
         _buttonHoverTexture.Dispose();
         _sliderTexture.Dispose();
         _sliderHandleTexture.Dispose();
+    }
+    
+    private static void LoadCategoryText()
+    {
+        var cattxt = Canvas.AddElement<UIText>();
+        cattxt.Text = "menu.options";
+        cattxt.Position = new Vector2(0, 20);
+        cattxt.Anchor = Anchor.TopCenter;
+        cattxt.TextColor = Color.White;
+        cattxt.FontSize = 16f;
     }
     
     private static void LoadGameplayBackground()
@@ -191,6 +204,12 @@ public class OptionsScreen
         }
         if (_crossText != null)
             _crossText.Text = $"{Localization.Get("options.crosssize")}: {UserSettings.CrosshairSize}";
+        if (ControlScreen.SensText != null)
+            ControlScreen.SensText.Text = $"{Localization.Get("options.sensitivity")}: {Math.Round(UserSettings.Sensitivity * 100, 0)}";
+        
+        if (VideoScreen.FOVText != null)
+            VideoScreen.FOVText.Text = $"{Localization.Get("options.fov")}: {UserSettings.FOV}";
+        
     }
 
     private static void LoadLanguageButton()
@@ -253,6 +272,39 @@ public class OptionsScreen
         // Text
         var text = Canvas.AddElement<UIText>();
         text.Text = "options.controls";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+    
+    private static void LoadVideoButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(-180, -90);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            if (!IsGameplay)
+            {
+                MainMenuScene.SwitchTo(VideoScreen.Canvas);
+            }
+            else
+            {
+                WorldScene.ChangeScreen(VideoScreen.Canvas);
+            }
+        };
+        
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.video";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;

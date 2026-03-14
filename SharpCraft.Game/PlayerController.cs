@@ -1,3 +1,4 @@
+using SharpCraft.Engine;
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
@@ -78,7 +79,7 @@ public class PlayerController
             Player.Velocity = vel;
         }
         
-        float targetFov = Camera.BaseFov; // Camera FOV
+        float targetFov = (float)UserSettings.FOV; // Camera FOV
         if (move != Vector3.Zero) // Check if player is moving
         {
             var vel = Player.Velocity;
@@ -88,7 +89,7 @@ public class PlayerController
             if (KeyBindings.Sprint.IsDown() && KeyBindings.MoveForward.IsDown()) // Sprinting
             {
                 currentSpeed *= 1.3f;
-                targetFov = Camera.BaseFov + 20f;
+                targetFov = (float)UserSettings.FOV + 20f;
             }
             
             vel.X = dir.X * currentSpeed;
@@ -100,7 +101,7 @@ public class PlayerController
             var vel = Player.Velocity;
             vel.X = 0; vel.Z = 0;
             Player.Velocity = vel;
-            Camera.Fov += (Camera.BaseFov - Camera.Fov) * 10f * (float)Time.DeltaTime;
+            Camera.Fov += ((float)UserSettings.FOV - Camera.Fov) * 10f * (float)Time.DeltaTime;
         }
         
         float lerpSpeed = 10f; 
@@ -113,9 +114,11 @@ public class PlayerController
         var hit = WorldScene.HitBlock;
         if (hit.HasValue)
         {
+            if (KeyBindings.Destroy.IsJustPressed()) _blockActionTimer = 0f;
+            if (KeyBindings.Place.IsJustPressed()) _blockActionTimer = 0f;
+
             bool destroy = KeyBindings.Destroy.IsJustPressed() || 
                            (KeyBindings.Destroy.IsDown() && _blockActionTimer <= 0f);
-                   
             bool place = KeyBindings.Place.IsJustPressed() || 
                          (KeyBindings.Place.IsDown() && _blockActionTimer <= 0f);
 

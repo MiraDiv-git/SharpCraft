@@ -1,6 +1,7 @@
 ﻿using SharpCraft.Engine.Scene;
 using SharpCraft.Engine.UI;
 using SharpCraft.Game.Screens;
+using SharpCraft.Game.Screens.Options;
 
 namespace SharpCraft.Game;
 
@@ -28,7 +29,12 @@ public class MainMenuScene : IScene
         _activeCanvas = canvas;
     }
 
-    public void Update() => _activeCanvas.Update(UIRenderer);
+    public void Update()
+    {
+        _activeCanvas.Update(UIRenderer);
+        ControlScreen.Update();
+    }
+
     public void Render() => _activeCanvas.Render();
 
     public void Unload()

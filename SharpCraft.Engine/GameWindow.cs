@@ -60,6 +60,7 @@ public class GameWindow
             Console.WriteLine("\nLoading User Settings...");
             
             UserSettings.Load();
+            KeyBindings.LoadFromSettings();
             SetFPSLock(UserSettings.FPSLock);
             Console.WriteLine("[OK] FPS loaded and set.");
             Localization.SetLanguage(UserSettings.Language);

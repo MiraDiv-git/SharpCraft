@@ -7,6 +7,7 @@ using SharpCraft.Engine.World;
 using SharpCraft.Engine.World.Blocks;
 using SharpCraft.Engine.World.Blocks.GameReady;
 using SharpCraft.Game.Screens;
+using SharpCraft.Game.Screens.Options;
 using Silk.NET.Input;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -121,6 +122,7 @@ public class WorldScene : IScene
         InputManager.ResetCursor();
         _playerController.Update();
         HUD.Update();
+        ControlScreen.Update();
 
         if (!IsPaused)
         {

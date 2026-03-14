@@ -7,6 +7,7 @@ public class InputManager
     public static Vector2 MouseDelta { get; private set; }
     public static bool IsMouseLocked { get; private set; }
     public static Vector2 MousePosition { get; private set; }
+    public static bool BlockUIInput { get; set; } = false;
     
     // Hardcode for UI
     private static bool _prevLeftMouseButtonDown;
@@ -23,6 +24,10 @@ public class InputManager
 
     private static readonly HashSet<Key> _prevKeys = new();
     private static readonly HashSet<Key> _currKeys = new();
+    
+    private static bool _prevRightMouseButtonDown;
+    public static bool RightMouseButtonDown => IsMouseButtonDown(MouseButton.Right);
+    public static bool RightMouseButtonJustPressed { get; private set; }
 
     public static void Initialize(IInputContext input)
     {
@@ -78,16 +83,18 @@ public class InputManager
         MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
         _lastMousePos = currentPos;
         MousePosition = currentPos;
-        
-        // Mouse click
+
+        // UI hardcode
         bool currentLeftDown = IsMouseButtonDown(MouseButton.Left);
         LeftMouseButtonJustPressed = currentLeftDown && !_prevLeftMouseButtonDown;
         _prevLeftMouseButtonDown = currentLeftDown;
         
         _prevMouseButtonsDown.Clear();
         foreach (var btn in _mouseButtonsDown.Keys.ToList())
-        {
             _prevMouseButtonsDown[btn] = _mouseButtonsDown[btn];
-        }
+        
+        bool currentRightDown = IsMouseButtonDown(MouseButton.Right);
+        RightMouseButtonJustPressed = currentRightDown && !_prevRightMouseButtonDown;
+        _prevRightMouseButtonDown = currentRightDown;
     }
 }
