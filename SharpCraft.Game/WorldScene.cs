@@ -56,7 +56,7 @@ public class WorldScene : IScene
         
         GameWorld = new GameWorld();
         _worldGenerator = new WorldGenerator();
-        _worldGenerator.GenerateCube(GameWorld, 16, 16, 4, _grassBlock, _dirtBlock);
+        _worldGenerator.GenerateCube(GameWorld, 16, 16, 16, _grassBlock, _dirtBlock);
         
         HUD.Load();
         DebugScreen.Load();

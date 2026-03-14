@@ -43,6 +43,7 @@ public class Player
         foreach (var (model, _) in world.Blocks)
         {
             var blockPos = new Vector3(model.M41, model.M42, model.M43);
+            if (Vector3D.Distance(Position, blockPos) > 3f) continue;
             var blockAABB = world.GetBlockAABB(model);
 
             if (!GetAABB().Intersects(blockAABB)) continue;

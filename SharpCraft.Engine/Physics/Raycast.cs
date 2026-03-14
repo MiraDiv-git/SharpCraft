@@ -10,20 +10,20 @@ public class Raycast
     {
         var dir = Vector3D.Normalize(direction);
         
-        for (float d = 0f; d < maxDistance; d += 0.05f)
+        (Matrix4X4<float> model, Block block, Vector3 normal, float dist)? closest = null;
+
+        foreach (var (model, block) in world.Blocks)
         {
-            var point = origin + dir * d;
-            
-            foreach (var (model, block) in world.Blocks)
+            var blockPos = new Vector3(model.M41, model.M42, model.M43);
+            if (Vector3D.Distance(origin, blockPos) > maxDistance + 2f) continue;
+
+            var aabb = world.GetBlockAABB(model);
+            var hit = RayIntersectsAABB(origin, dir, aabb);
+            if (hit.HasValue && hit.Value < maxDistance)
             {
-                var blockPos = new Vector3(model.M41, model.M42, model.M43);
-                if (Vector3D.Distance(point, blockPos) > 1.5f) continue;
-    
-                var aabb = world.GetBlockAABB(model);
-                if (point.X >= aabb.Min.X && point.X <= aabb.Max.X &&
-                    point.Y >= aabb.Min.Y && point.Y <= aabb.Max.Y &&
-                    point.Z >= aabb.Min.Z && point.Z <= aabb.Max.Z)
+                if (closest == null || hit.Value < closest.Value.dist)
                 {
+                    var point = origin + dir * hit.Value;
                     var center = new Vector3(
                         (aabb.Min.X + aabb.Max.X) / 2f,
                         (aabb.Min.Y + aabb.Max.Y) / 2f,
@@ -39,11 +39,35 @@ public class Raycast
                         normal = new Vector3(0, MathF.Sign(diff.Y), 0);
                     else
                         normal = new Vector3(0, 0, MathF.Sign(diff.Z));
-                    return (model, block, normal);
+                    closest = (model, block, normal, hit.Value);
                 }
             }
         }
-        
-        return null;
+
+        return closest.HasValue ? (closest.Value.model, closest.Value.block, closest.Value.normal) : null;
+    }
+
+    private static float? RayIntersectsAABB(Vector3 origin, Vector3 dir, AABB aabb)
+    {
+        float tmin = (aabb.Min.X - origin.X) / dir.X;
+        float tmax = (aabb.Max.X - origin.X) / dir.X;
+        if (tmin > tmax) (tmin, tmax) = (tmax, tmin);
+
+        float tymin = (aabb.Min.Y - origin.Y) / dir.Y;
+        float tymax = (aabb.Max.Y - origin.Y) / dir.Y;
+        if (tymin > tymax) (tymin, tymax) = (tymax, tymin);
+
+        if (tmin > tymax || tymin > tmax) return null;
+        tmin = MathF.Max(tmin, tymin);
+        tmax = MathF.Min(tmax, tymax);
+
+        float tzmin = (aabb.Min.Z - origin.Z) / dir.Z;
+        float tzmax = (aabb.Max.Z - origin.Z) / dir.Z;
+        if (tzmin > tzmax) (tzmin, tzmax) = (tzmax, tzmin);
+
+        if (tmin > tzmax || tzmin > tmax) return null;
+        tmin = MathF.Max(tmin, tzmin);
+
+        return tmin >= 0 ? tmin : null;
     }
 }
