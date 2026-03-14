@@ -86,7 +86,7 @@ public class PlayerController
             float currentSpeed = Player.IsFlying ? Camera.Speed * 2f : Camera.Speed;
             if (InputManager.IsKeyDown(Key.ControlLeft) && InputManager.IsKeyDown(Key.W)) // Sprinting
             {
-                currentSpeed *= 1.5f;
+                currentSpeed *= 1.3f;
                 targetFov = Camera.BaseFov + 20f;
             }
             

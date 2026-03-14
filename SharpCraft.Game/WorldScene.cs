@@ -8,6 +8,7 @@ using SharpCraft.Engine.World.Blocks;
 using SharpCraft.Engine.World.Blocks.GameReady;
 using SharpCraft.Game.Screens;
 using Silk.NET.Input;
+using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 
 namespace SharpCraft.Game;
@@ -32,6 +33,8 @@ public class WorldScene : IScene
 
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
     private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
+    
+    private (Matrix4X4<float> model, Block block)? _hitBlock;
     
     private BlockOutlineRenderer _outlineRenderer;
     private Shader _outlineShader;
@@ -99,10 +102,7 @@ public class WorldScene : IScene
         
         
         // Block outline in gameplay
-        var hit = Raycast.Cast(PlayerController.Camera.Position, 
-            PlayerController.Camera.Front, GameWorld);
-        
-        if (hit.HasValue)
+        if (_hitBlock.HasValue)
         {
             _gl.Enable(EnableCap.DepthTest);
             var view = PlayerController.Camera.GetView();
@@ -110,10 +110,10 @@ public class WorldScene : IScene
             int[] vp = new int[4];
             _gl.GetInteger(GetPName.Viewport, vp);
             _outlineRenderer.DrawOutline(
-                GameWorld.GetBlockAABB(hit.Value.model),
+                GameWorld.GetBlockAABB(_hitBlock.Value.model),
                 new Vector4(0, 0, 0, 1),
                 view, proj,
-                new Vector2(vp[2], vp[3]));
+                new Vector2(vp[2], vp[3]), thickness: 0.003f);
             _gl.Disable(EnableCap.DepthTest);
         }
         
@@ -126,6 +126,12 @@ public class WorldScene : IScene
         InputManager.ResetCursor();
         _playerController.Update();
         HUD.Update();
+
+        if (!IsPaused)
+        {
+            _hitBlock = Raycast.Cast(PlayerController.Camera.Position,
+                PlayerController.Camera.Front, GameWorld);
+        }
 
         if (InputManager.IsKeyJustPressed(Key.Escape))
         {

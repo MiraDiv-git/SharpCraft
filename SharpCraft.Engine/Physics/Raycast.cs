@@ -16,6 +16,9 @@ public class Raycast
             
             foreach (var (model, block) in world.Blocks)
             {
+                var blockPos = new Vector3(model.M41, model.M42, model.M43);
+                if (Vector3D.Distance(point, blockPos) > 1.5f) continue;
+    
                 var aabb = world.GetBlockAABB(model);
                 if (point.X >= aabb.Min.X && point.X <= aabb.Max.X &&
                     point.Y >= aabb.Min.Y && point.Y <= aabb.Max.Y &&
