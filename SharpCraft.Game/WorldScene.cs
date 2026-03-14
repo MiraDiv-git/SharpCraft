@@ -28,7 +28,7 @@ public class WorldScene : IScene
     public static Block _dirtBlock;
     private WorldGenerator _worldGenerator;
     private static Canvas _activeCanvas;
-    private PlayerController _playerController;
+    private static PlayerController _playerController;
     private static bool _isDebug = false;
     private readonly string _vertPath = Path.Combine("Shaders", "World", "block.vert");
     private readonly string _fragPath = Path.Combine("Shaders", "World", "block.frag");
@@ -41,6 +41,7 @@ public class WorldScene : IScene
         _gl = gl;
         _playerController = new PlayerController();
         _playerController.Load();
+        _playerController.ResetBlockTimer();
         UIRenderer = uiRenderer;
         
         _shader = new Shader(_gl, _vertPath, _fragPath);
@@ -56,9 +57,6 @@ public class WorldScene : IScene
         GameWorld = new GameWorld();
         _worldGenerator = new WorldGenerator();
         _worldGenerator.GenerateCube(GameWorld, 16, 16, 4, _grassBlock, _dirtBlock);
-        
-        GameWorld.AddBlock(3, 0, 0, _grassBlock);
-        GameWorld.AddBlock(3, -1, 1, _grassBlock);
         
         HUD.Load();
         DebugScreen.Load();
@@ -122,7 +120,6 @@ public class WorldScene : IScene
         InputManager.ResetCursor();
         _playerController.Update();
         HUD.Update();
-        ControlScreen.Update();
 
         if (!IsPaused)
         {
@@ -142,6 +139,7 @@ public class WorldScene : IScene
             DebugScreen.Update(PlayerController.Camera);
         
         _activeCanvas?.Update(UIRenderer);
+        ControlScreen.Update();
     }
 
     public void Unload()
@@ -192,6 +190,7 @@ public class WorldScene : IScene
         {
             _activeCanvas = null;
             InputManager.LockMouse();
+            _playerController.ResetBlockTimer();
         }
     }
 }

@@ -41,11 +41,8 @@ public static class KeyBindings
     public static KeyBind Jump = new(Key.Space);
     public static KeyBind Sprint = new(Key.ControlLeft);
     public static KeyBind Sneak = new(Key.ShiftLeft);
-    // public static KeyBind Destroy = new(MouseButton.Left);
-    // public static KeyBind Place = new(MouseButton.Right);
-    
-    public static KeyBind Destroy = new(MouseButton.Right);
-    public static KeyBind Place = new(MouseButton.Left);
+    public static KeyBind Destroy = new(MouseButton.Left);
+    public static KeyBind Place = new(MouseButton.Right);
     
     public static void LoadFromSettings()
     {

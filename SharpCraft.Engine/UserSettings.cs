@@ -17,8 +17,8 @@ public class UserSettings
     public static string BindMoveRight { get; set; } = "D";
     public static string BindJump { get; set; } = "Space";
     public static string BindSneak { get; set; } = "ShiftLeft";
-    public static string BindPlace { get; set; } = "Left";
-    public static string BindDestroy { get; set; } = "Right";
+    public static string BindPlace { get; set; } = "Right";
+    public static string BindDestroy { get; set; } = "Left";
     
     public static void Load()
     {

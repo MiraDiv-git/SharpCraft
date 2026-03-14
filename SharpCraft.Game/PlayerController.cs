@@ -36,6 +36,12 @@ public class PlayerController
                 Player.IsFlying = false;
         }
     }
+    
+    public void ResetBlockTimer()
+    {
+        _blockActionTimer = BlockActionDelay;
+    }
+    
     public void ApplyMovement()
     {
         var forward = new Vector3(

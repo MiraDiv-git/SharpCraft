@@ -23,7 +23,7 @@ public class ControlScreen
     private static Texture _sliderTexture;
     private static Texture _sliderHandleTexture;
     
-    private static bool _skipNextFrame = false;
+    private static bool _waitingForRelease = false;
     private static bool _waitingForBind = false;
     private static Action<KeyBind> _onBindReceived;
 
@@ -64,7 +64,12 @@ public class ControlScreen
     public static void Update()
     {
         if (!_waitingForBind) return;
-        if (_skipNextFrame) { _skipNextFrame = false; return; }
+        if (_waitingForRelease)
+        {
+            if (!InputManager.LeftMouseButtonDown)
+                _waitingForRelease = false;
+            return;
+        }
 
         foreach (Key key in Enum.GetValues<Key>())
         {
@@ -97,7 +102,7 @@ public class ControlScreen
     private static void StartListening(Action<KeyBind> onBind)
     {
         _waitingForBind = true;
-        _skipNextFrame = true;
+        _waitingForRelease = true;
         _onBindReceived = onBind;
         InputManager.BlockUIInput = true;
     }
