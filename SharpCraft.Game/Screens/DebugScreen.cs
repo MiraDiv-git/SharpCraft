@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using static System.FormattableString;
+
 using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
 using SharpCraft.Engine.UI;
@@ -13,6 +15,7 @@ public class DebugScreen
     private static UIText _coords;
     private static UIText _fps;
     private static UIText _ram;
+    private static UIText _blockPos;
     
     private static float _memoryTimer = 0f;
     private static long _lastRamValue = 0;
@@ -31,7 +34,8 @@ public class DebugScreen
     public static void Update(Camera camera)
     {
         var p = camera.Position;
-        _coords.Text = $"Position: {p.X:F2}, {p.Y:F2}, {p.Z:F2}";
+        _coords.Text = Invariant($"Position: {p.X:F2},  {p.Y:F2},  {p.Z:F2}");
+        _blockPos.Text = $"Block: {Math.Round(p.X, 0)},  {Math.Round(p.Y, 0)},  {Math.Round(p.Z, 0)}";
         _fps.Text = $"FPS: {(int)(1f / Time.DeltaTime)}";
         
         _memoryTimer += (float)Time.DeltaTime;
@@ -55,11 +59,21 @@ public class DebugScreen
         _coords.ShadowOffset = 1f;
         _coords.Align = TextAlign.Left;
         
+        // Block position
+        _blockPos = Canvas.AddElement<UIText>();
+        _blockPos.FontSize = 9f;
+        _blockPos.Anchor = Anchor.TopLeft;
+        _blockPos.Position = new Vector2(_coords.Position.X, _coords.Position.Y + 12);
+        _blockPos.TextColor = Color.White;
+        _blockPos.Shadow = false;
+        _blockPos.ShadowOffset = 1f;
+        _blockPos.Align = TextAlign.Left;
+        
         // FPS
         _fps = Canvas.AddElement<UIText>();
         _fps.FontSize = 9f;
         _fps.Anchor = Anchor.TopLeft;
-        _fps.Position = new Vector2(_coords.Position.X, _coords.Position.Y + 12);
+        _fps.Position = new Vector2(_blockPos.Position.X, _blockPos.Position.Y + 12);
         _fps.TextColor = Color.White;
         _fps.Shadow = false;
         _fps.Align = TextAlign.Left;

@@ -36,7 +36,8 @@ public class UIButton : UIElement
 
         if (hovered)
         {
-            InputManager.SetCursor(StandardCursor.Hand);
+            if (!OperatingSystem.IsWindows()) // YEAH, that's how I ""fixed"" this stupid GLFW bug on Windows
+                InputManager.SetCursor(StandardCursor.Hand);
             
             if (InputManager.LeftMouseButtonDown)
             {

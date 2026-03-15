@@ -133,7 +133,7 @@ public class PlayerController
                 WorldScene.GameWorld.RemoveBlock(hit.Value.model);
                 _blockActionTimer = BlockActionDelay;
             }
-            else if (place)
+            if (place) // TODO: When clicking destroy/place rapidly, it just destroys block twice
             {
                 var pos = new Vector3(hit.Value.model.M41, hit.Value.model.M42, hit.Value.model.M43);
                 var newPos = pos + hit.Value.normal;

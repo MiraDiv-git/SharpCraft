@@ -80,43 +80,6 @@ public class OptionsScreen
         bgimage.Anchor = Anchor.MiddleCenter;
         bgimage.ImageColor = Color.Black.WithAlpha(200);
     }
-    
-    private static void LoadBackButton()
-    {
-        // Button
-        var rect = Canvas.AddElement<UIButton>();
-        rect.Position = new Vector2(0, -20);
-        rect.Size = MainMenuScene.defaultButtonSize;
-        rect.ButtonTexture = _buttonTexture;
-        rect.HoverTexture = _buttonHoverTexture;
-        rect.ButtonColor = Color.White;
-        rect.HoverColor = Color.White;
-        rect.Anchor = Anchor.BottomCenter;
-        rect.OnClick += () =>
-        {
-            AudioManager.Play(_clickSound);
-            
-            if (!IsGameplay)
-            {
-                MainMenuScene.SwitchTo(MainMenuScreen.Canvas);
-                Console.WriteLine("[INFO] Changing screen to Main Menu Screen");
-            }
-            else
-            {
-                WorldScene.ChangeScreen(PauseScreen.Canvas);
-                Console.WriteLine("[INFO] Changing screen to Pause Screen");
-            }
-        };
-        
-        // Text
-        var text = Canvas.AddElement<UIText>();
-        text.Text = "options.back";
-        text.Position = rect.Position;
-        text.VerticalOffset = -3f;
-        text.Anchor = rect.Anchor;
-        text.TextColor = Color.White;
-        text.FontSize = 16f;
-    }
 
     private static void LoadFPSSlider()
     {
@@ -306,6 +269,43 @@ public class OptionsScreen
         var text = Canvas.AddElement<UIText>();
         text.Text = "options.video";
         text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+    
+    private static void LoadBackButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(0, -20);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.BottomCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            
+            if (!IsGameplay)
+            {
+                MainMenuScene.SwitchTo(MainMenuScreen.Canvas);
+                Console.WriteLine("[INFO] Changing screen to Main Menu Screen");
+            }
+            else
+            {
+                WorldScene.ChangeScreen(PauseScreen.Canvas);
+                Console.WriteLine("[INFO] Changing screen to Pause Screen");
+            }
+        };
+        
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.back";
+        text.Position = rect.Position;
+        text.VerticalOffset = -3f;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
         text.FontSize = 16f;

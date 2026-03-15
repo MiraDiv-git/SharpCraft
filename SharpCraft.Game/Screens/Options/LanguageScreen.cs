@@ -34,6 +34,7 @@ public class LanguageScreen
         LoadCategoryText();
         LoadEnglishButton();
         LoadUkrainianButton();
+        LoadRussianButton();
     }
     
     private static void LoadGameplayBackground()
@@ -106,6 +107,35 @@ public class LanguageScreen
         // Text
         var text = Canvas.AddElement<UIText>();
         text.Text = "Українська";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+
+    private static void LoadRussianButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(0, 50);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            UserSettings.Language = "ru";
+            UserSettings.Save();
+            Localization.SetLanguage("ru");
+            OptionsScreen.RefreshTexts();
+        };
+        
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "Русский";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;

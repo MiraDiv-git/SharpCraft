@@ -27,6 +27,7 @@ public class PauseScreen
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures","UI","Button","button_hover.png"));
 
         LoadBackground();
+        LoadCategoryText();
         LoadResumeButton();
         LoadOptionsButton();
         LoadMenuButton();
@@ -36,7 +37,6 @@ public class PauseScreen
     {
         _buttonTexture.Dispose();
         _buttonHoverTexture.Dispose();
-        //_clickSound.Dispose();
     }
 
     private static void LoadBackground()
@@ -45,6 +45,16 @@ public class PauseScreen
         bgimage.Size = new Vector2(9999, 9999);
         bgimage.Anchor = Anchor.MiddleCenter;
         bgimage.ImageColor = Color.Black.WithAlpha(200);
+    }
+    
+    private static void LoadCategoryText()
+    {
+        var cattxt = Canvas.AddElement<UIText>();
+        cattxt.Text = "world.pause";
+        cattxt.Position = new Vector2(0, 20);
+        cattxt.Anchor = Anchor.TopCenter;
+        cattxt.TextColor = Color.White;
+        cattxt.FontSize = 16f;
     }
 
     private static void LoadResumeButton()
