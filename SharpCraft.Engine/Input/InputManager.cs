@@ -13,27 +13,30 @@ public class InputManager
     private static bool _prevLeftMouseButtonDown;
     public static bool LeftMouseButtonDown => IsMouseButtonDown(MouseButton.Left);
     public static bool LeftMouseButtonJustPressed { get; private set; }
+    public static bool RightMouseButtonDown => IsMouseButtonDown(MouseButton.Right);
+    public static bool RightMouseButtonJustPressed { get; private set; }
+    public static event Action<char>? OnKeyChar;
 
     private static IInputContext _input;
     private static IMouse _mouse;
     private static IKeyboard _keyboard;
     private static Vector2 _lastMousePos;
-
     private static readonly Dictionary<MouseButton, bool> _mouseButtonsDown = new();
     private static readonly Dictionary<MouseButton, bool> _prevMouseButtonsDown = new();
-
     private static readonly HashSet<Key> _prevKeys = new();
     private static readonly HashSet<Key> _currKeys = new();
-    
     private static bool _prevRightMouseButtonDown;
-    public static bool RightMouseButtonDown => IsMouseButtonDown(MouseButton.Right);
-    public static bool RightMouseButtonJustPressed { get; private set; }
-
+    
     public static void Initialize(IInputContext input)
     {
         _input = input;
         _mouse = input.Mice[0];
         _keyboard = input.Keyboards[0];
+        
+        _keyboard.KeyChar += (_, c) =>
+        {
+            OnKeyChar?.Invoke(c);
+        };
 
         _mouse.MouseDown += (_, btn) => _mouseButtonsDown[btn] = true;
         _mouse.MouseUp += (_, btn) => _mouseButtonsDown[btn] = false;

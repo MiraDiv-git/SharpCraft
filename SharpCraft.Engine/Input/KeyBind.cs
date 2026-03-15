@@ -43,6 +43,7 @@ public static class KeyBindings
     public static KeyBind Sneak = new(Key.ShiftLeft);
     public static KeyBind Destroy = new(MouseButton.Left);
     public static KeyBind Place = new(MouseButton.Right);
+    public static KeyBind OpenChat = new(Key.T);
     
     public static void LoadFromSettings()
     {

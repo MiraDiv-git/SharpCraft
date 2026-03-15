@@ -95,6 +95,8 @@ public class WorldScene : IScene
         _gl.Disable(EnableCap.DepthTest);
         
         HUD.Canvas.Render();
+        if (HUD.IsChatOpen)
+            HUD.ChatCanvas.Render();
         
         if (_isDebug)
             DebugScreen.Canvas.Render();
@@ -128,6 +130,9 @@ public class WorldScene : IScene
 
         if (!IsPaused)
         {
+            if (!HUD.IsChatOpen && KeyBindings.OpenChat.IsJustPressed())
+                HUD.OpenChat();
+            
             HitBlock = Raycast.Cast(PlayerController.Camera.Position,
                 PlayerController.Camera.Front, GameWorld, 6f);
         }

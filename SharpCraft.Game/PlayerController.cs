@@ -2,6 +2,7 @@ using SharpCraft.Engine;
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
+using SharpCraft.Game.Screens;
 using Silk.NET.Maths;
 
 namespace SharpCraft.Game;
@@ -30,6 +31,7 @@ public class PlayerController
         {
             Player.Update(Time.DeltaTime, WorldScene.GameWorld);
             Camera.Position = Player.Position + new Vector3(0, 1.6f, 0);
+            
             ApplyMovement();
             
             if (Player.IsFlying && Player.IsGrounded)
@@ -54,6 +56,7 @@ public class PlayerController
         if (KeyBindings.MoveBack.IsDown()) move -= forward;
         if (KeyBindings.MoveLeft.IsDown()) move -= right;
         if (KeyBindings.MoveRight.IsDown()) move += right;
+        if (HUD.IsChatOpen) move = Vector3.Zero;
 
         if (KeyBindings.Jump.IsJustPressed()) // Fly check
         {
@@ -118,7 +121,7 @@ public class PlayerController
         
         // Block actions
         var hit = WorldScene.HitBlock;
-        if (hit.HasValue)
+        if (hit.HasValue && !HUD.IsChatOpen)
         {
             if (KeyBindings.Destroy.IsJustPressed()) _blockActionTimer = 0f;
             if (KeyBindings.Place.IsJustPressed()) _blockActionTimer = 0f;

@@ -54,9 +54,9 @@ public class ControlScreen
         LoadRightBindButton();
         LoadJumpBindButton();
         LoadSneakBindButton();
-        
         LoadPlaceBindButton();
         LoadDestroyBindButton();
+        LoadChatBindButton();
         
         LoadBackButton();
     }
@@ -494,6 +494,48 @@ public class ControlScreen
         // Bind Text
         var text = Canvas.AddElement<UIText>();
         text.Text = "options.bind.destroy";
+        text.Position = new Vector2(rect.Position.X - 143, rect.Position.Y);
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+    
+    private static void LoadChatBindButton()
+    {
+        // Button Text
+        var bText = Canvas.AddElement<UIText>();
+        bText.Text = KeyBindings.OpenChat.ToString();
+        
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(150, 0);
+        rect.Size = new Vector2(MainMenuScene.defaultButtonSize.X / 2, MainMenuScene.defaultButtonSize.Y);
+        rect.ButtonTexture = _smallButtonTexture;
+        rect.HoverTexture = _smallButtonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
+        {
+            AudioManager.Play(_clickSound);
+            bText.Text = "...";
+            StartListening(bind =>
+            {
+                KeyBindings.OpenChat = bind;
+                bText.Text = bind.ToString();
+                UserSettings.Save();
+            });
+        };
+        
+        // Button text position
+        bText.Position = rect.Position;
+        bText.Anchor = rect.Anchor;
+        bText.TextColor = Color.White;
+        bText.FontSize = 16f;
+        
+        // Bind Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.bind.chat";
         text.Position = new Vector2(rect.Position.X - 143, rect.Position.Y);
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
