@@ -18,6 +18,7 @@ public class UITextField : UIElement
     private float _cursorTimer = 0f;
     private bool _cursorVisible = true;
     private bool _isFocused = false;
+    private float _backspaceTimer = 0f;
 
     public override void Update(UIRenderer renderer)
     {
@@ -42,8 +43,28 @@ public class UITextField : UIElement
             return;
         }
 
-        if (InputManager.IsKeyJustPressed(Key.Backspace) && Text.Length > 0)
-            Text = Text[..^1];
+        if (InputManager.IsKeyDown(Key.Backspace))
+        {
+            if (Text.Length > 0)
+            {
+                if (InputManager.IsKeyJustPressed(Key.Backspace))
+                {
+                    Text = Text[..^1];
+                    _backspaceTimer = 0.5f;
+                }
+                else
+                {
+                    _backspaceTimer -= Time.DeltaTime;
+                    if (_backspaceTimer <= 0)
+                    {
+                        Text = Text[..^1];
+                        _backspaceTimer = 0.04f;
+                    }
+                }
+            }
+            else
+                _backspaceTimer = 0;
+        }
     }
 
     public override void Render(UIRenderer renderer)
