@@ -72,14 +72,14 @@ public class PlayerController
             }
         }
         
-        if (KeyBindings.Jump.IsDown() && Player.IsGrounded && !Player.IsFlying) // Jump
+        if (KeyBindings.Jump.IsDown() && Player.IsGrounded && !Player.IsFlying && !HUD.IsChatOpen) // Jump
         {
             var vel = Player.Velocity;
             vel.Y = JumpForce;
             Player.Velocity = vel;
         }
 
-        if (Player.IsFlying) // Flying
+        if (Player.IsFlying && !HUD.IsChatOpen) // Flying
         {
             var vel = Player.Velocity;
             vel.Y = 0;
