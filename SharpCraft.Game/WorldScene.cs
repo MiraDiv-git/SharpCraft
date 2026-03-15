@@ -95,6 +95,7 @@ public class WorldScene : IScene
         _gl.Disable(EnableCap.DepthTest);
         
         HUD.Canvas.Render();
+        HUD.RenderMessages(WorldScene.UIRenderer, HUD.IsChatOpen);
         if (HUD.IsChatOpen)
             HUD.ChatCanvas.Render();
         
@@ -139,7 +140,8 @@ public class WorldScene : IScene
 
         if (InputManager.IsKeyJustPressed(Key.Escape))
         {
-            TogglePause(PauseScreen.Canvas);
+            if (!HUD.WasChatOpen)
+                TogglePause(PauseScreen.Canvas);
         }
         
         if (InputManager.IsKeyJustPressed(Key.F3))

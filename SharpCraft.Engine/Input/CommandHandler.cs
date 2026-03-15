@@ -33,11 +33,13 @@ public static class CommandHandler
     // var create MyVariable 3
     // var print MyVariable
     // var set MyVariable 0
+    // var add MyVariable 2
+    // var subtract MyVariable 1
     // var remove MyVariable 
     //
-    // item give {item name} {count} (attributes)
+    // item give {item name} {count} [reciever] (attributes)
     // item give dirt_block
-    // item give grass_block 3 {Name: "Cool block"}
+    // item give grass_block 3 Player1 {Name: "Cool block"}
     //
     // clear [what] {where}
     // clear chat
@@ -55,4 +57,8 @@ public static class CommandHandler
     // checkpoint (who) (position)
     // checkpoint 
     // checkpoint Player1 12 3 6
+    //
+    // exec {condition} [action]
+    // exec {if Player1.Pos=[12, 3, 6]} item give grass_block 1 Player1
+    // exec {if var.MyVariable=2} clear blocks from 12 3 6 to 15 8 12
 }

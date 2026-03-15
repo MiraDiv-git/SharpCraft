@@ -11,6 +11,10 @@ public class UserSettings
     public static float CrosshairSize { get; set; } = 10;
     public static float Sensitivity { get; set; } = 0.1f;
     public static float FOV { get; set; } = 70f;
+    public static float ChatSize { get; set; } = 24f;
+    public static float ChatMaxMessages { get; set; } = 20;
+    public static float ChatMaxHistory { get; set; } = 50;
+    
     public static string BindMoveForward { get; set; } = "W";
     public static string BindMoveBack { get; set; } = "S";
     public static string BindMoveLeft { get; set; } = "A";
@@ -31,6 +35,11 @@ public class UserSettings
         if (data.TryGetValue("crosshair_size", out var crosshairSize)) CrosshairSize = float.Parse(crosshairSize);
         if (data.TryGetValue("sensitivity", out var sensitivity)) Sensitivity = float.Parse(sensitivity);
         if (data.TryGetValue("fov", out var fov)) FOV = float.Parse(fov);
+        if (data.TryGetValue("chat_size", out var chs)) ChatSize = float.Parse(chs);
+        if (data.TryGetValue("chat_max_messages", out var chatmsg)) ChatMaxMessages = int.Parse(chatmsg);
+        if (data.TryGetValue("chat_max_history", out var chathist)) ChatMaxHistory = int.Parse(chathist);
+        
+        // Binds
         if (data.TryGetValue("bind_forward", out var bf)) BindMoveForward = bf;
         if (data.TryGetValue("bind_back", out var bb)) BindMoveBack = bb;
         if (data.TryGetValue("bind_left", out var bl)) BindMoveLeft = bl;
@@ -49,6 +58,11 @@ public class UserSettings
         data["crosshair_size"] = CrosshairSize.ToString();
         data["sensitivity"] = Sensitivity.ToString();
         data["fov"] = FOV.ToString();
+        data["chat_size"] = ChatSize.ToString();
+        data["chat_max_messages"] = ChatMaxMessages.ToString();
+        data["chat_max_history"] = ChatMaxHistory.ToString();
+        
+        // Binds
         data["bind_forward"] = KeyBindings.MoveForward.ToString();
         data["bind_back"] = KeyBindings.MoveBack.ToString();
         data["bind_left"] = KeyBindings.MoveLeft.ToString();

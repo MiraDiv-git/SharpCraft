@@ -31,6 +31,7 @@ public class OptionsScreen
         LanguageScreen.Load();
         ControlScreen.Load();
         VideoScreen.Load();
+        ChatScreen.Load();
         
         _buttonTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button.png"));
         _buttonHoverTexture = AssetManager.LoadTexture(Path.Combine("Textures", "UI", "Button", "button_hover.png"));
@@ -51,6 +52,7 @@ public class OptionsScreen
         LoadLanguageButton();
         LoadControlsButton();
         LoadVideoButton();
+        LoadChatButton();
         
         LoadBackButton();
     }
@@ -173,6 +175,14 @@ public class OptionsScreen
         if (VideoScreen.FOVText != null)
             VideoScreen.FOVText.Text = $"{Localization.Get("options.fov")}: {UserSettings.FOV}";
         
+        if (ChatScreen.ChatSizeText != null)
+            ChatScreen.ChatSizeText.Text = $"{Localization.Get("options.chatsize")}: {UserSettings.ChatSize}";
+        
+        if (ChatScreen.ChatMaxMessagesText != null)
+            ChatScreen.ChatMaxMessagesText.Text = $"{Localization.Get("options.chatmsg")}: {UserSettings.ChatMaxMessages}";
+        
+        if (ChatScreen.ChatMaxHistoryText != null)
+            ChatScreen.ChatMaxHistoryText.Text = $"{Localization.Get("options.chathist")}: {UserSettings.ChatMaxHistory}";
     }
 
     private static void LoadLanguageButton()
@@ -188,7 +198,10 @@ public class OptionsScreen
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () =>
         {
+            Console.WriteLine("[INFO] Changing screen to LanguageScreen");
+            
             AudioManager.Play(_clickSound);
+            
             if (!IsGameplay)
             {
                 MainMenuScene.SwitchTo(LanguageScreen.Canvas);
@@ -221,7 +234,10 @@ public class OptionsScreen
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () =>
         {
+            Console.WriteLine("[INFO] Changing screen to ControlScreen");
+            
             AudioManager.Play(_clickSound);
+            
             if (!IsGameplay)
             {
                 MainMenuScene.SwitchTo(ControlScreen.Canvas);
@@ -254,7 +270,10 @@ public class OptionsScreen
         rect.Anchor = Anchor.MiddleCenter;
         rect.OnClick += () =>
         {
+            Console.WriteLine("[INFO] Changing screen to VideoScreen");
+            
             AudioManager.Play(_clickSound);
+            
             if (!IsGameplay)
             {
                 MainMenuScene.SwitchTo(VideoScreen.Canvas);
@@ -268,6 +287,42 @@ public class OptionsScreen
         // Text
         var text = Canvas.AddElement<UIText>();
         text.Text = "options.video";
+        text.Position = rect.Position;
+        text.Anchor = rect.Anchor;
+        text.TextColor = Color.White;
+        text.FontSize = 16f;
+    }
+    
+    private static void LoadChatButton()
+    {
+        // Button
+        var rect = Canvas.AddElement<UIButton>();
+        rect.Position = new Vector2(180, -90);
+        rect.Size = MainMenuScene.defaultButtonSize;
+        rect.ButtonTexture = _buttonTexture;
+        rect.HoverTexture = _buttonHoverTexture;
+        rect.ButtonColor = Color.White;
+        rect.HoverColor = Color.White;
+        rect.Anchor = Anchor.MiddleCenter;
+        rect.OnClick += () =>
+        {
+            Console.WriteLine("[INFO] Changing screen to ChatScreen");
+            
+            AudioManager.Play(_clickSound);
+            
+            if (!IsGameplay)
+            {
+                MainMenuScene.SwitchTo(ChatScreen.Canvas);
+            }
+            else
+            {
+                WorldScene.ChangeScreen(ChatScreen.Canvas);
+            }
+        };
+        
+        // Text
+        var text = Canvas.AddElement<UIText>();
+        text.Text = "options.bind.chat";
         text.Position = rect.Position;
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
