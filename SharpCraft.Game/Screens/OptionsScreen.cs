@@ -93,7 +93,7 @@ public class OptionsScreen
         slider.Position = pos;
         slider.Size = MainMenuScene.defaultButtonSize;
         slider.Anchor = anchor;
-        slider.Min = 30f;
+        slider.Min = 60f;
         slider.Max = 545f;
         slider.Step = 5f;
         slider.BackgroundTexture = _sliderTexture;

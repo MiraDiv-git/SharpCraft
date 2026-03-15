@@ -10,7 +10,7 @@ public class Player
     public bool IsFlying { get; set; } = false;
 
     private static readonly Vector3 Size = new(0.6f, 1.8f, 0.6f);
-    private const float Gravity = -24.5f;
+    private const float Gravity = -24f;
 
     public AABB GetAABB() => new(Position, Size);
 
