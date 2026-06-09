@@ -1,6 +1,7 @@
 .idea/
 **bin/
 **obj/
+publish/
 
 **.kate-swp
 **.blend1

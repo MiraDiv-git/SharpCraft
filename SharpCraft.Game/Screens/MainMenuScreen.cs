@@ -138,8 +138,8 @@ public class MainMenuScreen
         text.Shadow = false;
         
         var bottomText = Canvas.AddElement<UIText>();
-        bottomText.Text = "GPL-3.0 License";
-        bottomText.Position = new Vector2(text.Position.X, text.Position.Y + 20);
+        bottomText.Text = "MIT License";
+        bottomText.Position = new Vector2(text.Position.X + 12, text.Position.Y + 20);
         bottomText.VerticalOffset = -3f;
         bottomText.Anchor = Anchor.BottomRight;
         bottomText.TextColor = Color.Cyan.WithAlpha(220);
@@ -156,7 +156,7 @@ public class MainMenuScreen
         linkButton.OnClick += () =>
         {
             AudioManager.Play(_clickSound);
-            OpenUrl("https://www.gnu.org/licenses/gpl-3.0.en.html");
+            OpenUrl("https://github.com/MiraDiv-git/SharpCraft/blob/main/LICENSE");
         };
     }
 
