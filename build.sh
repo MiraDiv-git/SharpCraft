@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-  echo "Error: target OS not specified. Usage: ./publish.sh <os> [config]"
-  echo "Example: ./publish.sh win-x64 Release"
+  echo "Error: target OS not specified. Usage: ./build.sh <os> [config]"
+  echo "Example: ./build.sh linux-x64 Release"
   exit 1
 fi
 
