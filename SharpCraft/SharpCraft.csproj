@@ -20,6 +20,22 @@
 
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
       <ProjectReference Include="..\SharpCraft.Game\SharpCraft.Game.csproj" />
+
+      <ResourceFiles Include="..\SharpCraft.Game\Resources\**\*" />
     </ItemGroup>
 
+    <Target Name="BuildResources" AfterTargets="Build"
+          Inputs="@(ResourceFiles)"
+          Outputs="$(OutputPath)Resources.scres">
+      <ZipDirectory SourceDirectory="..\SharpCraft.Game\Resources"
+                    DestinationFile="$(OutputPath)Resources.scres"
+                    Overwrite="true" />
+    </Target>
+
+    <Target Name="BuildResourcesPublish" AfterTargets="Publish">
+        <ZipDirectory SourceDirectory="..\SharpCraft.Game\Resources"
+                      DestinationFile="$(PublishDir)Resources.scres"
+                      Overwrite="true" />
+    </Target>
+    
 </Project>

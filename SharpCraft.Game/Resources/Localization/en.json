@@ -25,7 +25,7 @@
   "options.bind.sneak": "Sneak",
   "options.bind.place": "Place",
   "options.bind.destroy": "Destroy",
-  "options.bind.chat": "Chat",
+  "options.bind.chat": "Chat (Beta)",
   "options.back": "Apply  and  back",
 
   "world.pause": "Paused",

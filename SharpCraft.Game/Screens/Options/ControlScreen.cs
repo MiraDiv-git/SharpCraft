@@ -536,7 +536,7 @@ public class ControlScreen
         // Bind Text
         var text = Canvas.AddElement<UIText>();
         text.Text = "options.bind.chat";
-        text.Position = new Vector2(rect.Position.X - 143, rect.Position.Y);
+        text.Position = new Vector2(rect.Position.X - 148, rect.Position.Y);
         text.Anchor = rect.Anchor;
         text.TextColor = Color.White;
         text.FontSize = 16f;

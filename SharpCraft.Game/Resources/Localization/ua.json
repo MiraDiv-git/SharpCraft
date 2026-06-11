@@ -25,7 +25,7 @@
   "options.bind.sneak": "Крастися",
   "options.bind.place": "Cтавити",
   "options.bind.destroy": "Нищити",
-  "options.bind.chat": "Чат",
+  "options.bind.chat": "Чат (Beta)",
   "options.back": "Застосувати",
 
   "world.pause": "Призупинено",
