@@ -13,8 +13,8 @@ public class UIRenderer
     private Vector2 _screenSize;
     private float[] _charWidths = new float[256];
     
-    private readonly string _vertPath = Path.Combine("Shaders","UI","ui.vert");
-    private readonly string _fragPath = Path.Combine("Shaders","UI","ui.frag");
+    private readonly string _vertPath = Path.Combine("Shaders", "UI", "ui.vert");
+    private readonly string _fragPath = Path.Combine("Shaders", "UI", "ui.frag");
     
     private readonly List<Canvas> _canvases = new();
     
@@ -22,9 +22,37 @@ public class UIRenderer
     public Vector2 ReferenceSize => _referenceSize;
     
     public static UIRenderer? Instance { get; private set; }
+
+    public void RegisterCanvas(Canvas canvas)
+    {
+        if (!_canvases.Contains(canvas))
+            _canvases.Add(canvas);
+    }
     
-    public void RegisterCanvas(Canvas canvas) => _canvases.Add(canvas);
-    public void UnregisterCanvas(Canvas canvas) => _canvases.Remove(canvas);
+    // public void UnregisterCanvas(Canvas canvas)
+    // {
+    //     _canvases.Remove(canvas);
+    // }
+    
+    public void DeactivateAllCanvases()
+    {
+        foreach (var canvas in _canvases)
+            canvas.SetActive(false);
+    }
+    
+    public void Update()
+    {
+        foreach (var canvas in _canvases)
+            if (canvas.IsActive)
+                canvas.Update(this);
+    }
+    
+    public void Render()
+    {
+        foreach (var canvas in _canvases)
+            if (canvas.IsActive)
+                canvas.Render();
+    }
     
     public unsafe UIRenderer(GL gl, int width, int height)
     {
@@ -64,12 +92,6 @@ public class UIRenderer
         
         _gl.Enable(EnableCap.Blend);
         _gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-    }
-    
-    public void Update()
-    {
-        foreach (var canvas in _canvases)
-            canvas.Update(this);
     }
     
     public void SetFont(Texture fontAtlas, byte[] rawPixels, int atlasWidth, int atlasHeight)
@@ -142,7 +164,6 @@ public class UIRenderer
     public void DrawRect(Vector2 position, Vector2 size, Color4 color, Anchor anchor)
     {
         _shader.Use();
-        
         _shader.SetUniform("uColor", color);
         
         var resolvedSize = ResolveSize(size);
@@ -152,7 +173,6 @@ public class UIRenderer
         _shader.SetUniform("uUseTexture", 0);
         _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
         _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
-        
         _shader.SetUniform("uScreenSize", _screenSize);
 
         _gl.BindVertexArray(_vao);
@@ -190,7 +210,6 @@ public class UIRenderer
         _shader.SetUniform("uScale", resolvedSize);
         _shader.SetUniform("uUVOffset", new Vector2(0f, 0f));
         _shader.SetUniform("uUVScale", new Vector2(1f, 1f));
-        
         _shader.SetUniform("uScreenSize", _screenSize);
         
         _gl.BindVertexArray(_vao);

@@ -7,9 +7,9 @@ public interface IScene
 {
     // Required
     void Load();
-    void Render();
     
     // Optional
+    void Render() { }
     void Unload() { }
     void Update() { }
 }

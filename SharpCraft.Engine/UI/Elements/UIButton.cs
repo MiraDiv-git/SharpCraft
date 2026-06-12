@@ -10,6 +10,12 @@ public enum ButtonState
     Hovered
 }
 
+public enum ClickMode
+{
+    OnPress,
+    OnRelease
+}
+
 public class UIButton : UIElement
 {
     public Color4 ButtonColor { get; set; } = Color.Grey;
@@ -23,6 +29,7 @@ public class UIButton : UIElement
     public Action? OnHover { get; set; }
     
     public ButtonState State { get; private set; } = ButtonState.Normal;
+    public ClickMode ClickMode { get; set; } = ClickMode.OnRelease;
 
     public override void Update(UIRenderer renderer)
     {
@@ -36,24 +43,28 @@ public class UIButton : UIElement
 
         if (hovered)
         {
-            if (!OperatingSystem.IsWindows()) // YEAH, that's how I ""fixed"" this stupid GLFW bug on Windows
-                InputManager.SetCursor(StandardCursor.Hand);
-            
+            // if (!OperatingSystem.IsWindows())
+            //     InputManager.SetCursor(StandardCursor.Hand);
+    
             if (InputManager.LeftMouseButtonDown)
             {
                 State = ButtonState.Pressed;
-                if (InputManager.LeftMouseButtonJustPressed)
+                if (ClickMode == ClickMode.OnPress && InputManager.LeftMouseButtonJustPressed)
                     OnClick?.Invoke();
             }
             else
             {
+                if (ClickMode == ClickMode.OnRelease && InputManager.LeftMouseButtonJustReleased)
+                    OnClick?.Invoke();
+        
                 State = ButtonState.Hovered;
                 OnHover?.Invoke();
             }
         }
         else
         {
-            State = ButtonState.Normal;
+            if (!InputManager.LeftMouseButtonDown)
+                State = ButtonState.Normal;
         }
     }
     

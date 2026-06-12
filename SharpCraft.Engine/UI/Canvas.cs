@@ -1,26 +1,45 @@
 using SharpCraft.Engine.Input;
 using SharpCraft.Engine.UI.Elements;
-using Silk.NET.Windowing;
+
 namespace SharpCraft.Engine.UI;
 
 public class Canvas
 {
     private readonly List<UIElement> _elements = new();
-    private readonly UIRenderer _renderer;
+    private bool _active = false;
+
+    public bool IsActive => _active;
 
     public Canvas()
     {
-        _renderer = UIRenderer.Instance!;
         UIRenderer.Instance!.RegisterCanvas(this);
     }
+
+    public void SetActive(bool active)
+    {
+        _active = active;
+    }
     
+    public void SetExclusive(bool active)
+    {
+        if (active)
+        {
+            UIRenderer.Instance!.DeactivateAllCanvases();
+            SetActive(true);
+        }
+        else
+        {
+            SetActive(false);
+        }
+    }
+
     public T AddElement<T>() where T : UIElement, new()
     {
         var element = new T();
         _elements.Add(element);
         return element;
     }
-    
+
     public void Update(UIRenderer renderer)
     {
         InputManager.ResetCursor();
@@ -33,13 +52,15 @@ public class Canvas
     {
         foreach (var element in _elements)
             if (element.Visible && element is not UIText)
-                element.Render(_renderer);
-        
+                element.Render(UIRenderer.Instance!);
+
         foreach (var element in _elements)
             if (element.Visible && element is UIText)
-                element.Render(_renderer);
-        
+                element.Render(UIRenderer.Instance!);
     }
-    
-    public void Clear() => _elements.Clear();
+
+    public void Clear()
+    {
+        _elements.Clear();
+    }
 }

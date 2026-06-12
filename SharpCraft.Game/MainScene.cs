@@ -8,9 +8,4 @@ public class MainScene : IScene
     {
         
     }
-
-    public void Render()
-    {
-        
-    }
 }

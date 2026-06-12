@@ -13,6 +13,7 @@ public class InputManager
     private static bool _prevLeftMouseButtonDown;
     public static bool LeftMouseButtonDown => IsMouseButtonDown(MouseButton.Left);
     public static bool LeftMouseButtonJustPressed { get; private set; }
+    public static bool LeftMouseButtonJustReleased { get; private set; }
     public static bool RightMouseButtonDown => IsMouseButtonDown(MouseButton.Right);
     public static bool RightMouseButtonJustPressed { get; private set; }
     public static event Action<char>? OnKeyChar;
@@ -90,6 +91,7 @@ public class InputManager
         // UI hardcode
         bool currentLeftDown = IsMouseButtonDown(MouseButton.Left);
         LeftMouseButtonJustPressed = currentLeftDown && !_prevLeftMouseButtonDown;
+        LeftMouseButtonJustReleased = !currentLeftDown && _prevLeftMouseButtonDown;
         _prevLeftMouseButtonDown = currentLeftDown;
         
         _prevMouseButtonsDown.Clear();

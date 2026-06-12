@@ -63,7 +63,7 @@ public class GameWindow
             AssetManager.Initialize(_gl);
             Console.WriteLine($"\t├─ Default font set: {_font}");
             WindowIcon.Set(_window, Path.Combine("Textures", "UI", "Logos", "game_icon.png"));
-            Console.WriteLine("\t└─ Window Icon set");
+            Console.WriteLine("\t└─ Window icon set");
             
             SceneManager.Initialize();
             Console.WriteLine("\t└─ Default scene loaded.");
@@ -114,10 +114,11 @@ public class GameWindow
             _gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             
             SceneManager.Render();
+            UIRenderer.Instance!.Render();
         };
     }
     
-    private static void SetFPSLock(double fps)
+    public static void SetFPSLock(double fps)
     {
         _instance!._window.FramesPerSecond = fps;
         _instance._window.UpdatesPerSecond = fps;
@@ -140,9 +141,9 @@ public class GameWindow
         Console.WriteLine($"[INFO] Engine: {Config.EngineMetadata.Info.EngineName} " +
                           $"{Config.EngineMetadata.Info.EngineVersion}" +
                           $"\n\t├─ Copyright: {Config.EngineMetadata.Info.EngineCopyright}" +
-                          $"\n\t├─ License: {Config.EngineMetadata.Info.License}" +
-                          $"\n\t├─ Website: {Config.EngineMetadata.Info.Website}" +
-                          $"\n\t└─ Documentation: {Config.EngineMetadata.Info.Docs}");
+                          $"\n\t├─ License: {Config.EngineMetadata.Info.EngineLicense}" +
+                          $"\n\t├─ Website: {Config.EngineMetadata.Info.EngineWebsite}" +
+                          $"\n\t└─ Documentation: {Config.EngineMetadata.Info.EngineDocs}");
         
         Console.WriteLine($"[INFO] Game: {Config.EngineMetadata.Info.GameName}" +
                           $"\n\t└─ Author: {Config.EngineMetadata.Info.GameAuthor}");
