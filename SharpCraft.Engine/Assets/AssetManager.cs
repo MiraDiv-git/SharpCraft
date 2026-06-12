@@ -6,16 +6,14 @@ namespace SharpCraft.Engine.Assets;
 
 public static class AssetManager
 {
-    private static GL _gl;
-    private static ZipArchive _resources;
+    private static GL _gl = null!;
+    private static ZipArchive _resources = null!;
 
     public static void Initialize(GL gl)
     {
         _gl = gl;
-        Console.WriteLine("[OK] Asset manager initialized.");
-        
         _resources = ZipFile.OpenRead("Resources.scres");
-        Console.WriteLine("\t↳ Reading Resources.scres...");
+        Console.WriteLine("[LOAD] Asset manager initialized.");
     }
     
     public static Stream OpenResource(string path)

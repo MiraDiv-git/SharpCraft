@@ -5,9 +5,11 @@ namespace SharpCraft.Engine.Scene;
 
 public interface IScene
 {
-    void Load(UIRenderer uiRenderer) { }
-    void Load(UIRenderer uiRenderer, GL gl) => Load(uiRenderer);
-    void Unload();
-    void Update() { }
+    // Required
+    void Load();
     void Render();
+    
+    // Optional
+    void Unload() { }
+    void Update() { }
 }

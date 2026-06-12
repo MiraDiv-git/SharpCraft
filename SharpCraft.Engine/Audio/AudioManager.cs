@@ -6,8 +6,8 @@ namespace SharpCraft.Engine.Audio;
 
 public static class AudioManager
 {
-    private static AL _al;
-    private static ALContext _alc;
+    private static AL _al = null!;
+    private static ALContext _alc = null!;
     private static unsafe Device* _device;
     private static unsafe Context* _context;
     
@@ -20,7 +20,7 @@ public static class AudioManager
         _context = _alc.CreateContext(_device, null);
         _alc.MakeContextCurrent(_context);
         
-        Console.WriteLine("[OK] Audio Manager initialized.");
+        Console.WriteLine("[LOAD] Audio Manager initialized.");
     }
     
     public static Sound LoadAudio(string path)

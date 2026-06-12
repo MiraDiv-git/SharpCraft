@@ -9,18 +9,26 @@ public class UIRenderer
     private readonly uint _vao;
     private readonly uint _vbo;
     private readonly Vector2 _referenceSize;
-    private Texture _fontTexture;
+    private Texture? _fontTexture;
     private Vector2 _screenSize;
     private float[] _charWidths = new float[256];
-
+    
     private readonly string _vertPath = Path.Combine("Shaders","UI","ui.vert");
     private readonly string _fragPath = Path.Combine("Shaders","UI","ui.frag");
+    
+    private readonly List<Canvas> _canvases = new();
     
     public Vector2 ScreenSize => _screenSize;
     public Vector2 ReferenceSize => _referenceSize;
     
+    public static UIRenderer? Instance { get; private set; }
+    
+    public void RegisterCanvas(Canvas canvas) => _canvases.Add(canvas);
+    public void UnregisterCanvas(Canvas canvas) => _canvases.Remove(canvas);
+    
     public unsafe UIRenderer(GL gl, int width, int height)
     {
+        Instance = this;
         _gl = gl;
         _referenceSize = new Vector2(width, height);
         _screenSize = new Vector2(width, height);
@@ -56,6 +64,12 @@ public class UIRenderer
         
         _gl.Enable(EnableCap.Blend);
         _gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+    }
+    
+    public void Update()
+    {
+        foreach (var canvas in _canvases)
+            canvas.Update(this);
     }
     
     public void SetFont(Texture fontAtlas, byte[] rawPixels, int atlasWidth, int atlasHeight)
@@ -244,7 +258,7 @@ public class UIRenderer
         else if (index == 0x0454) index = 197; // є
         else if (index == 0x0457) index = 198; // ї
         else if (index == 0x0456) index = 199; // і
-        else if (index >= 256) index = '?'; // Unknow symbol (fallback)
+        else if (index >= 256) index = '?'; // Unknow symbol fallback
         
         int col = index % 16;
         int row = 15 - (index / 16);
@@ -253,7 +267,7 @@ public class UIRenderer
         var uvScale = new Vector2(1f / 16f, 1f / 16f);
     
         _shader.Use();
-        _fontTexture.Bind();
+        _fontTexture!.Bind();
     
         _shader.SetUniform("uTexture", 0);
         _shader.SetUniform("uUseTexture", 1);

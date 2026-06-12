@@ -10,7 +10,7 @@ class Program
     {
         Directory.SetCurrentDirectory(AppContext.BaseDirectory);
         var window = new GameWindow();
-        SceneManager.SetScene(new MainMenuScene());
+        SceneManager.SetScene(new MainScene());
         window.Run();
     }
 }

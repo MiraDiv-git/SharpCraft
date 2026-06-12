@@ -74,7 +74,7 @@ public class UIButton : UIElement
         };
         
         if (ButtonTexture != null)
-            renderer.DrawTexturedRect(Position, Size, texture, color, Anchor);
+            renderer.DrawTexturedRect(Position, Size, texture!, color, Anchor);
         else
             renderer.DrawRect(Position, Size, color, Anchor);
     }

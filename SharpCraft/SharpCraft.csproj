@@ -13,6 +13,11 @@
         <OutputType>WinExe</OutputType>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Update="soft_oal.dll" Condition="'$(RuntimeIdentifier)' == 'win-x64'">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

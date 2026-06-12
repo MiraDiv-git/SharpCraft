@@ -55,5 +55,7 @@ public static class KeyBindings
         Sneak = KeyBind.FromString(UserSettings.BindSneak);
         Place = KeyBind.FromString(UserSettings.BindPlace);
         Destroy = KeyBind.FromString(UserSettings.BindDestroy);
+        
+        Console.WriteLine("[BIND] Key bindings loaded.");
     }
 }

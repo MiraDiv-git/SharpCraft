@@ -2,7 +2,7 @@
 **bin/
 **obj/
 publish/
+Templates/
 
 **.kate-swp
-**.blend1
 **.DotSettings.user

@@ -17,9 +17,9 @@ public class InputManager
     public static bool RightMouseButtonJustPressed { get; private set; }
     public static event Action<char>? OnKeyChar;
 
-    private static IInputContext _input;
-    private static IMouse _mouse;
-    private static IKeyboard _keyboard;
+    private static IInputContext? _input;
+    private static IMouse? _mouse;
+    private static IKeyboard? _keyboard;
     private static Vector2 _lastMousePos;
     private static readonly Dictionary<MouseButton, bool> _mouseButtonsDown = new();
     private static readonly Dictionary<MouseButton, bool> _prevMouseButtonsDown = new();
@@ -41,7 +41,7 @@ public class InputManager
         _mouse.MouseDown += (_, btn) => _mouseButtonsDown[btn] = true;
         _mouse.MouseUp += (_, btn) => _mouseButtonsDown[btn] = false;
 
-        Console.WriteLine("[OK] Input Manager initialized.");
+        Console.WriteLine("[LOAD] Input Manager initialized.");
     }
 
     public static bool IsMouseButtonDown(MouseButton btn) =>
@@ -51,23 +51,23 @@ public class InputManager
         _mouseButtonsDown.TryGetValue(btn, out var v) && v &&
         (!_prevMouseButtonsDown.TryGetValue(btn, out var pv) || !pv);
 
-    public static bool IsKeyDown(Key key) => _keyboard.IsKeyPressed(key);
+    public static bool IsKeyDown(Key key) => _keyboard!.IsKeyPressed(key);
     public static bool IsKeyJustPressed(Key key) => _currKeys.Contains(key) && !_prevKeys.Contains(key);
 
     public static void LockMouse()
     {
-        _mouse.Cursor.CursorMode = CursorMode.Raw;
+        _mouse!.Cursor.CursorMode = CursorMode.Raw;
         IsMouseLocked = true;
     }
 
     public static void UnlockMouse()
     {
-        _mouse.Cursor.CursorMode = CursorMode.Normal;
+        _mouse!.Cursor.CursorMode = CursorMode.Normal;
         IsMouseLocked = false;
     }
 
-    public static void SetCursor(StandardCursor cursor) => _mouse.Cursor.StandardCursor = cursor;
-    public static void ResetCursor() => _mouse.Cursor.StandardCursor = StandardCursor.Default;
+    public static void SetCursor(StandardCursor cursor) => _mouse!.Cursor.StandardCursor = cursor;
+    public static void ResetCursor() => _mouse!.Cursor.StandardCursor = StandardCursor.Default;
 
     public static void Update()
     {
@@ -78,11 +78,11 @@ public class InputManager
         foreach (var k in Enum.GetValues<Key>())
         {
             if (k == Key.Unknown || (int)k < 0) continue;
-            if (_keyboard.IsKeyPressed(k)) _currKeys.Add(k);
+            if (_keyboard!.IsKeyPressed(k)) _currKeys.Add(k);
         }
 
         // Mouse position
-        var currentPos = new Vector2(_mouse.Position.X, _mouse.Position.Y);
+        var currentPos = new Vector2(_mouse!.Position.X, _mouse.Position.Y);
         MouseDelta = IsMouseLocked ? currentPos - _lastMousePos : Vector2.Zero;
         _lastMousePos = currentPos;
         MousePosition = currentPos;

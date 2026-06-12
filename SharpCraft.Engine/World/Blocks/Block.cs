@@ -54,6 +54,6 @@ public class Block : IDisposable
     public void Dispose()
     {
         _mesh.Dispose();
-        _texture.Dispose();
+        _texture?.Dispose();
     }
 }

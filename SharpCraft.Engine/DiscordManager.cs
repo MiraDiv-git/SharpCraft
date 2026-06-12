@@ -1,33 +1,33 @@
-using DiscordRPC;
-using SharpCraft.Engine;
+// The entire script needs to be reworked from scratch
+// Currently it's just a placeholder
 
-namespace SharpCraft;
+using DiscordRPC;
+
+namespace SharpCraft.Engine;
 
 public static class DiscordManager
 {
-    private static DiscordRpcClient _client;
+    // private static DiscordRpcClient _client;
 
     public static void Initialize()
     {
-        _client = new DiscordRpcClient("1480590651069304862");
-        _client.Initialize();
-        SetPresence("discord.main_menu"); 
-        // TODO: Add localization switch logic
-        // TODO: Add .scres support
+        // _client = new DiscordRpcClient("your_app_id");
+        // _client.Initialize();
+        // SetPresence($"Playing {EngineMetadata.Info.GameName}"); 
     }
     
     public static void SetPresence(string stateKey)
     {
-        _client.SetPresence(new RichPresence
-        {
-            State = Localization.Get(stateKey),
-            Assets = new Assets
-            {
-                LargeImageKey = "logo",
-                LargeImageText = "SharpCraft"
-            }
-        });
+        // _client.SetPresence(new RichPresence
+        // {
+        //     State = stateKey,
+        //     Assets = new DiscordRPC.Assets
+        //     {
+        //         LargeImageKey = "logo",
+        //         LargeImageText = "SharpCraft"
+        //     }
+        // });
     }
     
-    public static void Shutdown() => _client.Dispose();
+    // public static void Shutdown() => _client.Dispose();
 }

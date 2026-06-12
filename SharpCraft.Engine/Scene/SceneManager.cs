@@ -6,15 +6,11 @@ namespace SharpCraft.Engine.Scene;
 public static class SceneManager
 {
     private static IScene? _currentScene;
-    private static UIRenderer _uiRenderer;
-    private static GL _gl;
     private static bool _initialized = false;
 
-    public static void Initialize(UIRenderer uiRenderer, GL gl)
+    public static void Initialize()
     {
-        _uiRenderer = uiRenderer;
-        _gl = gl;
-        Console.WriteLine("[OK] Scene Manager initialized.");
+        Console.WriteLine("[LOAD] Scene Manager initialized.");
     }
 
     public static void SetScene(IScene scene)
@@ -22,13 +18,13 @@ public static class SceneManager
         _currentScene?.Unload();
         _currentScene = scene;
         if (_initialized)
-            _currentScene.Load(_uiRenderer, _gl);
+            _currentScene.Load();
     }
 
     public static void LoadCurrentScene()
     {
         _initialized = true;
-        _currentScene?.Load(_uiRenderer, _gl);
+        _currentScene?.Load();
     }
 
     public static void Update() => _currentScene?.Update();

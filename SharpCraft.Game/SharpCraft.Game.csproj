@@ -6,14 +6,17 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
     <ItemGroup>
-
-
-      <None Update="Resources.scres">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-
       <ProjectReference Include="..\SharpCraft.Engine\SharpCraft.Engine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\" />
     </ItemGroup>
 
 </Project>

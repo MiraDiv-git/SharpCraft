@@ -8,9 +8,10 @@ public class Canvas
     private readonly List<UIElement> _elements = new();
     private readonly UIRenderer _renderer;
 
-    public Canvas(UIRenderer renderer)
+    public Canvas()
     {
-        _renderer = renderer;
+        _renderer = UIRenderer.Instance!;
+        UIRenderer.Instance!.RegisterCanvas(this);
     }
     
     public T AddElement<T>() where T : UIElement, new()
