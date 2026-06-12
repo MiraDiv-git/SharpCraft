@@ -3,6 +3,7 @@
 **obj/
 publish/
 Templates/
+SharpCraft.Game/Test/
 
 **.kate-swp
 **.DotSettings.user

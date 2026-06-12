@@ -42,14 +42,15 @@ public class UIRenderer
     
     public void Update()
     {
-        foreach (var canvas in _canvases)
+        var activeCanvases = _canvases.Where(c => c.IsActive).ToList();
+        foreach (var canvas in activeCanvases)
             if (canvas.IsActive)
                 canvas.Update(this);
     }
     
     public void Render()
     {
-        foreach (var canvas in _canvases)
+        foreach (var canvas in _canvases.ToList())
             if (canvas.IsActive)
                 canvas.Render();
     }
@@ -268,16 +269,16 @@ public class UIRenderer
     {
         int index = (int)character;
         if (index >= 0x0410 && index < 0x0450)
-            index = index - 0x0410 + 128; // Cyrillic
-        else if (index == 0x0401) index = 192; // Ё
-        else if (index == 0x0451) index = 193; // ё
-        else if (index == 0x0404) index = 194; // Є
-        else if (index == 0x0407) index = 195; // Ї
-        else if (index == 0x0406) index = 196; // І
-        else if (index == 0x0454) index = 197; // є
-        else if (index == 0x0457) index = 198; // ї
-        else if (index == 0x0456) index = 199; // і
-        else if (index >= 256) index = '?'; // Unknow symbol fallback
+            index = index - 0x0410 + 128;
+        else if (index == 0x0401) index = 192;
+        else if (index == 0x0451) index = 193;
+        else if (index == 0x0404) index = 194;
+        else if (index == 0x0407) index = 195;
+        else if (index == 0x0406) index = 196;
+        else if (index == 0x0454) index = 197;
+        else if (index == 0x0457) index = 198;
+        else if (index == 0x0456) index = 199;
+        else if (index >= 256) index = '?'; 
         
         int col = index % 16;
         int row = 15 - (index / 16);
