@@ -11,13 +11,14 @@ public class UIText : UIElement
         set => _text = value;
     }
     
-    public float FontSize { get; set; } = 16f;
-    public Color4 TextColor { get; set; } = Color.White;
-    public float Spacing { get; set; } = 0.4f;
-    public bool Shadow { get; set; } = true;
-    public float ShadowOffset { get; set; } = 2f;
-    public float VerticalOffset { get; set; } = 0f;
-    public TextAlign Align { get; set; } = TextAlign.Center;
+    public string Font { get; set; }
+    public float FontSize { get; set; } = Config.EngineDefaults.Font.Size;
+    public Color4 FontColor { get; set; } = Config.EngineDefaults.Font.Color;
+    public float Spacing { get; set; } = Config.EngineDefaults.Font.Spacing;
+    public bool Shadow { get; set; } = Config.EngineDefaults.Font.Shadow;
+    public float ShadowOffset { get; set; } = Config.EngineDefaults.Font.ShadowOffset;
+    public float VerticalOffset { get; set; } = Config.EngineDefaults.Font.VerticalOffset;
+    public TextAlign Align { get; set; } = Config.EngineDefaults.Font.TextAlign;
     
     public override void Render(UIRenderer renderer)
     {
@@ -41,7 +42,7 @@ public class UIText : UIElement
         if (Shadow)
         {
             float sx = xOffset;
-            var shadowColor = (0f, 0f, 0f, TextColor.a * 0.5f);
+            var shadowColor = (0f, 0f, 0f, FontColor.a * 0.5f);
             foreach (var c in Text)
             {
                 renderer.DrawChar(resolvedPos + new Vector2(sx + ShadowOffset * screenScale, yOffset + ShadowOffset * screenScale), scaledFontSize, c, shadowColor);
@@ -52,7 +53,7 @@ public class UIText : UIElement
         float x = xOffset;
         foreach (var c in Text)
         {
-            renderer.DrawChar(resolvedPos + new Vector2(x, yOffset), scaledFontSize, c, TextColor);
+            renderer.DrawChar(resolvedPos + new Vector2(x, yOffset), scaledFontSize, c, FontColor);
             x += (renderer.GetCharWidth(c) + Spacing) * glyphScale;
         }
     }

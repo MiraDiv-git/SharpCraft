@@ -1,5 +1,4 @@
 using SharpCraft.Engine.Input;
-using Silk.NET.Input;
 
 namespace SharpCraft.Engine.UI;
 
@@ -18,18 +17,26 @@ public enum ClickMode
 
 public class UIButton : UIElement
 {
-    public Color4 ButtonColor { get; set; } = Color.Grey;
+    public Color4 NormalColor { get; set; } = Color.Grey;
     public Color4 HoverColor { get; set; } = Color.LightGrey;
     public Color4 PressColor { get; set; } = Color.White;
-    public Texture? ButtonTexture { get; set; }
+    public Texture? NormalTexture { get; set; }
     public Texture? HoverTexture { get; set; }
     public Texture? PressTexture { get; set; }
     
     public Action? OnClick { get; set; }
     public Action? OnHover { get; set; }
-    
     public ButtonState State { get; private set; } = ButtonState.Normal;
     public ClickMode ClickMode { get; set; } = ClickMode.OnRelease;
+    
+    private readonly UIText _buttonText = new();
+    public string Text { get => _buttonText.Text; set => _buttonText.Text = value; }
+    public TextAlign TextAlign { get => _buttonText.Align; set => _buttonText.Align = value; }
+    public float FontSize { get => _buttonText.FontSize; set => _buttonText.FontSize = value; }
+    public Color4 FontColor { get => _buttonText.FontColor; set => _buttonText.FontColor = value; }
+    public float FontSpacing { get => _buttonText.Spacing; set => _buttonText.Spacing = value; }
+    public bool FontShadow { get => _buttonText.Shadow; set => _buttonText.Shadow = value; }
+    public float FontShadowOffset { get => _buttonText.ShadowOffset; set => _buttonText.ShadowOffset = value; }
 
     public override void Update(UIRenderer renderer)
     {
@@ -74,19 +81,29 @@ public class UIButton : UIElement
         {
             ButtonState.Hovered => HoverColor,
             ButtonState.Pressed => PressColor,
-            _ => ButtonColor
+            _ => NormalColor
         };
 
         var texture = State switch
         {
-            ButtonState.Hovered => HoverTexture ?? ButtonTexture,
-            ButtonState.Pressed => PressTexture ?? ButtonTexture,
-            _ => ButtonTexture
+            ButtonState.Hovered => HoverTexture ?? NormalTexture,
+            ButtonState.Pressed => PressTexture ?? NormalTexture,
+            _ => NormalTexture
         };
         
-        if (ButtonTexture != null)
+        if (NormalTexture != null)
             renderer.DrawTexturedRect(Position, Size, texture!, color, Anchor);
         else
             renderer.DrawRect(Position, Size, color, Anchor);
+
+        if (!string.IsNullOrEmpty(Text))
+        {
+            _buttonText.Position = this.Position;
+            _buttonText.Size = this.Size;
+            _buttonText.Anchor = this.Anchor;
+            _buttonText.VerticalOffset = State == ButtonState.Pressed ? 1f : 0f;
+
+            _buttonText.Render(renderer);
+        }
     }
 }
