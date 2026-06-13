@@ -1,6 +1,6 @@
 using SharpCraft.Engine.Physics;
 
-namespace SharpCraft.Engine.UI.Elements;
+namespace SharpCraft.Engine.UI;
 
 public class UIAnimation : UIElement
 {

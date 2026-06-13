@@ -14,4 +14,4 @@ dotnet publish SharpCraft/SharpCraft.csproj ^
   -r %OS% ^
   --self-contained true ^
   -p:PublishSingleFile=true ^
-  -o ./publish/%OS%/%CONFIG%
+  -o ./publish/%CONFIG%/%OS%

@@ -135,8 +135,10 @@ public class GameWindow
 
     private void PrintMetadata()
     {
-        Console.WriteLine($"==== {Config.EngineDefaults.Window.Title} =====");
-        Console.WriteLine();
+        Console.WriteLine($"[INFO] Game: {Config.EngineMetadata.Info.GameName}" +
+                          $"\n\t├─ Version: {Config.EngineMetadata.Info.GameVersion}" +
+                          $"\n\t├─ Author: {Config.EngineMetadata.Info.GameAuthor}" +
+                          $"\n\t└─ Website: {Config.EngineMetadata.Info.GameWebsite}");
         
         Console.WriteLine($"[INFO] Engine: {Config.EngineMetadata.Info.EngineName} " +
                           $"{Config.EngineMetadata.Info.EngineVersion}" +
@@ -144,9 +146,6 @@ public class GameWindow
                           $"\n\t├─ License: {Config.EngineMetadata.Info.EngineLicense}" +
                           $"\n\t├─ Website: {Config.EngineMetadata.Info.EngineWebsite}" +
                           $"\n\t└─ Documentation: {Config.EngineMetadata.Info.EngineDocs}");
-        
-        Console.WriteLine($"[INFO] Game: {Config.EngineMetadata.Info.GameName}" +
-                          $"\n\t└─ Author: {Config.EngineMetadata.Info.GameAuthor}");
         
         Console.WriteLine();
     }

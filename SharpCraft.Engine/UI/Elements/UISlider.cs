@@ -1,6 +1,6 @@
 using SharpCraft.Engine.Input;
 
-namespace SharpCraft.Engine.UI.Elements;
+namespace SharpCraft.Engine.UI;
 
 public class UISlider : UIElement
 {

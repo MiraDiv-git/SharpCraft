@@ -1,7 +1,7 @@
 using SharpCraft.Engine.Input;
 using Silk.NET.Input;
 
-namespace SharpCraft.Engine.UI.Elements;
+namespace SharpCraft.Engine.UI;
 
 public enum ButtonState
 {

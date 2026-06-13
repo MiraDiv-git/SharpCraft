@@ -12,6 +12,8 @@ public class EngineMetadata
         public const string EngineDocs = "https://sharpcraft-docs.netlify.app/";
         
         public const string GameName = "Unnamed";
+        public const string GameVersion = "v0.1.0";
         public const string GameAuthor = "Unknown";
+        public const string GameWebsite = "https://www.webpagetest.org/blank.html";
     }
 }

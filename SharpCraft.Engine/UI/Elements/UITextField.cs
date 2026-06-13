@@ -3,7 +3,7 @@ using SharpCraft.Engine.Physics;
 using SharpCraft.Engine.Rendering;
 using Silk.NET.Input;
 
-namespace SharpCraft.Engine.UI.Elements;
+namespace SharpCraft.Engine.UI;
 
 public class UITextField : UIElement
 {

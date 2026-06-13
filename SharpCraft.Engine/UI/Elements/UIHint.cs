@@ -1,4 +1,4 @@
-namespace SharpCraft.Engine.UI.Elements;
+namespace SharpCraft.Engine.UI;
 
 public class UIHint : UIElement
 {
