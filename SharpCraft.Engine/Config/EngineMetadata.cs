@@ -1,19 +1,19 @@
 namespace SharpCraft.Engine.Config;
 
-public class EngineMetadata
+public static class EngineMetadata
 {
     public static class Info
     {
-        public const string EngineName = "SharpCraft";
-        public const string EngineVersion = "v0.2.0";
-        public const string EngineCopyright = "© 2026 MiraDiv · © 2026 SharpCraft Contributors";
-        public const string EngineLicense = "MIT";
-        public const string EngineWebsite = "https://github.com/MiraDiv-git/SharpCraft";
-        public const string EngineDocs = "https://sharpcraft-docs.netlify.app/";
+        public static string EngineName = "SharpCraft";
+        public static string EngineVersion = "v0.2.0";
+        public static string EngineCopyright = "© 2026 MiraDiv · © 2026 SharpCraft Contributors";
+        public static string EngineLicense = "MIT";
+        public static string EngineWebsite = "https://github.com/MiraDiv-git/SharpCraft";
+        public static string EngineDocs = "https://sharpcraft-docs.netlify.app/";
         
-        public const string GameName = "Unnamed";
-        public const string GameVersion = "v0.1.0";
-        public const string GameAuthor = "Unknown";
-        public const string GameWebsite = "https://www.webpagetest.org/blank.html";
+        public static string GameName = "Unnamed";
+        public static string GameVersion = "v0.1.0";
+        public static string GameAuthor = "Unknown";
+        public static string GameWebsite = "https://www.webpagetest.org/blank.html";
     }
 }
