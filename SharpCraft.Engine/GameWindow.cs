@@ -135,17 +135,17 @@ public class GameWindow
 
     private void PrintMetadata()
     {
-        Console.WriteLine($"[INFO] Game: {Config.EngineMetadata.Info.GameName}" +
-                          $"\n\t├─ Version: {Config.EngineMetadata.Info.GameVersion}" +
-                          $"\n\t├─ Author: {Config.EngineMetadata.Info.GameAuthor}" +
-                          $"\n\t└─ Website: {Config.EngineMetadata.Info.GameWebsite}");
+        Console.WriteLine($"[INFO] Game: {Config.EngineMetadata.GameInfo.GameName}" +
+                          $"\n\t├─ Version: {Config.EngineMetadata.GameInfo.GameVersion}" +
+                          $"\n\t├─ Author: {Config.EngineMetadata.GameInfo.GameAuthor}" +
+                          $"\n\t└─ Website: {Config.EngineMetadata.GameInfo.GameWebsite}");
         
-        Console.WriteLine($"[INFO] Engine: {Config.EngineMetadata.Info.EngineName} " +
-                          $"{Config.EngineMetadata.Info.EngineVersion}" +
-                          $"\n\t├─ Copyright: {Config.EngineMetadata.Info.EngineCopyright}" +
-                          $"\n\t├─ License: {Config.EngineMetadata.Info.EngineLicense}" +
-                          $"\n\t├─ Website: {Config.EngineMetadata.Info.EngineWebsite}" +
-                          $"\n\t└─ Documentation: {Config.EngineMetadata.Info.EngineDocs}");
+        Console.WriteLine($"[INFO] Engine: {Config.EngineMetadata.EngineInfo.EngineName} " +
+                          $"{Config.EngineMetadata.EngineInfo.EngineVersion}" +
+                          $"\n\t├─ Copyright: {Config.EngineMetadata.EngineInfo.EngineCopyright}" +
+                          $"\n\t├─ License: {Config.EngineMetadata.EngineInfo.EngineLicense}" +
+                          $"\n\t├─ Website: {Config.EngineMetadata.EngineInfo.EngineWebsite}" +
+                          $"\n\t└─ Documentation: {Config.EngineMetadata.EngineInfo.EngineDocs}");
         
         Console.WriteLine();
     }

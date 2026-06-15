@@ -13,7 +13,7 @@ public static class EngineDefaults
         public static WindowState Mode = WindowState.Normal;
         public static WindowBorder Border = WindowBorder.Resizable;
     }
-
+    
     public static class Font
     {
         public static string Path = System.IO.Path.Combine("Fonts", "dogicapixel.png");
