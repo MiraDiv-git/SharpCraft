@@ -75,14 +75,13 @@ public class UITextField : UIElement
         
         var (resolvedPos, resolvedSize) = renderer.ResolveElement(Position, Size, Anchor);
         float scale = resolvedSize.Y / Size.Y;
-        float x = resolvedPos.X + 4 * scale;
-        float y = resolvedPos.Y + (resolvedSize.Y - FontSize * scale) / 2f;
+        float fontSize = FontSize * scale;
 
-        foreach (var c in display)
-        {
-            renderer.DrawChar(new Vector2(x, y), FontSize * scale, c, TextColor);
-            x += (renderer.GetCharWidth(c) + 1) * scale;
-        }
+        var measure = renderer.MeasureText(display, fontSize);
+        float x = resolvedPos.X + 4 * scale;
+        float y = resolvedPos.Y + (resolvedSize.Y - measure.Y) / 2f;
+
+        renderer.DrawText(display, new Vector2(x, y), fontSize, TextColor);
     }
     
     public bool IsFocused

@@ -10,7 +10,8 @@ public static class WindowIcon
     public static void Set(IWindow window, string path)
     {
         StbImage.stbi_set_flip_vertically_on_load(0);
-        var image = ImageResult.FromStream(AssetManager.OpenResource(path), ColorComponents.RedGreenBlueAlpha);
+        using var stream = AssetManager.OpenResource(path);
+        var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
         var icon = new RawImage(image.Width, image.Height, new Memory<byte>(image.Data));
         window.SetWindowIcon(ref icon);
     }

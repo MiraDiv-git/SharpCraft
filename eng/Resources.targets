@@ -1,0 +1,31 @@
+<Project>
+
+  <!--
+    Reusable packaging for the engine's resource archive.
+    Produces Resources.scres (zip of SharpCraft.Engine/Resources) after
+    Build and Publish, so asset lookups go through AssetManager only.
+  -->
+  <PropertyGroup>
+    <ResourceSourceDirectory>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..', 'SharpCraft.Engine', 'Resources'))</ResourceSourceDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ResourceFiles Include="$(ResourceSourceDirectory)**\*" />
+  </ItemGroup>
+
+  <Target Name="BuildResources"
+          AfterTargets="Build"
+          Inputs="@(ResourceFiles)"
+          Outputs="$(OutputPath)Resources.scres">
+    <ZipDirectory SourceDirectory="$(ResourceSourceDirectory)"
+                  DestinationFile="$(OutputPath)Resources.scres"
+                  Overwrite="true" />
+  </Target>
+
+  <Target Name="BuildResourcesPublish" AfterTargets="Publish">
+    <ZipDirectory SourceDirectory="$(ResourceSourceDirectory)"
+                  DestinationFile="$(PublishDir)Resources.scres"
+                  Overwrite="true" />
+  </Target>
+
+</Project>

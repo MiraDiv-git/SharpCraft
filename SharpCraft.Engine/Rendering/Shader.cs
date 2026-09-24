@@ -6,6 +6,7 @@ public class Shader : IDisposable
 {
     private readonly uint _handle;
     private readonly GL _gl;
+    private readonly Dictionary<string, int> _locations = new();
 
     public Shader(GL gl, string vertPath, string fragPath)
     {
@@ -24,6 +25,8 @@ public class Shader : IDisposable
         if (status == 0)
             throw new Exception($"Error linking shader program: {_gl.GetProgramInfoLog(_handle)}");
 
+        _gl.DetachShader(_handle, vert);
+        _gl.DetachShader(_handle, frag);
         _gl.DeleteShader(vert);
         _gl.DeleteShader(frag);
     }
@@ -42,70 +45,79 @@ public class Shader : IDisposable
         var shader = _gl.CreateShader(type);
         _gl.ShaderSource(shader, source);
         _gl.CompileShader(shader);
-        
+
         string infoLog = _gl.GetShaderInfoLog(shader);
         if (!string.IsNullOrWhiteSpace(infoLog))
-        {
             throw new Exception($"Error compiling shader of type {type}: {infoLog}");
-        }
-        
+
         return shader;
     }
-    
+
+    private int GetLocation(string name)
+    {
+        if (!_locations.TryGetValue(name, out var location))
+        {
+            location = _gl.GetUniformLocation(_handle, name);
+            _locations[name] = location;
+        }
+        return location;
+    }
+
     // Color
     public void SetUniform(string name, Color4 color)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.Uniform4(location, color.r, color.g, color.b, color.a);
     }
-    
+
     // Position and size
     public void SetUniform(string name, Vector2 value)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.Uniform2(location, value.X, value.Y);
     }
-    
+
     // Camera (3D)
     public unsafe void SetUniform(string name, Matrix4X4<float> matrix)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.UniformMatrix4(location, 1, false, (float*)&matrix);
     }
-    
+
     // Debug renderer
     public void SetUniform(string name, Vector3 value)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
-        _gl.Uniform3(location, value.X, value.Y, value.Z);
+        int location = GetLocation(name);
+        if (location != -1)
+            _gl.Uniform3(location, value.X, value.Y, value.Z);
     }
-    
+
     public void SetUniform(string name, Vector4D<float> value)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.Uniform4(location, value.X, value.Y, value.Z, value.W);
     }
 
     public void SetUniform(string name, float value)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.Uniform1(location, value);
     }
-    
+
     // Only number (used for texture)
     public void SetUniform(string name, int value)
     {
-        int location = _gl.GetUniformLocation(_handle, name);
+        int location = GetLocation(name);
         if (location != -1)
             _gl.Uniform1(location, value);
     }
 
     public void Use() => _gl.UseProgram(_handle);
-    
+
     public void Dispose() => _gl.DeleteProgram(_handle);
 }

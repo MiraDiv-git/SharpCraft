@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z "$1" ]; then
   echo "Error: target OS not specified. Usage: ./build.sh <os> [config]"
   echo "Example: ./build.sh linux-x64 Release"
@@ -7,11 +9,10 @@ if [ -z "$1" ]; then
 fi
 
 OS=$1
-CONFIG=${2:-Debug}
+CONFIG=${2:-Release}
 
 dotnet publish SharpCraft/SharpCraft.csproj \
-  -c $CONFIG \
-  -r $OS \
-  --self-contained true \
-  -p:PublishSingleFile=true \
-  -o ./publish/$CONFIG/$OS
+  -c "$CONFIG" \
+  -p:PublishProfile="$OS"
+
+echo "Published to SharpCraft/bin/$CONFIG/$OS/"

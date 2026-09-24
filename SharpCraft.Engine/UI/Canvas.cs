@@ -2,7 +2,7 @@ using SharpCraft.Engine.Input;
 
 namespace SharpCraft.Engine.UI;
 
-public class Canvas
+public class Canvas : IDisposable
 {
     private readonly List<UIElement> _elements = new();
     private bool _active = false;
@@ -61,5 +61,10 @@ public class Canvas
     public void Clear()
     {
         _elements.Clear();
+    }
+
+    public void Dispose()
+    {
+        UIRenderer.Instance?.UnregisterCanvas(this);
     }
 }

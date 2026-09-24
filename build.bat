@@ -7,11 +7,10 @@ if "%~1"=="" (
 
 set OS=%~1
 set CONFIG=%~2
-if "%CONFIG%"=="" set CONFIG=Debug
+if "%CONFIG%"=="" set CONFIG=Release
 
 dotnet publish SharpCraft/SharpCraft.csproj ^
   -c %CONFIG% ^
-  -r %OS% ^
-  --self-contained true ^
-  -p:PublishSingleFile=true ^
-  -o ./publish/%CONFIG%/%OS%
+  -p:PublishProfile=%OS%
+
+echo Published to SharpCraft\bin\%CONFIG%\%OS%\

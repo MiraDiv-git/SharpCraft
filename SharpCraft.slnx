@@ -1,5 +1,5 @@
 <Solution>
   <Project Path="SharpCraft.Engine/SharpCraft.Engine.csproj" />
-  <Project Path="SharpCraft.Game/SharpCraft.Game.csproj" />
   <Project Path="SharpCraft\SharpCraft.csproj" />
+  <Project Path="SharpCraft.Editor\SharpCraft.Editor.csproj" />
 </Solution>

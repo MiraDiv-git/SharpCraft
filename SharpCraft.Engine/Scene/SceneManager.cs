@@ -1,6 +1,3 @@
-using SharpCraft.Engine.UI;
-using Silk.NET.OpenGL;
-
 namespace SharpCraft.Engine.Scene;
 
 public static class SceneManager
@@ -15,7 +12,7 @@ public static class SceneManager
 
     public static void SetScene(IScene scene)
     {
-        _currentScene?.Unload();
+        _currentScene?.Dispose();
         _currentScene = scene;
         if (_initialized)
             _currentScene.Load();
@@ -29,4 +26,11 @@ public static class SceneManager
 
     public static void Update() => _currentScene?.Update();
     public static void Render() => _currentScene?.Render();
+
+    public static void Shutdown()
+    {
+        _currentScene?.Dispose();
+        _currentScene = null;
+        _initialized = false;
+    }
 }

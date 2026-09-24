@@ -16,6 +16,7 @@ public class InputManager
     public static bool LeftMouseButtonJustReleased { get; private set; }
     public static bool RightMouseButtonDown => IsMouseButtonDown(MouseButton.Right);
     public static bool RightMouseButtonJustPressed { get; private set; }
+    public static bool RightMouseButtonJustReleased { get; private set; }
     public static event Action<char>? OnKeyChar;
 
     private static IInputContext? _input;
@@ -27,6 +28,7 @@ public class InputManager
     private static readonly HashSet<Key> _prevKeys = new();
     private static readonly HashSet<Key> _currKeys = new();
     private static bool _prevRightMouseButtonDown;
+    private static readonly Key[] _allKeys = Enum.GetValues<Key>();
     
     public static void Initialize(IInputContext input)
     {
@@ -76,7 +78,7 @@ public class InputManager
         _prevKeys.Clear();
         foreach (var k in _currKeys) _prevKeys.Add(k);
         _currKeys.Clear();
-        foreach (var k in Enum.GetValues<Key>())
+        foreach (var k in _allKeys)
         {
             if (k == Key.Unknown || (int)k < 0) continue;
             if (_keyboard!.IsKeyPressed(k)) _currKeys.Add(k);
@@ -95,11 +97,12 @@ public class InputManager
         _prevLeftMouseButtonDown = currentLeftDown;
         
         _prevMouseButtonsDown.Clear();
-        foreach (var btn in _mouseButtonsDown.Keys.ToList())
-            _prevMouseButtonsDown[btn] = _mouseButtonsDown[btn];
+        foreach (var btn in _mouseButtonsDown)
+            _prevMouseButtonsDown[btn.Key] = btn.Value;
         
         bool currentRightDown = IsMouseButtonDown(MouseButton.Right);
         RightMouseButtonJustPressed = currentRightDown && !_prevRightMouseButtonDown;
+        RightMouseButtonJustReleased = !currentRightDown && _prevRightMouseButtonDown;
         _prevRightMouseButtonDown = currentRightDown;
     }
 }

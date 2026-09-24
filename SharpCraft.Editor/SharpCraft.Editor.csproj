@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <RootNamespace>SharpCraft</RootNamespace>
-        <ApplicationIcon>game_icon.ico</ApplicationIcon>
-        <AssemblyTitle>SharpCraft</AssemblyTitle>
+        <RootNamespace>SharpCraft.Editor</RootNamespace>
+        <AssemblyTitle>SharpCraft Editor</AssemblyTitle>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64' or '$(RuntimeIdentifier)' == 'win-x86'">

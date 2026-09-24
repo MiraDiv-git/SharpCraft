@@ -16,7 +16,7 @@ public static class EngineDefaults
     
     public static class Font
     {
-        public static string Path = System.IO.Path.Combine("Fonts", "dogicapixel.png");
+        public static string Path = System.IO.Path.Combine("Fonts", "dogicapixel.ttf");
         public static float Size = 16f;
         public static Color4 Color = Rendering.Color.White;
         public static float Spacing = 0.4f;

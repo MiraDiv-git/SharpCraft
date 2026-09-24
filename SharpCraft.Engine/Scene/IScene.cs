@@ -1,15 +1,14 @@
-using SharpCraft.Engine.UI;
-using Silk.NET.OpenGL;
-
 namespace SharpCraft.Engine.Scene;
 
-public interface IScene
+public interface IScene : IDisposable
 {
     // Required
     void Load();
-    
+
     // Optional
     void Render() { }
     void Unload() { }
     void Update() { }
+
+    void IDisposable.Dispose() => Unload();
 }
